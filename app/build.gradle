@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.freddy.kulachat"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "0.1.0"
@@ -64,6 +64,11 @@ android {
                 }
             }
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

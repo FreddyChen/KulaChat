@@ -1,17 +1,26 @@
 package com.freddy.kulachat;
 
-import android.os.Bundle;
+import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends BaseActivity<HomeContract.View, HomePresenter> implements HomeContract.View {
 
-public class MainActivity extends AppCompatActivity {
+    private TextView tv;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onTest() {
+
+    }
+
+    @Override
+    protected void setRootView() {
         setContentView(R.layout.activity_main);
 
-        int i = Integer.parseInt("a");
-        System.out.println("i=" + i);
+        tv = findViewById(R.id.tv);
+        tv.postDelayed(() -> presenter.onPresenterTest(), 3000);
+    }
+
+    @Override
+    protected HomePresenter getPresenter() {
+        return new HomePresenter();
     }
 }
