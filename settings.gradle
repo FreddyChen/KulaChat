@@ -1,2 +1,2 @@
 rootProject.name='KulaChat'
-include ':app'
+include ':app', ":ims_kula"
