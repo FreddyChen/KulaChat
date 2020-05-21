@@ -1,0 +1,3 @@
+[submodule "ims_kula"]
+	path = ims_kula
+	url = git@github.com:FreddyChen/ims_kula.git
