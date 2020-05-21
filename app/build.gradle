@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.freddy.kulachat"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "0.1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            keyAlias("KulaChat")
+            keyPassword("1088299709")
+            storeFile file("../kula_chat.jks")
+            storePassword("1088299709")
+        }
+
+        debug {
+            keyAlias("KulaChat")
+            keyPassword("1088299709")
+            storeFile file("../kula_chat.jks")
+            storePassword("1088299709")
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "LOG_DEBUG", "false")
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "LOG_DEBUG", "true")
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            def date = new Date().format("yyyyMMddHHmm")
+            project.logger.debug("outputFile = ${outputFile}")
+            project.logger.debug("buildTypeName = ${variant.buildType.name}")
+            if(outputFile != null && outputFile.name.endsWith('.apk')) {
+                def buildType
+                if(variant.buildType.name == "release") {
+                    buildType = "release"
+                }else if(variant.buildType.name == "debug") {
+                    buildType = "debug"
+                }
+                if(buildType != null) {
+                    outputFileName = "KulaChat_v${project.android.defaultConfig.versionName}.${project.android.defaultConfig.versionCode}_${buildType}_${date}.apk"
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
