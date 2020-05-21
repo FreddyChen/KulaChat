@@ -1,0 +1,2 @@
+# KulaChat
+基于ims_kula实现的Android即时通讯app
