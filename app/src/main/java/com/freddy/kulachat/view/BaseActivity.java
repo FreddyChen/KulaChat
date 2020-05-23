@@ -42,6 +42,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             e.printStackTrace();
         }
         super.onCreate(savedInstanceState);
+        CActivityManager.getInstance().addActivityToStack(this);
         setRootView(savedInstanceState);
         setStatusBarColor();
         unbinder = ButterKnife.bind(this);
@@ -96,6 +97,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
         destroy();
         super.onDestroy();
+        CActivityManager.getInstance().removeActivityFromStack(this);
     }
 
     @Override
