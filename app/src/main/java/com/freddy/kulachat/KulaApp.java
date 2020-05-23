@@ -1,8 +1,10 @@
 package com.freddy.kulachat;
 
-import android.app.Application;
-
+import com.freddy.kulachat.di.component.DaggerApplicationComponent;
 import com.freddy.kulachat.utils.CrashHandler;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
 
 /**
  * @author FreddyChen
@@ -12,7 +14,7 @@ import com.freddy.kulachat.utils.CrashHandler;
  * @github https://github.com/FreddyChen
  * @desc
  */
-public class KulaApp extends Application {
+public class KulaApp extends DaggerApplication {
 
     private static KulaApp instance;
 
@@ -25,5 +27,10 @@ public class KulaApp extends Application {
         super.onCreate();
         instance = this;
         CrashHandler.getInstance().init();
+    }
+
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        return DaggerApplicationComponent.builder().application(this).build();
     }
 }
