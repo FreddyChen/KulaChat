@@ -1,11 +1,6 @@
 package com.freddy.kulachat.di.module;
 
-import com.google.gson.Gson;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
-import dagger.Provides;
 
 /**
  * @author FreddyChen
@@ -18,15 +13,9 @@ import dagger.Provides;
 @Module
 public abstract class ConfigModule {
 
-    @Singleton
-    @Provides
-    static Gson provideGson() {
-        return new Gson();
-    }
-
 //    @Singleton
 //    @Provides
-//    static MainModel provideMainModel() {
-//        return new MainModel();
+//    static Gson provideGson() {
+//        return CGson.getInstance();
 //    }
 }

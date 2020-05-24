@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.freddy.kulachat.KulaApp;
 import com.freddy.kulachat.di.module.ApplicationModule;
-import com.freddy.kulachat.di.module.BuilderModule;
+import com.freddy.kulachat.di.module.ActivityModule;
 import com.freddy.kulachat.di.module.ConfigModule;
 
 import javax.inject.Singleton;
@@ -25,7 +25,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Singleton
 @Component(modules = {
         ApplicationModule.class,
-        BuilderModule.class,
+        ActivityModule.class,
         ConfigModule.class,
         AndroidSupportInjectionModule.class
 })

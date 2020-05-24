@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.presenter.NullablePresenter;
 import com.freddy.kulachat.view.BaseActivity;
+import com.freddy.kulachat.view.home.HomeActivity;
 import com.jaeger.library.StatusBarUtil;
 
 /**
@@ -20,6 +21,8 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
     @Override
     protected void setRootView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_splash);
+
+        startActivity(HomeActivity.class);
     }
 
     @Override

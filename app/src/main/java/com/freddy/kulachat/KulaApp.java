@@ -26,7 +26,7 @@ public class KulaApp extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        CrashHandler.getInstance().init();
+//        CrashHandler.getInstance().init();
     }
 
     @Override

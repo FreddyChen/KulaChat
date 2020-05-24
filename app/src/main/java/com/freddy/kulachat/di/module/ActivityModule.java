@@ -16,7 +16,7 @@ import dagger.android.ContributesAndroidInjector;
  * @desc
  */
 @Module
-public abstract class BuilderModule {
+public abstract class ActivityModule {
 
     @ActivityScope
     @ContributesAndroidInjector
