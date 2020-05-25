@@ -1,10 +1,17 @@
 package com.freddy.kulachat;
 
-import com.freddy.kulachat.di.component.DaggerApplicationComponent;
+import android.app.Activity;
+import android.app.Application;
+
+import com.freddy.kulachat.di.component.DaggerAppComponent;
 import com.freddy.kulachat.utils.CrashHandler;
+
+import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 
 /**
  * @author FreddyChen
@@ -14,8 +21,10 @@ import dagger.android.DaggerApplication;
  * @github https://github.com/FreddyChen
  * @desc
  */
-public class KulaApp extends DaggerApplication {
+public class KulaApp extends Application implements HasActivityInjector {
 
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
     private static KulaApp instance;
 
     public static KulaApp getInstance() {
@@ -26,11 +35,12 @@ public class KulaApp extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
-//        CrashHandler.getInstance().init();
+        DaggerAppComponent.builder().build().inject(this);
+        CrashHandler.getInstance().init();
     }
 
     @Override
-    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
-        return DaggerApplicationComponent.builder().application(this).build();
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingAndroidInjector;
     }
 }

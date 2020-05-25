@@ -1,43 +1,37 @@
 package com.freddy.kulachat.di.component;
 
-import android.content.Context;
-
 import com.freddy.kulachat.KulaApp;
-import com.freddy.kulachat.di.module.ApplicationModule;
 import com.freddy.kulachat.di.module.ActivityModule;
-import com.freddy.kulachat.di.module.ConfigModule;
+import com.freddy.kulachat.di.module.AppModule;
 
 import javax.inject.Singleton;
 
-import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjectionModule;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 /**
  * @author FreddyChen
  * @name
- * @date 2020/05/23 18:30
+ * @date 2020/05/26 01:54
  * @email chenshichao@outlook.com
  * @github https://github.com/FreddyChen
- * @desc
+ * @describe
  */
 @Singleton
 @Component(modules = {
-        ApplicationModule.class,
+        AppModule.class,
         ActivityModule.class,
-        ConfigModule.class,
+        AndroidInjectionModule.class,
         AndroidSupportInjectionModule.class
 })
-public interface ApplicationComponent extends AndroidInjector<KulaApp> {
+public interface AppComponent extends AndroidInjector<KulaApp> {
 
     @Component.Builder
     interface Builder {
-        @BindsInstance
-        Builder application(KulaApp app);
-
-        ApplicationComponent build();
+        AppComponent build();
     }
 
-    Context getContext();
+    void inject(KulaApp application);
 }

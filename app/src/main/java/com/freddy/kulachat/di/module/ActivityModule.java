@@ -1,8 +1,8 @@
 package com.freddy.kulachat.di.module;
 
+import com.freddy.kulachat.di.component.ActivityComponent;
 import com.freddy.kulachat.di.scope.ActivityScope;
-import com.freddy.kulachat.view.home.HomeActivity;
-import com.freddy.kulachat.view.main.MainActivity;
+import com.freddy.kulachat.view.main.SplashActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -10,19 +10,15 @@ import dagger.android.ContributesAndroidInjector;
 /**
  * @author FreddyChen
  * @name
- * @date 2020/05/23 18:39
+ * @date 2020/05/26 02:57
  * @email chenshichao@outlook.com
  * @github https://github.com/FreddyChen
- * @desc
+ * @describe
  */
-@Module
+@Module(subcomponents = {ActivityComponent.class})
 public abstract class ActivityModule {
 
     @ActivityScope
-    @ContributesAndroidInjector
-    abstract MainActivity mainActivityInject();
-
-    @ActivityScope
-    @ContributesAndroidInjector
-    abstract HomeActivity homeActivityInject();
+    @ContributesAndroidInjector(modules = {SplashModule.class})
+    abstract SplashActivity splashActivityInjector();
 }

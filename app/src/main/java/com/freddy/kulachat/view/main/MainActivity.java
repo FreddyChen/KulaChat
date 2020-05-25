@@ -1,7 +1,6 @@
 package com.freddy.kulachat.view.main;
 
 import android.os.Bundle;
-
 import com.freddy.kulachat.presenter.NullablePresenter;
 import com.freddy.kulachat.view.BaseActivity;
 

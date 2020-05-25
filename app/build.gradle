@@ -122,5 +122,6 @@ dependencies {
     implementation 'me.jessyan:autosize:1.2.1'
     implementation 'com.alibaba:fastjson:1.1.71.android'
     implementation 'com.github.ihsanbal:LoggingInterceptor:3.1.0-rc5'
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     implementation project(':ims_kula')
 }
