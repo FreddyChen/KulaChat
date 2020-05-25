@@ -68,14 +68,14 @@ android {
             def date = new Date().format("yyyyMMddHHmm")
             project.logger.debug("outputFile = ${outputFile}")
             project.logger.debug("buildTypeName = ${variant.buildType.name}")
-            if(outputFile != null && outputFile.name.endsWith('.apk')) {
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 def buildType
-                if(variant.buildType.name == "release") {
+                if (variant.buildType.name == "release") {
                     buildType = "release"
-                }else if(variant.buildType.name == "debug") {
+                } else if (variant.buildType.name == "debug") {
                     buildType = "debug"
                 }
-                if(buildType != null) {
+                if (buildType != null) {
                     outputFileName = "KulaChat_v${project.android.defaultConfig.versionName}.${project.android.defaultConfig.versionCode}_${buildType}_${date}.apk"
                 }
             }
@@ -120,8 +120,7 @@ dependencies {
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     implementation 'me.jessyan:autosize:1.2.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
-    //    implementation 'com.alibaba:fastjson:1.1.71.android'
+    implementation 'com.alibaba:fastjson:1.1.71.android'
+    implementation 'com.github.ihsanbal:LoggingInterceptor:3.1.0-rc5'
     implementation project(':ims_kula')
-    implementation files('libs/fastjson-1.2.68.jar')
 }

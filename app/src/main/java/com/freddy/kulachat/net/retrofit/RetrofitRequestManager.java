@@ -11,17 +11,18 @@ import com.freddy.kulachat.net.config.ResponseModel;
 import com.freddy.kulachat.net.interf.IRequestInterface;
 import com.freddy.kulachat.net.retrofit.converter.FastJsonConverterFactory;
 import com.freddy.kulachat.utils.StringUtil;
+import com.ihsanbal.logging.Level;
+import com.ihsanbal.logging.LoggingInterceptor;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
-import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.internal.platform.Platform;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -36,24 +37,26 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class RetrofitRequestManager implements IRequestInterface {
 
     private static final String TAG = RetrofitRequestManager.class.getSimpleName();
-    private RetrofitWrapper retrofitWrapper;
-    private Retrofit retrofit;
+    private RetrofitWrapper mRetrofitWrapper;
+    private Map<String, Retrofit> mRetrofitMap = new HashMap<>();
 
     private RetrofitRequestManager() {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().connectTimeout(NetworkConfig.REQUEST_TIMEOUT, TimeUnit.MILLISECONDS);
         if (BuildConfig.LOG_DEBUG) {
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> {
-                Log.d("OkHttpClient", "message = " + message);
-            }).setLevel(HttpLoggingInterceptor.Level.BASIC);
+            LoggingInterceptor loggingInterceptor = new LoggingInterceptor.Builder()
+                    .setLevel(Level.HEADERS)
+                    .log(Platform.INFO)
+                    .request("Request")
+                    .response("Response")
+                    .logger((level, tag, message) -> Log.d(TAG, "level = " + level + ", tag = " + tag + ", message = " + message))
+                    .build();
             clientBuilder.addNetworkInterceptor(loggingInterceptor);
         }
 
-        retrofitWrapper = new RetrofitWrapper()
-                .setBaseUrl(BuildConfig.SERVER_URL)
-                .addConverterFactory(FastJsonConverterFactory.create())// retrofit对于解析器是由添加的顺序分别试用的，解析成功就直接返回，失败则调用下一个解析器
+        mRetrofitWrapper = new RetrofitWrapper()
+                .addConverterFactory(FastJsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .setClient(clientBuilder.build());
-        retrofit = retrofitWrapper.build();
+                .setClientBuilder(clientBuilder);
     }
 
     public static RetrofitRequestManager getInstance() {
@@ -72,9 +75,23 @@ public class RetrofitRequestManager implements IRequestInterface {
         }
 
         String baseUrl = options.getBaseUrl();
-        if (StringUtil.isNotEmpty(baseUrl)) {
-            retrofitWrapper.setBaseUrl(baseUrl);
+        if (StringUtil.isEmpty(baseUrl)) {
+            baseUrl = BuildConfig.SERVER_URL;
         }
+        mRetrofitWrapper.setBaseUrl(baseUrl);
+
+        Retrofit retrofit;
+        if(mRetrofitMap.containsKey(baseUrl)) {
+            retrofit = mRetrofitMap.get(baseUrl);
+        }else {
+            retrofit = mRetrofitWrapper.build();
+            mRetrofitMap.put(baseUrl, retrofit);
+        }
+        if(retrofit == null) {
+            Log.w(TAG, "request() failure, reason: retrofit instance is null.");
+            return null;
+        }
+        Log.d(TAG, "retrofit = " + retrofit.hashCode());
 
         String function = options.getFunction();
         if (StringUtil.isEmpty(function)) {

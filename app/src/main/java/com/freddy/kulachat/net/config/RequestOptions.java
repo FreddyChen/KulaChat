@@ -4,8 +4,6 @@ import com.freddy.kulachat.BuildConfig;
 
 import java.util.Map;
 
-import retrofit2.http.POST;
-
 /**
  * @author FreddyChen
  * @name

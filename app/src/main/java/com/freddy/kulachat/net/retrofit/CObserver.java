@@ -1,18 +1,11 @@
 package com.freddy.kulachat.net.retrofit;
 
-import android.util.Log;
-
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.freddy.kulachat.net.config.ResponseModel;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import retrofit2.http.POST;
 
 /**
  * @author FreddyChen

@@ -9,4 +9,6 @@ package com.freddy.kulachat.config;
  * @describe
  */
 public class CConfig {
+
+
 }
