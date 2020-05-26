@@ -1,5 +1,6 @@
 package com.freddy.kulachat.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -34,6 +35,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     private Unbinder unbinder;
 
+    protected BaseActivity activity;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         try {
@@ -42,7 +45,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             e.printStackTrace();
         }
         super.onCreate(savedInstanceState);
-        CActivityManager.getInstance().addActivityToStack(this);
+        activity = this;
+        CActivityManager.getInstance().addActivityToStack(activity);
         setRootView(savedInstanceState);
         setStatusBarColor();
         unbinder = ButterKnife.bind(this);
@@ -97,7 +101,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
         destroy();
         super.onDestroy();
-        CActivityManager.getInstance().removeActivityFromStack(this);
+        CActivityManager.getInstance().removeActivityFromStack(activity);
     }
 
     @Override

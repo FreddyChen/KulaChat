@@ -44,7 +44,7 @@ public class RetrofitRequestManager implements IRequestInterface {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().connectTimeout(NetworkConfig.REQUEST_TIMEOUT, TimeUnit.MILLISECONDS);
         if (BuildConfig.LOG_DEBUG) {
             LoggingInterceptor loggingInterceptor = new LoggingInterceptor.Builder()
-                    .setLevel(Level.HEADERS)
+                    .setLevel(Level.BASIC)
                     .log(Platform.INFO)
                     .request("Request")
                     .response("Response")

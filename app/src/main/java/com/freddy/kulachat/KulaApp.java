@@ -2,14 +2,15 @@ package com.freddy.kulachat;
 
 import android.app.Activity;
 import android.app.Application;
+import android.util.Log;
 
 import com.freddy.kulachat.di.component.DaggerAppComponent;
 import com.freddy.kulachat.utils.CrashHandler;
+import com.freddy.kulachat.utils.FileUtil;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
-import dagger.android.DaggerApplication;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 

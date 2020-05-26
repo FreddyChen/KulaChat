@@ -86,8 +86,6 @@ public class RetrofitWrapper {
 
     private Map<String, String> getHeaders() {
         Map<String, String> headers = new HashMap<>();
-        headers.put("name", "freddyc");
-        headers.put("age", "25");
         return headers;
     }
 }

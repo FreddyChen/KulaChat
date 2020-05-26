@@ -27,7 +27,6 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
 
     @Override
     protected void start() {
-        presenter.test();
     }
 
     @Override
