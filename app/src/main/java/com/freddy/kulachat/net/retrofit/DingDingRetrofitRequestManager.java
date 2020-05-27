@@ -1,8 +1,8 @@
 package com.freddy.kulachat.net.retrofit;
 
 import com.alibaba.fastjson.JSON;
+import com.freddy.kulachat.net.config.DingDingResponseModel;
 import com.freddy.kulachat.net.config.RequestOptions;
-import com.freddy.kulachat.net.config.ResponseModel;
 import com.freddy.kulachat.net.interf.IRequestInterface;
 
 import io.reactivex.Observable;
@@ -18,17 +18,17 @@ import okhttp3.OkHttpClient;
  * @github https://github.com/FreddyChen
  * @desc
  */
-public class RetrofitRequestManager extends AbstractRequestManager implements IRequestInterface<ResponseModel> {
+public class DingDingRetrofitRequestManager extends AbstractRequestManager implements IRequestInterface<DingDingResponseModel> {
 
-    public RetrofitRequestManager(OkHttpClient okHttpClient) {
+    public DingDingRetrofitRequestManager(OkHttpClient okHttpClient) {
         super(okHttpClient);
     }
 
     @Override
-    public Observable<ResponseModel> request(RequestOptions options) {
+    public Observable<DingDingResponseModel> request(RequestOptions options) {
         Observable<String> observable = execRequest(options);
-        return observable.flatMap((Function<String, ObservableSource<ResponseModel>>) s -> {
-            ResponseModel responseModel = JSON.parseObject(s, ResponseModel.class);
+        return observable.flatMap((Function<String, ObservableSource<DingDingResponseModel>>) s -> {
+            DingDingResponseModel responseModel = JSON.parseObject(s, DingDingResponseModel.class);
             return Observable.just(responseModel);
         });
     }

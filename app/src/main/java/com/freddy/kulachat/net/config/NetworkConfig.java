@@ -11,4 +11,6 @@ package com.freddy.kulachat.net.config;
 public class NetworkConfig {
 
     public static final int REQUEST_TIMEOUT = 15 * 1000;
+    public static final int READ_TIMEOUT = 15 * 1000;
+    public static final int WRITE_TIMEOUT = 15 * 1000;
 }

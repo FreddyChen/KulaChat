@@ -1,7 +1,6 @@
 package com.freddy.kulachat.net.interf;
 
 import com.freddy.kulachat.net.config.RequestOptions;
-import com.freddy.kulachat.net.config.ResponseModel;
 
 import io.reactivex.Observable;
 
@@ -13,7 +12,7 @@ import io.reactivex.Observable;
  * @github https://github.com/FreddyChen
  * @describe
  */
-public interface IRequestInterface {
-
-    Observable<ResponseModel> request(RequestOptions options);
+public interface IRequestInterface<Model> {
+    
+    Observable<Model> request(RequestOptions options);
 }

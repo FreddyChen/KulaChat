@@ -26,15 +26,15 @@ import retrofit2.Retrofit;
 public class RetrofitWrapper {
 
     private Retrofit.Builder builder = new Retrofit.Builder();
-    private OkHttpClient.Builder clientBuilder;
+    private OkHttpClient okHttpClient;
 
     public RetrofitWrapper setBaseUrl(String baseUrl) {
         builder.baseUrl(baseUrl);
         return this;
     }
 
-    public RetrofitWrapper setClientBuilder(OkHttpClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+    public RetrofitWrapper setClient(OkHttpClient okHttpClient) {
+        this.okHttpClient = okHttpClient;
         return this;
     }
 
@@ -69,7 +69,8 @@ public class RetrofitWrapper {
     }
 
     public Retrofit build() {
-        List<Interceptor> interceptors = clientBuilder.interceptors();
+        OkHttpClient.Builder okHttpClientBuilder = okHttpClient.newBuilder();
+        List<Interceptor> interceptors = okHttpClientBuilder.interceptors();
         if(!interceptors.isEmpty()) {
             for(Interceptor interceptor : interceptors) {
                 if(interceptor.getClass().equals(HeaderInterceptor.class)) {
@@ -79,8 +80,8 @@ public class RetrofitWrapper {
             }
         }
 
-        clientBuilder.addInterceptor(new HeaderInterceptor(getHeaders())).build();
-        builder.client(clientBuilder.build());
+        okHttpClientBuilder.addInterceptor(new HeaderInterceptor(getHeaders())).build();
+        builder.client(okHttpClientBuilder.build());
         return builder.build();
     }
 

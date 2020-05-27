@@ -3,6 +3,8 @@ package com.freddy.kulachat.di.component;
 import com.freddy.kulachat.KulaApp;
 import com.freddy.kulachat.di.module.ActivityModule;
 import com.freddy.kulachat.di.module.AppModule;
+import com.freddy.kulachat.net.retrofit.DingDingRetrofitRequestManager;
+import com.freddy.kulachat.net.retrofit.RetrofitRequestManager;
 
 import javax.inject.Singleton;
 
@@ -34,4 +36,7 @@ public interface AppComponent extends AndroidInjector<KulaApp> {
     }
 
     void inject(KulaApp application);
+
+    RetrofitRequestManager getRetrofitRequestManager();
+    DingDingRetrofitRequestManager getDingDingRetrofitRequestManager();
 }

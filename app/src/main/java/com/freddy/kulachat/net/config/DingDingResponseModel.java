@@ -5,19 +5,17 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * @author FreddyChen
  * @name
- * @date 2020/05/24 21:56
+ * @date 2020/05/27 11:24
  * @email chenshichao@outlook.com
  * @github https://github.com/FreddyChen
- * @describe
+ * @desc
  */
-public class ResponseModel {
+public class DingDingResponseModel {
 
-    @JSONField(name = "code")
+    @JSONField(name = "errcode")
     private int code;
-    @JSONField(name = "msg")
+    @JSONField(name = "errmsg")
     private String msg;
-    @JSONField(name = "data")
-    private String data;
 
     public int getCode() {
         return code;
@@ -35,20 +33,11 @@ public class ResponseModel {
         this.msg = msg;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
     @Override
     public String toString() {
-        return "ResponseModel{" +
+        return "DingDingResponseModel{" +
                 "code=" + code +
                 ", msg='" + msg + '\'' +
-                ", data=" + data +
                 '}';
     }
 }

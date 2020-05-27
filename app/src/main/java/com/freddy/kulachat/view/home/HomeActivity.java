@@ -5,8 +5,14 @@ import android.util.Log;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.contract.HomeContract;
+import com.freddy.kulachat.net.RequestManagerFactory;
+import com.freddy.kulachat.net.config.RequestOptions;
+import com.freddy.kulachat.net.config.ResponseModel;
+import com.freddy.kulachat.net.retrofit.CObserver;
 import com.freddy.kulachat.presenter.HomePresenter;
 import com.freddy.kulachat.view.BaseActivity;
+
+import io.reactivex.Observable;
 
 /**
  * @author FreddyChen
@@ -18,8 +24,6 @@ import com.freddy.kulachat.view.BaseActivity;
  */
 public class HomeActivity extends BaseActivity<HomePresenter> implements HomeContract.View {
 
-    private static final String TAG = HomeActivity.class.getSimpleName();
-
     @Override
     protected void setRootView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
@@ -27,6 +31,18 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
 
     @Override
     protected void start() {
+        RequestOptions requestOptions = new RequestOptions.Builder()
+                .setBaseUrl("https://wanandroid.com/")
+                .setFunction("wxarticle/chapters/json")
+                .build();
+
+        Observable<ResponseModel> observable = RequestManagerFactory.getRequestManager().request(requestOptions);
+        observable.subscribe(new CObserver() {
+            @Override
+            protected void onCNext(ResponseModel responseModel) {
+                Log.d("HomeActivity", "responseModel = " + responseModel);
+            }
+        });
     }
 
     @Override

@@ -1,8 +1,5 @@
 package com.freddy.kulachat.net.retrofit;
 
-import com.freddy.kulachat.net.config.ResponseModel;
-
-
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -17,24 +14,24 @@ import retrofit2.http.Url;
 /**
  * @author FreddyChen
  * @name
- * @date 2020/05/24 21:43
+ * @date 2020/05/27 14:29
  * @email chenshichao@outlook.com
  * @github https://github.com/FreddyChen
- * @describe
+ * @desc
  */
 public interface IApiService {
 
     @GET
-    Observable<ResponseModel> get(@Url String url);
+    Observable<String> get(@Url String function);
 
     @GET
-    Observable<ResponseModel> get(@Url String url, @QueryMap Map<String, Object> params);
+    Observable<String> get(@Url String url, @QueryMap Map<String, Object> params);
 
     @Headers("Content-Type:application/json")
     @POST
-    Observable<ResponseModel> post(@Url String url);
+    Observable<String> post(@Url String url);
 
     @Headers("Content-Type:application/json")
     @POST
-    Observable<ResponseModel> post(@Url String url, @Body RequestBody body);
+    Observable<String> post(@Url String url, @Body RequestBody body);
 }

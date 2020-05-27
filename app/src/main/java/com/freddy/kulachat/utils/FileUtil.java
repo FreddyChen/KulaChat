@@ -1,9 +1,7 @@
 package com.freddy.kulachat.utils;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,16 +32,20 @@ public class FileUtil {
     }
 
     public static void saveContentToSDCard(Context context, String directoryName, String fileName, String content, boolean append) {
-        if(context == null) {
+        if (context == null) {
             return;
         }
 
-        if(StringUtil.isEmpty(fileName)) {
+        if (StringUtil.isEmpty(fileName)) {
             return;
         }
 
         File directory = getCompatDirectory(context, Environment.DIRECTORY_DOCUMENTS, directoryName);
-        if (directory == null || !directory.exists() || !directory.isDirectory()) {
+        if (directory == null) {
+            return;
+        }
+
+        if (!directory.exists() || !directory.isDirectory()) {
             directory.mkdirs();
         }
 
@@ -77,21 +79,21 @@ public class FileUtil {
     }
 
     public static String readContentFromSDCard(Context context, String directoryName, String fileName) {
-        if(context == null) {
+        if (context == null) {
             return null;
         }
 
-        if(StringUtil.isEmpty(fileName)) {
+        if (StringUtil.isEmpty(fileName)) {
             return null;
         }
 
         File directory = getCompatDirectory(context, Environment.DIRECTORY_DOCUMENTS, directoryName);
-        if(directory == null || !directory.exists() || !directory.isDirectory()) {
+        if (directory == null || !directory.exists() || !directory.isDirectory()) {
             return null;
         }
 
         File file = new File(getFilePath(directory.getPath(), fileName));
-        if(!file.exists() || !file.isFile()) {
+        if (!file.exists() || !file.isFile()) {
             return null;
         }
 
@@ -102,14 +104,14 @@ public class FileUtil {
             BufferedReader br = new BufferedReader(isr);
             String line;
             StringBuilder sb = new StringBuilder();
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 sb.append(line).append("\n");
             }
 
             return sb.toString();
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 if (is != null) {
                     is.close();
@@ -151,7 +153,7 @@ public class FileUtil {
         return directory;
     }
 
-    public static boolean isExists(Context context, String directoryName, String fileName) {
+    public static boolean isFileExists(Context context, String directoryType, String directoryName, String fileName) {
         if (context == null) {
             return false;
         }
@@ -160,16 +162,34 @@ public class FileUtil {
             return false;
         }
 
-        File directory = getCompatDirectory(context, Environment.DIRECTORY_DOCUMENTS, directoryName);
-        if(directory == null || !directory.exists() || !directory.isDirectory()) {
+        File directory = getCompatDirectory(context, directoryType, directoryName);
+        if (directory == null || !directory.exists() || !directory.isDirectory()) {
             return false;
         }
 
         File file = new File(getFilePath(directory.getPath(), fileName));
-        if(!file.exists() || !file.isFile()) {
+        return file.exists() && file.isFile();
+    }
+
+    public static boolean deleteFile(Context context, String directoryType, String directoryName, String fileName) {
+        if (context == null) {
             return false;
         }
 
-        return true;
+        if (StringUtil.isEmpty(fileName)) {
+            return false;
+        }
+
+        File directory = getCompatDirectory(context, directoryType, directoryName);
+        if (directory == null || !directory.exists() || !directory.isDirectory()) {
+            return false;
+        }
+
+        File file = new File(getFilePath(directory.getPath(), fileName));
+        if (file.exists() && file.isFile()) {
+            return file.delete();
+        }
+
+        return false;
     }
 }

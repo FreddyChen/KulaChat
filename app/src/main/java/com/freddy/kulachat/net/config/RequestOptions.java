@@ -17,6 +17,7 @@ public class RequestOptions {
     private String baseUrl;
     private String function;
     private RequestMethod method;
+    private Map<String, Object> headers;
     private Map<String, Object> params;
 
     public String getBaseUrl() {
@@ -43,6 +44,14 @@ public class RequestOptions {
         this.method = method;
     }
 
+    public Map<String, Object> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, Object> headers) {
+        this.headers = headers;
+    }
+
     public Map<String, Object> getParams() {
         return params;
     }
@@ -58,6 +67,7 @@ public class RequestOptions {
         public Builder() {
             options = new RequestOptions();
             options.setBaseUrl(BuildConfig.SERVER_URL);
+            options.setMethod(RequestMethod.GET);
         }
 
         public Builder setBaseUrl(String baseUrl) {
@@ -72,6 +82,11 @@ public class RequestOptions {
 
         public Builder setMethod(RequestMethod method) {
             options.setMethod(method);
+            return this;
+        }
+
+        public Builder setHeaders(Map<String, Object> headers) {
+            options.setHeaders(headers);
             return this;
         }
 

@@ -2,6 +2,7 @@ package com.freddy.kulachat.di.module;
 
 import com.freddy.kulachat.di.component.ActivityComponent;
 import com.freddy.kulachat.di.scope.ActivityScope;
+import com.freddy.kulachat.view.home.HomeActivity;
 import com.freddy.kulachat.view.main.SplashActivity;
 
 import dagger.Module;
@@ -21,4 +22,8 @@ public abstract class ActivityModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = {SplashModule.class})
     abstract SplashActivity splashActivityInjector();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract HomeActivity homeActivityInjector();
 }
