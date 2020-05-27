@@ -10,5 +10,6 @@ package com.freddy.kulachat.config;
  */
 public class CConfig {
 
-
+    public static final int MAX_PHONE_NUMBER_LENGTH = 11;
+    public static final int MAX_VERIFY_CODE_LENGTH = 6;
 }

@@ -2,6 +2,7 @@ package com.freddy.kulachat.view.home;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.contract.HomeContract;
@@ -12,6 +13,7 @@ import com.freddy.kulachat.net.retrofit.CObserver;
 import com.freddy.kulachat.presenter.HomePresenter;
 import com.freddy.kulachat.view.BaseActivity;
 
+import es.dmoral.toasty.Toasty;
 import io.reactivex.Observable;
 
 /**
@@ -48,5 +50,22 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     @Override
     public void onTestSuccess() {
         Log.d("HomeActivity", "onTestSuccess()");
+    }
+
+    private long firstClickTime = 0L;
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+            long secondClickTime = System.currentTimeMillis();
+            if(secondClickTime - firstClickTime > 2000) {
+                Toasty.warning(activity, "再按一次退出程序", Toasty.LENGTH_SHORT).show();
+                firstClickTime = secondClickTime;
+                return true;
+            }else {
+                finish();
+            }
+        }
+
+        return super.onKeyUp(keyCode, event);
     }
 }

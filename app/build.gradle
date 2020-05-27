@@ -55,6 +55,7 @@ android {
             res.srcDirs = [
                     "src/main/res/layouts/main",
                     "src/main/res/layouts/home",
+                    "src/main/res/layouts/user",
                     "src/main/res/layouts",
                     "src/main/res"
             ]
@@ -124,5 +125,6 @@ dependencies {
     implementation 'com.github.ihsanbal:LoggingInterceptor:3.1.0-rc5'
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     implementation 'com.github.GrenderG:Toasty:1.4.2'
+    implementation 'com.noober.background:core:1.6.3'
     implementation project(':ims_kula')
 }

@@ -9,6 +9,7 @@ import com.freddy.kulachat.presenter.NullablePresenter;
 import com.freddy.kulachat.utils.RxExecutorService;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.home.HomeActivity;
+import com.freddy.kulachat.view.user.LoginActivity;
 import com.jaeger.library.StatusBarUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -112,8 +113,13 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
         }
     };
 
+    private boolean isLogged = false;
     private void initPage() {
-        startActivity(HomeActivity.class);
+        if(!isLogged) {
+            startActivity(LoginActivity.class);
+        }else {
+            startActivity(HomeActivity.class);
+        }
         finish();
     }
 

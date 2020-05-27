@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CTextButton">
+        <attr name="normal_text_color" format="color|reference" />
+        <attr name="pressed_text_color" format="color|reference" />
+        <attr name="disabled_text_color" format="color|reference" />
+    </declare-styleable>
+</resources>

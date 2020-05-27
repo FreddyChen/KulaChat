@@ -5,5 +5,15 @@
     <color name="colorAccent">#03DAC5</color>
 
     <color name="c_ffde59">#ffde59</color>
+    <color name="c_dfc766">#dfc766</color>
+    <color name="c_ffffff">#ffffff</color>
+    <color name="c_000000">#000000</color>
+    <color name="c_999999">#999999</color>
+    <color name="c_666666">#666666</color>
+    <color name="c_333333">#333333</color>
+    <color name="c_0072ff">#0072ff</color>
+    <color name="c_5fa6fd">#5fa6fd</color>
     <color name="c_app_main_color">@color/c_ffde59</color>
+    <color name="c_btn_normal_color">@color/c_app_main_color</color>
+    <color name="c_btn_pressed_color">@color/c_dfc766</color>
 </resources>
