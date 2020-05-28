@@ -1,26 +1,26 @@
-package com.freddy.kulachat.contract;
+package com.freddy.kulachat.contract.user;
 
 import com.freddy.kulachat.view.IBaseView;
 
 /**
  * @author FreddyChen
  * @name
- * @date 2020/05/23 18:53
+ * @date 2020/05/27 23:36
  * @email chenshichao@outlook.com
  * @github https://github.com/FreddyChen
- * @desc
+ * @describe
  */
-public interface HomeContract {
+public interface LoginContract {
 
     interface Model {
-        void test();
+
     }
 
     interface View extends IBaseView {
-        void onTestSuccess();
+
     }
 
     interface Presenter {
-        void test();
+
     }
 }

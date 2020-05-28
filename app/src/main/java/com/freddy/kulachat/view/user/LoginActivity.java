@@ -2,15 +2,14 @@ package com.freddy.kulachat.view.user;
 
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.config.CConfig;
-import com.freddy.kulachat.contract.LoginContract;
-import com.freddy.kulachat.presenter.LoginPresenter;
+import com.freddy.kulachat.contract.user.LoginContract;
+import com.freddy.kulachat.presenter.user.LoginPresenter;
 import com.freddy.kulachat.utils.StringUtil;
 import com.freddy.kulachat.utils.UIUtil;
 import com.freddy.kulachat.utils.Util;

@@ -14,9 +14,15 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/c_ffffff</item>
     </style>
-    
+
     <style name="AppTheme.Fullscreen" parent="AppTheme">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="style_topBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 </resources>

@@ -1,8 +1,9 @@
-package com.freddy.kulachat.model;
+package com.freddy.kulachat.model.home;
 
 import android.util.Log;
 
-import com.freddy.kulachat.contract.HomeContract;
+import com.freddy.kulachat.contract.home.HomeContract;
+import com.freddy.kulachat.model.BaseModel;
 
 import javax.inject.Inject;
 

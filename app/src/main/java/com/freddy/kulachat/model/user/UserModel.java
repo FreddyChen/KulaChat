@@ -1,6 +1,7 @@
-package com.freddy.kulachat.model;
+package com.freddy.kulachat.model.user;
 
-import com.freddy.kulachat.contract.LoginContract;
+import com.freddy.kulachat.contract.user.LoginContract;
+import com.freddy.kulachat.model.BaseModel;
 
 import javax.inject.Inject;
 

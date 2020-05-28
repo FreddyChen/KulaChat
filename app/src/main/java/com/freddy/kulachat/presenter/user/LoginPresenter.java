@@ -1,7 +1,8 @@
-package com.freddy.kulachat.presenter;
+package com.freddy.kulachat.presenter.user;
 
-import com.freddy.kulachat.contract.LoginContract;
-import com.freddy.kulachat.model.UserModel;
+import com.freddy.kulachat.contract.user.LoginContract;
+import com.freddy.kulachat.model.user.UserModel;
+import com.freddy.kulachat.presenter.BasePresenter;
 
 import javax.inject.Inject;
 

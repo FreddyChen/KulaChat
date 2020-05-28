@@ -5,12 +5,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.freddy.kulachat.R;
-import com.freddy.kulachat.contract.HomeContract;
+import com.freddy.kulachat.contract.home.HomeContract;
 import com.freddy.kulachat.net.RequestManagerFactory;
 import com.freddy.kulachat.net.config.RequestOptions;
 import com.freddy.kulachat.net.config.ResponseModel;
 import com.freddy.kulachat.net.retrofit.CObserver;
-import com.freddy.kulachat.presenter.HomePresenter;
+import com.freddy.kulachat.presenter.home.HomePresenter;
 import com.freddy.kulachat.view.BaseActivity;
 
 import es.dmoral.toasty.Toasty;

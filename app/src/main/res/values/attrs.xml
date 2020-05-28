@@ -5,4 +5,23 @@
         <attr name="pressed_text_color" format="color|reference" />
         <attr name="disabled_text_color" format="color|reference" />
     </declare-styleable>
+
+    <declare-styleable name="CImageButton">
+        <attr name="normal_image_res_id" format="reference" />
+        <attr name="pressed_image_res_id" format="reference" />
+        <attr name="disabled_image_res_id" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CTopBar">
+        <attr name="ctb_background_color" format="color|reference" />
+        <attr name="ctb_btn_back_normal_icon" format="reference" />
+        <attr name="ctb_btn_back_pressed_icon" format="reference" />
+        <attr name="ctb_btn_back_visibility">
+            <enum name="visible" value="1" />
+            <enum name="gone" value="0" />
+        </attr>
+        <attr name="ctb_title_text" format="string|reference" />
+        <attr name="ctb_title_text_color" format="color|reference" />
+        <attr name="ctb_title_text_size" format="dimension|reference" />
+    </declare-styleable>
 </resources>

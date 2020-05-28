@@ -13,13 +13,11 @@ import com.freddy.kulachat.view.user.LoginActivity;
 import com.jaeger.library.StatusBarUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import es.dmoral.toasty.Toasty;
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -56,7 +54,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
     }
 
     private void checkNecessaryPermissions() {
-        RxExecutorService.getInstance().delay(2, TimeUnit.SECONDS, Schedulers.io(), AndroidSchedulers.mainThread(), new Observer<Long>() {
+        RxExecutorService.getInstance().delay(1, TimeUnit.SECONDS, Schedulers.io(), AndroidSchedulers.mainThread(), new Observer<Long>() {
 
             @Override
             public void onSubscribe(Disposable d) {
@@ -133,6 +131,5 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
         if (d != null && !d.isDisposed()) {
             d.dispose();
         }
-        d = null;
     }
 }

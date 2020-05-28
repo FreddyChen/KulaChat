@@ -1,7 +1,8 @@
-package com.freddy.kulachat.presenter;
+package com.freddy.kulachat.presenter.home;
 
-import com.freddy.kulachat.contract.HomeContract;
-import com.freddy.kulachat.model.HomeModel;
+import com.freddy.kulachat.contract.home.HomeContract;
+import com.freddy.kulachat.model.home.HomeModel;
+import com.freddy.kulachat.presenter.BasePresenter;
 
 import javax.inject.Inject;
 
