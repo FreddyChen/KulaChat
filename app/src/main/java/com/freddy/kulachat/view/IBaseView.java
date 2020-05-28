@@ -12,7 +12,7 @@ public interface IBaseView {
 
     void showLoading();
 
-    void showLoading(String content);
+    void showLoading(String title);
 
     void hideLoading();
 }

@@ -51,6 +51,7 @@ public class CImageButton extends AppCompatImageView {
         setClickable(true);
         setImageResource(normalImageResId);
         setOnTouchListener(mOnTouchListener);
+        setScaleType(ScaleType.CENTER_INSIDE);
     }
 
     public void setNormalImageResId(@DrawableRes int resId) {

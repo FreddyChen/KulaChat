@@ -56,6 +56,7 @@ android {
                     "src/main/res/layouts/main",
                     "src/main/res/layouts/home",
                     "src/main/res/layouts/user",
+                    "src/main/res/layouts/widget",
                     "src/main/res/layouts",
                     "src/main/res"
             ]

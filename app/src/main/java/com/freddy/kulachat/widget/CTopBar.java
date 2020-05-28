@@ -2,8 +2,16 @@ package com.freddy.kulachat.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.text.InputFilter;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.util.SparseArray;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.freddy.kulachat.R;
@@ -61,7 +69,7 @@ public class CTopBar extends ConstraintLayout {
             backBtnVisibility = VISIBILITY_FLAG[array.getInt(R.styleable.CTopBar_ctb_btn_back_visibility, VISIBLE)];
             titleText = array.getString(R.styleable.CTopBar_ctb_title_text);
             titleTextColor = array.getColor(R.styleable.CTopBar_ctb_title_text_color, ContextCompat.getColor(context, R.color.c_000000));
-            titleTextSize = array.getDimensionPixelSize(R.styleable.CTopBar_ctb_title_text_size, DensityUtil.sp2px(14));
+            titleTextSize = array.getDimensionPixelSize(R.styleable.CTopBar_ctb_title_text_size, DensityUtil.sp2px(mContext, 16));
             array.recycle();
         }
 
@@ -72,6 +80,8 @@ public class CTopBar extends ConstraintLayout {
         setId(R.id.c_top_bar);
         setBackgroundColor(backgroundColor);
         setFitsSystemWindows(true);
+        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.dp2px(mContext, 48));
+        setLayoutParams(lp);
 
         mConstraintSet = new ConstraintSet();
         mConstraintSet.clone(this);
@@ -92,8 +102,8 @@ public class CTopBar extends ConstraintLayout {
 
         addView(mBackBtn);
 
-        mConstraintSet.constrainWidth(R.id.ctb_btn_back, DensityUtil.dp2px(72));
-        mConstraintSet.constrainHeight(R.id.ctb_btn_back, DensityUtil.dp2px(48));
+        mConstraintSet.constrainWidth(R.id.ctb_btn_back, DensityUtil.dp2px(mContext, 72));
+        mConstraintSet.constrainHeight(R.id.ctb_btn_back, DensityUtil.dp2px(mContext, 48));
         mConstraintSet.centerVertically(R.id.ctb_btn_back, ConstraintSet.PARENT_ID);
     }
 
@@ -107,7 +117,8 @@ public class CTopBar extends ConstraintLayout {
         mTitleTextView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
         mTitleTextView.setText(titleText);
         mTitleTextView.setTextColor(titleTextColor);
-        mTitleTextView.setTextSize(titleTextSize);
+        mTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);
+        mTitleTextView.getPaint().setFakeBoldText(true);
 
         addView(mTitleTextView);
 
@@ -115,5 +126,31 @@ public class CTopBar extends ConstraintLayout {
         mConstraintSet.constrainHeight(R.id.ctb_tv_title, ConstraintSet.WRAP_CONTENT);
         mConstraintSet.centerVertically(R.id.ctb_tv_title, ConstraintSet.PARENT_ID);
         mConstraintSet.centerHorizontally(R.id.ctb_tv_title, ConstraintSet.PARENT_ID);
+    }
+
+    private SparseArray<View> mMenuArray;
+    public void addMenu(int normalImgResId, int pressedImgResId, OnClickListener listener) {
+        if(mMenuArray == null) {
+            mMenuArray = new SparseArray<>();
+        }
+
+        int menuId = View.generateViewId();
+        CImageButton menuBtn = new CImageButton(mContext);
+        menuBtn.setId(menuId);
+        menuBtn.setNormalImageResId(normalImgResId);
+        menuBtn.setPressedImageResId(pressedImgResId);
+        menuBtn.setOnClickListener(listener);
+        addView(menuBtn);
+
+        mConstraintSet.constrainWidth(menuId, DensityUtil.dp2px(mContext, 42));
+        mConstraintSet.constrainHeight(menuId, DensityUtil.dp2px(mContext, 42));
+        if(mMenuArray.size() == 0) {
+            mConstraintSet.connect(menuId, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, DensityUtil.dp2px(mContext, 8));
+        }else {
+            mConstraintSet.connect(menuId, ConstraintSet.RIGHT, mMenuArray.valueAt(mMenuArray.size() - 1).getId(), ConstraintSet.LEFT, DensityUtil.dp2px(mContext, 8));
+        }
+        mConstraintSet.centerVertically(menuId, ConstraintSet.PARENT_ID);
+        mConstraintSet.applyTo(this);
+        mMenuArray.put(menuId, menuBtn);
     }
 }

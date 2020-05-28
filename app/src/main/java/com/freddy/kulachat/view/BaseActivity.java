@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.presenter.BasePresenter;
+import com.freddy.kulachat.widget.CLoadingDialog;
 import com.jaeger.library.StatusBarUtil;
 
 import java.io.Serializable;
@@ -106,17 +107,26 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     public void showLoading() {
-
+        this.showLoading("加载中");
     }
 
+    private CLoadingDialog mLoadingDialog;
     @Override
-    public void showLoading(String content) {
-
+    public void showLoading(String title) {
+        mLoadingDialog = new CLoadingDialog.Builder()
+                .setTitle(title)
+                .setCancelable(true)
+                .setCanceledOnTouchOutside(true)
+                .build();
+        mLoadingDialog.show(getSupportFragmentManager(), null);
     }
 
     @Override
     public void hideLoading() {
-
+        if(mLoadingDialog != null && mLoadingDialog.isVisible()) {
+            mLoadingDialog.dismiss();
+        }
+        mLoadingDialog = null;
     }
 
     protected abstract void setRootView(Bundle savedInstanceState);

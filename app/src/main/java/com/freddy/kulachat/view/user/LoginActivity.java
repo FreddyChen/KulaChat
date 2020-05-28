@@ -16,6 +16,7 @@ import com.freddy.kulachat.utils.Util;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.home.HomeActivity;
 import com.freddy.kulachat.widget.CTextButton;
+import com.freddy.kulachat.widget.CTopBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,6 +32,8 @@ import es.dmoral.toasty.Toasty;
  */
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
 
+    @BindView(R.id.c_top_bar)
+    CTopBar mTopBar;
     @BindView(R.id.btn_request_verifyCode)
     CTextButton mRequestVerifyCodeBtn;
     @BindView(R.id.et_phoneNumber)
@@ -48,6 +51,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     protected void init() {
+        mTopBar.addMenu(R.drawable.ic_more_normal, R.drawable.ic_more_pressed, v -> {
+            Toasty.normal(activity, "点中了菜单" + v.getId(), Toasty.LENGTH_SHORT).show();
+        });
         mPhoneNumberEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_PHONE_NUMBER_LENGTH)});
         mVerifyCodeEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_VERIFY_CODE_LENGTH)});
         UIUtil.requestFocus(mPhoneNumberEditText);
@@ -60,6 +66,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 if(checkPhoneNumberInput()) {
                     Toasty.normal(this, "正在获取验证码", Toasty.LENGTH_SHORT).show();
                 }
+                showLoading();
                 break;
             }
 

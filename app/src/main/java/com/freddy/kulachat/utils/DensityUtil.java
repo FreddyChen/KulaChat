@@ -1,5 +1,6 @@
 package com.freddy.kulachat.utils;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -20,9 +21,9 @@ public class DensityUtil {
      * @param dpValue
      * @return
      */
-    public static int dp2px(float dpValue) {
-        final float scale = Resources.getSystem().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
+    public static int dp2px(Context context, float dpValue) {
+        final float density = getDensity(context);
+        return Math.round(dpValue * density);
     }
 
     /**
@@ -31,58 +32,54 @@ public class DensityUtil {
      * @param pxValue
      * @return
      */
-    public static int px2dp(float pxValue) {
-        final float scale = Resources.getSystem().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
+    public static int px2dp(Context context, float pxValue) {
+        final float density = getDensity(context);
+        return Math.round(pxValue / density);
     }
 
     /**
      * sp转px
      *
-     * @param context
      * @param spVal
      * @return
      */
-    public static int sp2px(float spVal) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                spVal, Resources.getSystem().getDisplayMetrics());
+    public static int sp2px(Context context, float spVal) {
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                spVal, context.getResources().getDisplayMetrics()));
     }
 
     /**
      * px转sp
      *
-     * @param context
      * @param pxVal
      * @return
      */
-    public static float px2sp(float pxVal) {
-        return (pxVal / Resources.getSystem().getDisplayMetrics().scaledDensity);
+    public static float px2sp(Context context, float pxVal) {
+        return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
     }
 
     /**
      * 获取屏幕宽度
      */
-    public static int getScreenWidth() {
-        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
-        int width = dm.widthPixels;
-        return width;
+    public static int getScreenWidth(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.widthPixels;
     }
 
     /**
      * 获取屏幕高度
      */
-    public static int getScreenHeight() {
-        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
-        int height = dm.heightPixels;
-        return height;
+    public static int getScreenHeight(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.heightPixels;
     }
 
     /**
      * 获取像素密度
      * @return
      */
-    public static float getDensity() {
-        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+    public static float getDensity(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
         return dm.density;
     }
 }
