@@ -25,4 +25,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
+
+    <style name="bottom_navigation_menu_item_text_size_active" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">10sp</item>
+    </style>
+    <style name="bottom_navigation_menu_item_text_size_inactive" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">8sp</item>
+    </style>
 </resources>

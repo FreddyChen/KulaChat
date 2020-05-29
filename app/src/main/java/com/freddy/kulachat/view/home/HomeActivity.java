@@ -3,18 +3,18 @@ package com.freddy.kulachat.view.home;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.View;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.contract.home.HomeContract;
-import com.freddy.kulachat.net.RequestManagerFactory;
-import com.freddy.kulachat.net.config.RequestOptions;
-import com.freddy.kulachat.net.config.ResponseModel;
-import com.freddy.kulachat.net.retrofit.CObserver;
 import com.freddy.kulachat.presenter.home.HomePresenter;
 import com.freddy.kulachat.view.BaseActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.viewpager2.widget.ViewPager2;
+import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
-import io.reactivex.Observable;
 
 /**
  * @author FreddyChen
@@ -26,25 +26,70 @@ import io.reactivex.Observable;
  */
 public class HomeActivity extends BaseActivity<HomePresenter> implements HomeContract.View {
 
+    @BindView(R.id.view_pager)
+    ViewPager2 mViewPager;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView mBottomNavigation;
+
     @Override
     protected void setRootView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
     }
 
     @Override
-    protected void start() {
-        RequestOptions requestOptions = new RequestOptions.Builder()
-                .setBaseUrl("https://wanandroid.com/")
-                .setFunction("wxarticle/chapters/json")
-                .build();
+    protected void init() {
+        disableBottomNavigationMenuLongClick();
+        HomeFragmentStateAdapter adapter = new HomeFragmentStateAdapter(activity, 4);
+        mViewPager.setAdapter(adapter);
+    }
 
-        Observable<ResponseModel> observable = RequestManagerFactory.getRequestManager().request(requestOptions);
-        observable.subscribe(new CObserver() {
+    @Override
+    protected void setListeners() {
+        mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            protected void onCNext(ResponseModel responseModel) {
-                Log.d("HomeActivity", "responseModel = " + responseModel);
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mBottomNavigation.getMenu().getItem(position).setChecked(true);
             }
         });
+
+        mBottomNavigation.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_home: {
+                    mViewPager.setCurrentItem(0, false);
+                    return true;
+                }
+
+                case R.id.menu_message: {
+                    mViewPager.setCurrentItem(1, false);
+                    return true;
+                }
+
+                case R.id.menu_contact: {
+                    mViewPager.setCurrentItem(2, false);
+                    return true;
+                }
+
+                case R.id.menu_mine : {
+                    mViewPager.setCurrentItem(3, false);
+                    return true;
+                }
+
+            }
+            return false;
+        });
+    }
+
+    private void disableBottomNavigationMenuLongClick() {
+        Menu menu = mBottomNavigation.getMenu();
+        int menuCount = menu.size();
+        for(int i = 0; i < menuCount; i++) {
+            View view = mBottomNavigation.findViewById(menu.getItem(i).getItemId());
+            if(view == null) {
+                continue;
+            }
+            view.setOnLongClickListener(v -> true);
+        }
     }
 
     @Override

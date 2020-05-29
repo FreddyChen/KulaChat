@@ -2,21 +2,18 @@ package com.freddy.kulachat.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.text.InputFilter;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.utils.DensityUtil;
 import com.freddy.kulachat.utils.StringUtil;
+import com.freddy.kulachat.view.CActivityManager;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -49,6 +46,8 @@ public class CTopBar extends ConstraintLayout {
     private static final int VISIBLE = 0;
     private static final int GONE = 1;
     private static final int[] VISIBILITY_FLAG = {VISIBLE, GONE};
+
+    private OnClickListener mOnBackClickListener;
 
     public CTopBar(Context context) {
         this(context, null);
@@ -99,16 +98,23 @@ public class CTopBar extends ConstraintLayout {
         mBackBtn.setId(R.id.ctb_btn_back);
         mBackBtn.setNormalImageResId(backBtnNormalIcon);
         mBackBtn.setPressedImageResId(backBtnPressedIcon);
+        mBackBtn.setOnClickListener(v -> {
+            if(mOnBackClickListener != null) {
+                mOnBackClickListener.onClick(v);
+            }else {
+                CActivityManager.getInstance().finishActivity();
+            }
+        });
 
         addView(mBackBtn);
 
-        mConstraintSet.constrainWidth(R.id.ctb_btn_back, DensityUtil.dp2px(mContext, 72));
-        mConstraintSet.constrainHeight(R.id.ctb_btn_back, DensityUtil.dp2px(mContext, 48));
+        mConstraintSet.constrainWidth(R.id.ctb_btn_back, DensityUtil.dp2px(mContext, 54));
+        mConstraintSet.constrainHeight(R.id.ctb_btn_back, DensityUtil.dp2px(mContext, 36));
         mConstraintSet.centerVertically(R.id.ctb_btn_back, ConstraintSet.PARENT_ID);
     }
 
     private void createTitleText() {
-        if(StringUtil.isEmpty(titleText)) {
+        if (StringUtil.isEmpty(titleText)) {
             return;
         }
 
@@ -129,8 +135,9 @@ public class CTopBar extends ConstraintLayout {
     }
 
     private SparseArray<View> mMenuArray;
+
     public void addMenu(int normalImgResId, int pressedImgResId, OnClickListener listener) {
-        if(mMenuArray == null) {
+        if (mMenuArray == null) {
             mMenuArray = new SparseArray<>();
         }
 
@@ -144,13 +151,17 @@ public class CTopBar extends ConstraintLayout {
 
         mConstraintSet.constrainWidth(menuId, DensityUtil.dp2px(mContext, 42));
         mConstraintSet.constrainHeight(menuId, DensityUtil.dp2px(mContext, 42));
-        if(mMenuArray.size() == 0) {
+        if (mMenuArray.size() == 0) {
             mConstraintSet.connect(menuId, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, DensityUtil.dp2px(mContext, 8));
-        }else {
+        } else {
             mConstraintSet.connect(menuId, ConstraintSet.RIGHT, mMenuArray.valueAt(mMenuArray.size() - 1).getId(), ConstraintSet.LEFT, DensityUtil.dp2px(mContext, 8));
         }
         mConstraintSet.centerVertically(menuId, ConstraintSet.PARENT_ID);
         mConstraintSet.applyTo(this);
         mMenuArray.put(menuId, menuBtn);
+    }
+
+    public void setOnBackClickListener(OnClickListener listener) {
+        this.mOnBackClickListener = listener;
     }
 }
