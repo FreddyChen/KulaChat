@@ -1,10 +1,8 @@
 package com.freddy.kulachat.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.freddy.kulachat.R;
 import com.freddy.kulachat.presenter.BasePresenter;
 import com.freddy.kulachat.widget.CLoadingDialog;
 import com.jaeger.library.StatusBarUtil;
@@ -16,7 +14,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dagger.android.AndroidInjection;

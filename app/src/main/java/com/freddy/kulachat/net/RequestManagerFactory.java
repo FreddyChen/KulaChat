@@ -3,6 +3,10 @@ package com.freddy.kulachat.net;
 import com.freddy.kulachat.KulaApp;
 import com.freddy.kulachat.net.config.ServerType;
 import com.freddy.kulachat.net.interf.IRequestInterface;
+import com.freddy.kulachat.net.retrofit.DingDingRetrofitRequestManager;
+import com.freddy.kulachat.net.retrofit.RetrofitRequestManager;
+
+import javax.inject.Inject;
 
 /**
  * @author FreddyChen
@@ -14,6 +18,8 @@ import com.freddy.kulachat.net.interf.IRequestInterface;
  */
 public class RequestManagerFactory {
 
+    private RequestManagerFactory() {}
+
     public static IRequestInterface getRequestManager() {
         return RequestManagerFactory.getRequestManager(ServerType.INNER);
     }
@@ -22,11 +28,11 @@ public class RequestManagerFactory {
         switch (serverType) {
             case INNER:
             default: {
-                return KulaApp.getInstance().getAppComponent().getRetrofitRequestManager();
+                return KulaApp.getInstance().applicationComponent.getRetrofitRequestManager();
             }
 
             case DINGDING: {
-                return KulaApp.getInstance().getAppComponent().getDingDingRetrofitRequestManager();
+                return KulaApp.getInstance().applicationComponent.getDingDingRetrofitRequestManager();
             }
         }
     }

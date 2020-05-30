@@ -92,7 +92,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
 
         @Override
         public void onSubscribe(Disposable d) {
-            Toasty.error(activity, "缺少必须权限，程序即将关闭", Toasty.LENGTH_SHORT).show();
+            mExitAppDisposable = d;
         }
 
         @Override
@@ -107,6 +107,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
 
         @Override
         public void onComplete() {
+            Toasty.error(activity, "缺少必须权限，程序即将关闭", Toasty.LENGTH_SHORT).show();
             System.exit(0);
         }
     };

@@ -1,17 +1,18 @@
 package com.freddy.kulachat;
 
-import android.app.Activity;
 import android.app.Application;
 
-import com.freddy.kulachat.di.component.AppComponent;
-import com.freddy.kulachat.di.component.DaggerAppComponent;
+//import com.freddy.kulachat.di.component.ApplicationComponent;
+//import com.freddy.kulachat.di.component.DaggerApplicationComponent;
+import com.freddy.kulachat.di.component.ApplicationComponent;
+import com.freddy.kulachat.di.component.DaggerApplicationComponent;
 import com.freddy.kulachat.utils.CrashHandler;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
+import dagger.android.HasAndroidInjector;
 
 /**
  * @author FreddyChen
@@ -21,33 +22,30 @@ import dagger.android.HasActivityInjector;
  * @github https://github.com/FreddyChen
  * @desc
  */
-public class KulaApp extends Application implements HasActivityInjector {
+public class KulaApp extends Application implements HasAndroidInjector {
 
-    @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
     private static KulaApp instance;
-
-    private AppComponent mAppComponent;
 
     public static KulaApp getInstance() {
         return instance;
     }
 
+    public ApplicationComponent applicationComponent;
+
+    @Inject
+    DispatchingAndroidInjector<Object> androidInjector;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        applicationComponent = DaggerApplicationComponent.builder().build();
+        applicationComponent.inject(this);
         instance = this;
-        mAppComponent = DaggerAppComponent.builder().build();
-        mAppComponent.inject(this);
         CrashHandler.getInstance().init();
     }
 
     @Override
-    public AndroidInjector<Activity> activityInjector() {
-        return dispatchingAndroidInjector;
-    }
-
-    public AppComponent getAppComponent() {
-        return mAppComponent;
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
     }
 }

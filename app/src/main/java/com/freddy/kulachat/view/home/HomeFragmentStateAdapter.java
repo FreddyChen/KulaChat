@@ -17,11 +17,15 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
  */
 public class HomeFragmentStateAdapter extends FragmentStateAdapter {
 
-    private int num;
+    private static final String[] PAGES = {
+            HomeFragment.class.getSimpleName(),
+            MessageFragment.class.getSimpleName(),
+            ContactFragment.class.getSimpleName(),
+            MineFragment.class.getSimpleName(),
+    };
 
-    public HomeFragmentStateAdapter(@NonNull FragmentActivity fragmentActivity, int num) {
+    public HomeFragmentStateAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
-        this.num = num;
     }
 
     @NonNull
@@ -30,19 +34,19 @@ public class HomeFragmentStateAdapter extends FragmentStateAdapter {
         Log.d("HomeFragmentStateAdapter()", "createFragment() position = " + position);
         switch (position) {
             case 0:
-                return Fragment1.newInstance();
+                return HomeFragment.newInstance();
             case 1:
-                return Fragment2.newInstance();
+                return MessageFragment.newInstance();
             case 2:
-                return Fragment3.newInstance();
+                return ContactFragment.newInstance();
             case 3:
-                return Fragment4.newInstance();
+                return MineFragment.newInstance();
         }
         return null;
     }
 
     @Override
     public int getItemCount() {
-        return num;
+        return PAGES.length;
     }
 }

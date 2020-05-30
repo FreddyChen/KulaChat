@@ -1,8 +1,5 @@
 package com.freddy.kulachat.di.module;
 
-import android.util.Log;
-
-import com.freddy.kulachat.di.scope.ActivityScope;
 import com.freddy.kulachat.view.main.SplashActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -20,11 +17,6 @@ import dagger.Provides;
 @Module
 public class SplashModule {
 
-    public SplashModule() {
-        Log.d("SplashModule", "SplashModule()");
-    }
-
-    @ActivityScope
     @Provides
     public RxPermissions provideRxPermission(SplashActivity activity) {
         return new RxPermissions(activity);

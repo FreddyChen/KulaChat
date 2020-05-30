@@ -39,7 +39,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     @Override
     protected void init() {
         disableBottomNavigationMenuLongClick();
-        HomeFragmentStateAdapter adapter = new HomeFragmentStateAdapter(activity, 4);
+        HomeFragmentStateAdapter adapter = new HomeFragmentStateAdapter(activity);
         mViewPager.setAdapter(adapter);
     }
 

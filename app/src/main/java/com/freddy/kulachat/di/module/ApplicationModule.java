@@ -21,13 +21,13 @@ import okhttp3.internal.platform.Platform;
 /**
  * @author FreddyChen
  * @name
- * @date 2020/05/26 01:54
+ * @date 2020/05/30 22:22
  * @email chenshichao@outlook.com
  * @github https://github.com/FreddyChen
  * @describe
  */
 @Module
-public abstract class AppModule {
+public class ApplicationModule {
 
     @Singleton
     @Provides
