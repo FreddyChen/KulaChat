@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#065555">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.freddy.kulachat.widget.CTopBar
         style="@style/style_topBar"
-        app:ctb_title_text="消息"
         app:ctb_btn_back_visibility="gone"
+        app:ctb_title_text="消息"
         tools:ignore="MissingConstraints" />
+
+    <com.freddy.kulachat.widget.ReboundRecyclerView
+        android:id="@+id/recycler_view_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/c_top_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

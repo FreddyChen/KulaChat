@@ -10,9 +10,11 @@ import com.freddy.kulachat.R;
 import com.freddy.kulachat.contract.home.HomeContract;
 import com.freddy.kulachat.presenter.home.HomePresenter;
 import com.freddy.kulachat.view.BaseActivity;
+import com.freddy.kulachat.view.adapter.HomeFragmentStateAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.viewpager2.widget.ViewPager2;
+
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
 
@@ -41,6 +43,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         disableBottomNavigationMenuLongClick();
         HomeFragmentStateAdapter adapter = new HomeFragmentStateAdapter(activity);
         mViewPager.setAdapter(adapter);
+        mViewPager.setUserInputEnabled(false);
     }
 
     @Override
@@ -48,30 +51,29 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                super.onPageSelected(position);
                 mBottomNavigation.getMenu().getItem(position).setChecked(true);
             }
         });
 
         mBottomNavigation.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
-                case R.id.menu_home: {
+//                case R.id.menu_home: {
+//                    mViewPager.setCurrentItem(0, false);
+//                    return true;
+//                }
+
+                case R.id.menu_message: {
                     mViewPager.setCurrentItem(0, false);
                     return true;
                 }
 
-                case R.id.menu_message: {
+                case R.id.menu_contact: {
                     mViewPager.setCurrentItem(1, false);
                     return true;
                 }
 
-                case R.id.menu_contact: {
-                    mViewPager.setCurrentItem(2, false);
-                    return true;
-                }
-
                 case R.id.menu_mine : {
-                    mViewPager.setCurrentItem(3, false);
+                    mViewPager.setCurrentItem(2, false);
                     return true;
                 }
 

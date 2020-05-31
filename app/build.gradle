@@ -53,9 +53,11 @@ android {
     sourceSets {
         main {
             res.srcDirs = [
+                    "src/main/res/layouts/common",
                     "src/main/res/layouts/main",
                     "src/main/res/layouts/home",
                     "src/main/res/layouts/user",
+                    "src/main/res/layouts/chat",
                     "src/main/res/layouts/widget",
                     "src/main/res/layouts",
                     "src/main/res"
@@ -134,5 +136,6 @@ dependencies {
     implementation 'com.noober.background:core:1.6.3'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.freddy:eventcenter_lib:1.0.1'
     implementation project(':ims_kula')
 }

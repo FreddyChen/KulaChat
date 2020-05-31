@@ -1,4 +1,4 @@
-package com.freddy.kulachat.view.home;
+package com.freddy.kulachat.view.user;
 
 import android.os.Bundle;
 
@@ -14,19 +14,19 @@ import com.freddy.kulachat.view.BaseFragment;
  * @github https://github.com/FreddyChen
  * @describe
  */
-public class MessageFragment extends BaseFragment<NullablePresenter> {
+public class ContactFragment extends BaseFragment<NullablePresenter> {
 
-    public static MessageFragment newInstance() {
+    public static ContactFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        MessageFragment fragment = new MessageFragment();
+        ContactFragment fragment = new ContactFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void setRootView(Bundle saveInstanceState) {
-        setLayout(R.layout.fragment_message);
+        setLayout(R.layout.fragment_concact);
     }
 }

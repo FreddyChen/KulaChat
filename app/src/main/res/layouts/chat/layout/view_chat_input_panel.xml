@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <com.freddy.kulachat.widget.CImageButton
+        android:id="@+id/btn_voice"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:visibility="gone"
+        app:normal_image_res_id="@drawable/ic_chat_voice_normal"
+        app:pressed_image_res_id="@drawable/ic_chat_voice_pressed" />
+
+    <com.freddy.kulachat.widget.CImageButton
+        android:id="@+id/btn_keyboard"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:visibility="gone"
+        app:normal_image_res_id="@drawable/ic_chat_keyboard_normal"
+        app:pressed_image_res_id="@drawable/ic_chat_keyboard_pressed" />
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:inputType="text"
+        android:maxLines="5"
+        android:paddingStart="8dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="6dp"
+        android:textColor="@color/c_000000"
+        android:textSize="14sp"
+        android:imeOptions="actionSend"
+        app:bl_corners_radius="6dp"
+        app:bl_solid_color="@color/c_ffffff"
+        app:bl_stroke_color="@color/c_999999"
+        app:bl_stroke_width="1dp" />
+
+
+    <com.freddy.kulachat.widget.CImageButton
+        android:id="@+id/btn_expression"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        app:normal_image_res_id="@drawable/ic_chat_expression_normal"
+        app:pressed_image_res_id="@drawable/ic_chat_expression_pressed" />
+
+    <com.freddy.kulachat.widget.CImageButton
+        android:id="@+id/btn_more"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        android:visibility="gone"
+        app:normal_image_res_id="@drawable/ic_chat_more_normal"
+        app:pressed_image_res_id="@drawable/ic_chat_more_pressed" />
+</merge>

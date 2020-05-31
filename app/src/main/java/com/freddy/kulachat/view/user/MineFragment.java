@@ -1,4 +1,4 @@
-package com.freddy.kulachat.view.home;
+package com.freddy.kulachat.view.user;
 
 import android.os.Bundle;
 

@@ -13,9 +13,16 @@
     <color name="c_333333">#333333</color>
     <color name="c_0072ff">#0072ff</color>
     <color name="c_5fa6fd">#5fa6fd</color>
+    <color name="c_ededed">#ededed</color>
+    <color name="c_33cbcbcb">#33cbcbcb</color>
+    <color name="c_07000000">#07000000</color>
+    <color name="c_77ffffff">#77ececec</color>
     <color name="c_translucent">#77000000</color>
     <color name="c_transparent">#00000000</color>
     <color name="c_app_main_color">@color/c_ffde59</color>
-    <color name="c_btn_normal_color">@color/c_app_main_color</color>
-    <color name="c_btn_pressed_color">@color/c_dfc766</color>
+    <color name="c_common_btn_normal_color">@color/c_app_main_color</color>
+    <color name="c_common_btn_pressed_color">@color/c_dfc766</color>
+    <color name="c_common_item_normal_color">@color/c_ffffff</color>
+    <color name="c_common_item_pressed_color">@color/c_07000000</color>
+    <color name="c_common_divider_color">@color/c_33cbcbcb</color>
 </resources>
