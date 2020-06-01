@@ -48,7 +48,6 @@
             android:name=".view.chat.SingleChatActivity"
             android:configChanges="locale|orientation|screenSize|keyboardHidden|navigation"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
 
         <meta-data

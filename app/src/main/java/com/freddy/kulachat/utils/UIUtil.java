@@ -2,8 +2,6 @@ package com.freddy.kulachat.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,8 @@ import android.widget.EditText;
  * @describe
  */
 public class UIUtil {
+
+    public static int keyboardHeight;
 
     /**
      * 使EditText获取焦点

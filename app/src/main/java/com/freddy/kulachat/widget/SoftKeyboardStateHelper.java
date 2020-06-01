@@ -1,10 +1,10 @@
 package com.freddy.kulachat.widget;
 
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import com.freddy.kulachat.R;
 import com.freddy.kulachat.utils.DensityUtil;
 
 import java.util.LinkedList;
@@ -30,6 +30,8 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
     private final View activityRootView;
     private int lastSoftKeyboardHeightInPx;
     private boolean isSoftKeyboardOpened;
+    private int windowHeight = 0;
+    private int keyboardHeight;
 
     private final int DIFF_HEIGHT;
 
@@ -50,15 +52,33 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
         final Rect r = new Rect();
         activityRootView.getWindowVisibleDisplayFrame(r);
 
-        final int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-        if (!isSoftKeyboardOpened && heightDiff > DIFF_HEIGHT) {
-            isSoftKeyboardOpened = true;
-            notifyOnSoftKeyboardOpened(heightDiff);
-        } else if (isSoftKeyboardOpened && heightDiff < DIFF_HEIGHT) {
-            isSoftKeyboardOpened = false;
-            notifyOnSoftKeyboardClosed();
+//        final int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+//        if (!isSoftKeyboardOpened && heightDiff > DIFF_HEIGHT) {
+//            isSoftKeyboardOpened = true;
+//            Log.d("SoftKeyboardStateHelper", "键盘打开，软键盘高度 = " + heightDiff);
+//            notifyOnSoftKeyboardOpened(heightDiff);
+//        } else if (isSoftKeyboardOpened && heightDiff < DIFF_HEIGHT) {
+//            isSoftKeyboardOpened = false;
+//            Log.d("SoftKeyboardStateHelper", "键盘收起" + heightDiff);
+//            notifyOnSoftKeyboardClosed();
+//        }
+
+        int height = r.height();
+        if (windowHeight == 0) {
+            windowHeight = height;
+        } else {
+            keyboardHeight = windowHeight - height;
+            if (windowHeight != height) {
+                if (!isSoftKeyboardOpened && keyboardHeight > DIFF_HEIGHT) {
+                    isSoftKeyboardOpened = true;
+                    notifyOnSoftKeyboardOpened(keyboardHeight);
+                }
+            } else if (isSoftKeyboardOpened && keyboardHeight < DIFF_HEIGHT) {
+                isSoftKeyboardOpened = false;
+            }
         }
     }
+
 
     public void setIsSoftKeyboardOpened(boolean isSoftKeyboardOpened) {
         this.isSoftKeyboardOpened = isSoftKeyboardOpened;
@@ -98,4 +118,9 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
         }
     }
 
+    public void release() {
+        if (activityRootView != null) {
+            activityRootView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        }
+    }
 }

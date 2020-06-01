@@ -1,36 +1,28 @@
 package com.freddy.kulachat.view.chat;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
+import android.view.WindowManager;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.freddy.kulachat.R;
-import com.freddy.kulachat.config.CConfig;
 import com.freddy.kulachat.contract.chat.ChatContract;
+import com.freddy.kulachat.entity.AppMessage;
+import com.freddy.kulachat.ims.MsgContentType;
+import com.freddy.kulachat.ims.MsgType;
 import com.freddy.kulachat.presenter.chat.ChatPresenter;
 import com.freddy.kulachat.utils.UIUtil;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.widget.SoftKeyboardStateHelper;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
+import java.util.UUID;
 
 import butterknife.BindView;
-import es.dmoral.toasty.Toasty;
 
 /**
  * @author FreddyChen
@@ -48,8 +40,8 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
     ChatRecyclerView mRecyclerView;
     @BindView(R.id.chat_input_panel)
     ChatInputPanel mInputPanel;
-    protected MessageListAdapter mMessageListAdapter;
-    protected List<String> mMessageList;
+    protected ChatMessageListAdapter mMessageListAdapter;
+    protected List<AppMessage> mChatMessageList;
     private SoftKeyboardStateHelper mSoftKeyboardStateHelper;
 
     public static void startSingleChat(Context context) {
@@ -59,20 +51,35 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
 
     @Override
     protected void setRootView(Bundle savedInstanceState) {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_chat);
     }
 
     @Override
     protected void init() {
-        mMessageList = new ArrayList<>();
+        mChatMessageList = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
-            mMessageList.add("消息" + (i + 1));
+            AppMessage.Builder messageBuilder = new AppMessage.Builder()
+                    .setMsgId(UUID.randomUUID().toString())
+                    .setMsgType(MsgType.SingleChat.getType())
+                    .setTimestamp(System.currentTimeMillis())
+                    .setState(0)
+                    .setContent("消息" + (i + 1))
+                    .setContentType(MsgContentType.Text.getType());
+
+            if ((i & 1) == 1) {
+                messageBuilder.setSender("1001").setReceiver("1002");
+            } else {
+                messageBuilder.setSender("1002").setReceiver("1001");
+            }
+
+            mChatMessageList.add(messageBuilder.build());
         }
-        mMessageListAdapter = new MessageListAdapter(R.layout.item_conversation, mMessageList);
+        mMessageListAdapter = new ChatMessageListAdapter(mChatMessageList);
         mRecyclerView.setAdapter(mMessageListAdapter);
         mRecyclerView.scrollToBottom();
         mSoftKeyboardStateHelper = new SoftKeyboardStateHelper(mMainLayout);
-//        mInputPanel.setSoftKeyboardStateHelper(mSoftKeyboardStateHelper);
+        //        mInputPanel.setSoftKeyboardStateHelper(mSoftKeyboardStateHelper);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -81,7 +88,8 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
         mSoftKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
 
             @Override
-            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+            public void onSoftKeyboardOpened(int keyboardHeight) {
+                UIUtil.keyboardHeight = keyboardHeight;
                 mRecyclerView.scrollToBottom();
             }
 
@@ -134,15 +142,8 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
 
     protected abstract void onLoadMoreMessage();
 
-    static class MessageListAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-
-        public MessageListAdapter(int layoutResId, @Nullable List<String> data) {
-            super(layoutResId, data);
-        }
-
-        @Override
-        protected void convert(@NotNull BaseViewHolder baseViewHolder, String s) {
-            baseViewHolder.setText(R.id.tv_name, s);
-        }
+    @Override
+    protected void destroy() {
+        mSoftKeyboardStateHelper.release();
     }
 }

@@ -3,6 +3,12 @@ package com.freddy.kulachat.view.chat;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.freddy.kulachat.utils.DensityUtil;
+import com.freddy.kulachat.widget.RecyclerViewSpacesItemDecoration;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,6 +45,9 @@ public class ChatRecyclerView extends RecyclerView {
     private void init() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         setLayoutManager(layoutManager);
+        Map<String, Integer> decorationMap = new HashMap<>(1);
+        decorationMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DensityUtil.dp2px(mContext, 8));
+        addItemDecoration(new RecyclerViewSpacesItemDecoration(decorationMap));
 
         addOnScrollListener(new OnScrollListener() {
 

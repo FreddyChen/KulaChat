@@ -16,7 +16,8 @@
     <color name="c_ededed">#ededed</color>
     <color name="c_33cbcbcb">#33cbcbcb</color>
     <color name="c_07000000">#07000000</color>
-    <color name="c_77ffffff">#77ececec</color>
+    <color name="c_33000000">#33000000</color>
+    <color name="c_77cbcbcb">#77cbcbcb</color>
     <color name="c_translucent">#77000000</color>
     <color name="c_transparent">#00000000</color>
     <color name="c_app_main_color">@color/c_ffde59</color>
