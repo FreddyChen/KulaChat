@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.freddy.kulachat.R;
+import com.freddy.kulachat.config.AppConfig;
 import com.freddy.kulachat.contract.chat.ChatContract;
 import com.freddy.kulachat.entity.AppMessage;
 import com.freddy.kulachat.ims.MsgContentType;
@@ -77,9 +79,8 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
         }
         mMessageListAdapter = new ChatMessageListAdapter(mChatMessageList);
         mRecyclerView.setAdapter(mMessageListAdapter);
-        mRecyclerView.scrollToBottom();
+        mRecyclerView.scrollToBottom(false);
         mSoftKeyboardStateHelper = new SoftKeyboardStateHelper(mMainLayout);
-        //        mInputPanel.setSoftKeyboardStateHelper(mSoftKeyboardStateHelper);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -89,13 +90,14 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
 
             @Override
             public void onSoftKeyboardOpened(int keyboardHeight) {
-                UIUtil.keyboardHeight = keyboardHeight;
-                mRecyclerView.scrollToBottom();
+                Log.d("BaseChatActivity", "keyboardHeight=" + keyboardHeight);
+                AppConfig.saveKeyboardHeight(keyboardHeight);
+                mRecyclerView.scrollToBottom(true);
             }
 
             @Override
             public void onSoftKeyboardClosed() {
-                UIUtil.loseFocus(mInputPanel.getEditText());
+                mInputPanel.hide();
             }
         });
         mRecyclerView.setOnTouchListener((v, event) -> {
@@ -121,6 +123,9 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
                 onLoadMoreMessage();
             }
         });
+        mInputPanel.setOnExpressionPanelOpenListener(() -> {
+            mRecyclerView.scrollToBottom(true);
+        });
     }
 
     private ChatLoadMoreView mLoadMoreView;
@@ -145,5 +150,6 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
     @Override
     protected void destroy() {
         mSoftKeyboardStateHelper.release();
+        mInputPanel.hide();
     }
 }

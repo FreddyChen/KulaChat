@@ -88,16 +88,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     protected void onDestroy() {
+        destroy();
         if (presenter != null) {
             presenter.detachView();
         }
-
         if (unbinder != null) {
             unbinder.unbind();
             unbinder = null;
         }
-
-        destroy();
         super.onDestroy();
         CActivityManager.getInstance().removeActivityFromStack(activity);
     }

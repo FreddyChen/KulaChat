@@ -18,8 +18,6 @@ import android.widget.EditText;
  */
 public class UIUtil {
 
-    public static int keyboardHeight;
-
     /**
      * 使EditText获取焦点
      *
@@ -88,16 +86,12 @@ public class UIUtil {
     public static void hideSoftInput(Context context, View v) {
         InputMethodManager imm = (InputMethodManager) context
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-        }
+        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
     }
 
     public static void showSoftInput(Context context, View v) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (!imm.isActive()) {
-            imm.showSoftInput(v, 0);
-        }
+        imm.showSoftInput(v, 0);
     }
 
     public static int getStatusBarHeight(Context context) {

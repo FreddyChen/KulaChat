@@ -60,12 +60,12 @@ public class ChatRecyclerView extends RecyclerView {
                     // 第二条可见就触发加载
                     if (lastVisibleItemPosition <= 2) {
                         isLoading = true;
-                        if(mOnLoadMoreListener != null) {
+                        if (mOnLoadMoreListener != null) {
                             post(() -> mOnLoadMoreListener.onShowLoading());
                         }
 
                         postDelayed(() -> {
-                            if(mOnLoadMoreListener != null) {
+                            if (mOnLoadMoreListener != null) {
                                 mOnLoadMoreListener.onLoadMore();
                                 isLoading = false;
                                 mOnLoadMoreListener.onHideLoading();
@@ -77,9 +77,21 @@ public class ChatRecyclerView extends RecyclerView {
         });
     }
 
-    public void scrollToBottom() {
-        scrollToPosition(getAdapter().getItemCount() - 1);
+    public void scrollToBottom(boolean delay) {
+        if (delay) {
+            postDelayed(mScrollToBottomDelayRunnable, 200);
+        } else {
+            scrollToPosition(getAdapter().getItemCount() - 1);
+        }
     }
+
+    private Runnable mScrollToBottomDelayRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            scrollToPosition(getAdapter().getItemCount() - 1);
+        }
+    };
 
     public void setCanLoadMore(boolean canLoadMore) {
         this.canLoadMore = canLoadMore;
@@ -93,7 +105,9 @@ public class ChatRecyclerView extends RecyclerView {
 
     public interface OnLoadMoreListener {
         void onShowLoading();
+
         void onHideLoading();
+
         void onLoadMore();
     }
 }

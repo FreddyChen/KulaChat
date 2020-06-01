@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.freddy.kulachat.R;
+import com.freddy.kulachat.config.AppConfig;
 import com.freddy.kulachat.config.CConfig;
 import com.freddy.kulachat.contract.user.LoginContract;
 import com.freddy.kulachat.presenter.user.LoginPresenter;
@@ -17,6 +19,7 @@ import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.home.HomeActivity;
 import com.freddy.kulachat.widget.CTextButton;
 import com.freddy.kulachat.widget.CTopBar;
+import com.freddy.kulachat.widget.SoftKeyboardStateHelper;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,7 +43,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     EditText mPhoneNumberEditText;
     @BindView(R.id.et_verifyCode)
     EditText mVerifyCodeEditText;
-
     private String phoneNumber;
     private String verifyCode;
 

@@ -12,8 +12,11 @@ import android.widget.LinearLayout;
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.utils.UIUtil;
 import com.freddy.kulachat.view.BaseActivity;
+import com.freddy.kulachat.widget.CImageButton;
+import com.freddy.kulachat.widget.SoftKeyboardStateHelper;
 
 import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,13 +37,13 @@ public class ChatInputPanel extends LinearLayout {
     private BaseActivity mActivity;
     private Context mContext;
     @BindView(R.id.btn_voice)
-    View mVoiceBtn;
+    CImageButton mVoiceBtn;
     @BindView(R.id.btn_keyboard)
-    View mKeyboardBtn;
+    CImageButton mKeyboardBtn;
     @BindView(R.id.btn_expression)
-    View mExpressionBtn;
+    CImageButton mExpressionBtn;
     @BindView(R.id.btn_more)
-    View mMoreBtn;
+    CImageButton mMoreBtn;
     @BindView(R.id.et_content)
     EditText mContentEditText;
     @BindView(R.id.expression_panel)
@@ -79,11 +82,7 @@ public class ChatInputPanel extends LinearLayout {
                 break;
             }
             case R.id.btn_expression: {
-                if (mExpressionPanel.getVisibility() == VISIBLE) {
-                    showHideExpressionPanel(false);
-                } else {
-                    showHideExpressionPanel(true);
-                }
+                showHideExpressionPanel(mExpressionPanel.getVisibility() != VISIBLE);
                 break;
             }
             case R.id.btn_more: {
@@ -103,27 +102,65 @@ public class ChatInputPanel extends LinearLayout {
 
     @OnFocusChange(R.id.et_content)
     void onContentEditTextFocusChanged(boolean focused) {
-        showHideExpressionPanel(!focused);
-    }
-
-    public EditText getEditText() {
-        return mContentEditText;
-    }
-
-    private void showHideExpressionPanel(boolean isShow) {
-        if(isShow) {
-            UIUtil.loseFocus(mContentEditText);
-            UIUtil.hideSoftInput(mContext, mContentEditText);
-            mExpressionPanel.setVisibility(VISIBLE);
-            mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-        }else {
-            mExpressionPanel.setVisibility(GONE);
-            mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        if(focused) {
+            mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
+            mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
+            mExpressionPanel.postDelayed(mExpressionPanelDelayRunnable, 200);
         }
     }
 
+    private void showHideExpressionPanel(boolean isShow) {
+        if (isShow) {
+            UIUtil.loseFocus(mContentEditText);
+            UIUtil.hideSoftInput(mContext, mContentEditText);
+            mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_keyboard_normal);
+            mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_keyboard_pressed);
+            mExpressionPanel.setVisibility(VISIBLE);
+            mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+            if(mOnExpressionPanelOpenListener != null) {
+                mOnExpressionPanelOpenListener.onOpen();
+            }
+        } else {
+            mContentEditText.postDelayed(mContentTextDelayRunnable, 200);
+        }
+    }
+
+    private Runnable mContentTextDelayRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
+            mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
+            UIUtil.requestFocus(mContentEditText);
+            UIUtil.showSoftInput(mContext, mContentEditText);
+            mExpressionPanel.postDelayed(mExpressionPanelDelayRunnable, 200);
+        }
+    };
+
+    private Runnable mExpressionPanelDelayRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            mExpressionPanel.setVisibility(GONE);
+            mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        }
+    };
+
     public void hide() {
+        mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
+        mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
+        mExpressionPanel.setVisibility(GONE);
         UIUtil.loseFocus(mContentEditText);
         UIUtil.hideSoftInput(mContext, mContentEditText);
+    }
+
+    private OnExpressionPanelOpenListener mOnExpressionPanelOpenListener;
+    public void setOnExpressionPanelOpenListener(OnExpressionPanelOpenListener listener) {
+        this.mOnExpressionPanelOpenListener = listener;
+    }
+
+    public interface OnExpressionPanelOpenListener {
+        void onOpen();
     }
 }
