@@ -46,7 +46,8 @@ public class ChatRecyclerView extends RecyclerView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         setLayoutManager(layoutManager);
         Map<String, Integer> decorationMap = new HashMap<>(1);
-        decorationMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DensityUtil.dp2px(mContext, 8));
+        decorationMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DensityUtil.dp2px(mContext, 6));
+        decorationMap.put(RecyclerViewSpacesItemDecoration.TOP_DECORATION, DensityUtil.dp2px(mContext, 6));
         addItemDecoration(new RecyclerViewSpacesItemDecoration(decorationMap));
 
         addOnScrollListener(new OnScrollListener() {
@@ -77,21 +78,9 @@ public class ChatRecyclerView extends RecyclerView {
         });
     }
 
-    public void scrollToBottom(boolean delay) {
-        if (delay) {
-            postDelayed(mScrollToBottomDelayRunnable, 200);
-        } else {
-            scrollToPosition(getAdapter().getItemCount() - 1);
-        }
+    public void scrollToBottom() {
+        scrollToPosition(getAdapter().getItemCount() - 1);
     }
-
-    private Runnable mScrollToBottomDelayRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            scrollToPosition(getAdapter().getItemCount() - 1);
-        }
-    };
 
     public void setCanLoadMore(boolean canLoadMore) {
         this.canLoadMore = canLoadMore;

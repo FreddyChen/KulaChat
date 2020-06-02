@@ -35,6 +35,8 @@ import es.dmoral.toasty.Toasty;
  */
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
 
+    @BindView(R.id.layout_main)
+    ViewGroup mMainLayout;
     @BindView(R.id.c_top_bar)
     CTopBar mTopBar;
     @BindView(R.id.btn_request_verifyCode)
@@ -45,6 +47,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     EditText mVerifyCodeEditText;
     private String phoneNumber;
     private String verifyCode;
+    private SoftKeyboardStateHelper mSoftKeyboardStateHelper;
 
     @Override
     protected void setRootView(Bundle savedInstanceState) {
@@ -58,7 +61,24 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         });
         mPhoneNumberEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_PHONE_NUMBER_LENGTH)});
         mVerifyCodeEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_VERIFY_CODE_LENGTH)});
+        mSoftKeyboardStateHelper = new SoftKeyboardStateHelper(mMainLayout);
         UIUtil.requestFocus(mPhoneNumberEditText);
+    }
+
+    @Override
+    protected void setListeners() {
+        mSoftKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+
+            @Override
+            public void onSoftKeyboardOpened(int keyboardHeight) {
+                AppConfig.saveKeyboardHeight(keyboardHeight);
+            }
+
+            @Override
+            public void onSoftKeyboardClosed() {
+
+            }
+        });
     }
 
     @OnClick({R.id.btn_request_verifyCode, R.id.btn_login})

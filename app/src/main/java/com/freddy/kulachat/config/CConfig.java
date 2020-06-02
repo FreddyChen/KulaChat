@@ -14,4 +14,6 @@ public class CConfig {
     public static final int MAX_VERIFY_CODE_LENGTH = 6;
 
     public static final String ANIMATOR_ROTATION = "rotation";
+    public static final String ANIMATOR_TRANSLATION_X = "translationX";
+    public static final String ANIMATOR_TRANSLATION_Y = "translationY";
 }

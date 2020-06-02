@@ -21,7 +21,7 @@ import java.util.List;
 public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutListener {
 
     public interface SoftKeyboardStateListener {
-        void onSoftKeyboardOpened(int keyboardHeightInPx);
+        void onSoftKeyboardOpened(int keyboardHeight);
 
         void onSoftKeyboardClosed();
     }
@@ -51,32 +51,45 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
     public void onGlobalLayout() {
         final Rect r = new Rect();
         activityRootView.getWindowVisibleDisplayFrame(r);
-
-//        final int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-//        if (!isSoftKeyboardOpened && heightDiff > DIFF_HEIGHT) {
-//            isSoftKeyboardOpened = true;
-//            Log.d("SoftKeyboardStateHelper", "键盘打开，软键盘高度 = " + heightDiff);
-//            notifyOnSoftKeyboardOpened(heightDiff);
-//        } else if (isSoftKeyboardOpened && heightDiff < DIFF_HEIGHT) {
-//            isSoftKeyboardOpened = false;
-//            Log.d("SoftKeyboardStateHelper", "键盘收起" + heightDiff);
-//            notifyOnSoftKeyboardClosed();
-//        }
-
-        int height = r.height();
-        if (windowHeight == 0) {
-            windowHeight = height;
-        } else {
-            keyboardHeight = windowHeight - height;
-            if (windowHeight != height) {
-                if (!isSoftKeyboardOpened && keyboardHeight > DIFF_HEIGHT) {
-                    isSoftKeyboardOpened = true;
-                    notifyOnSoftKeyboardOpened(keyboardHeight);
-                }
-            } else if (isSoftKeyboardOpened && keyboardHeight < DIFF_HEIGHT) {
-                isSoftKeyboardOpened = false;
-            }
+        int screenHeight = activityRootView.getRootView().getHeight();
+        Log.d("SoftKeyboardStateHelper", "screenHeight = " + screenHeight);
+        int heightDifference = screenHeight - r.bottom;
+        Log.d("SoftKeyboardStateHelper", "heightDifference = " + heightDifference + "\tr.bottom = " + r.bottom);
+        boolean visible = heightDifference > screenHeight / 4;
+        Log.d("SoftKeyboardStateHelper", "键盘" + (visible ? "已弹出" : "已收起"));
+        if (!isSoftKeyboardOpened && visible) {
+            isSoftKeyboardOpened = true;
+            notifyOnSoftKeyboardOpened(heightDifference);
+        }else if(isSoftKeyboardOpened && !visible) {
+            isSoftKeyboardOpened = false;
+            notifyOnSoftKeyboardClosed();
         }
+
+        //        final int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+        //        if (!isSoftKeyboardOpened && heightDiff > DIFF_HEIGHT) {
+        //            isSoftKeyboardOpened = true;
+        //            Log.d("SoftKeyboardStateHelper", "键盘打开，软键盘高度 = " + heightDiff);
+        //            notifyOnSoftKeyboardOpened(heightDiff);
+        //        } else if (isSoftKeyboardOpened && heightDiff < DIFF_HEIGHT) {
+        //            isSoftKeyboardOpened = false;
+        //            Log.d("SoftKeyboardStateHelper", "键盘收起" + heightDiff);
+        //            notifyOnSoftKeyboardClosed();
+        //        }
+
+        //        int height = r.height();
+        //        if (windowHeight == 0) {
+        //            windowHeight = height;
+        //        } else {
+        //            keyboardHeight = windowHeight - height;
+        //            if (windowHeight != height) {
+        //                if (!isSoftKeyboardOpened && keyboardHeight > DIFF_HEIGHT) {
+        //                    isSoftKeyboardOpened = true;
+        //                    notifyOnSoftKeyboardOpened(keyboardHeight);
+        //                }
+        //            } else if (isSoftKeyboardOpened && keyboardHeight < DIFF_HEIGHT) {
+        //                isSoftKeyboardOpened = false;
+        //            }
+        //        }
     }
 
 

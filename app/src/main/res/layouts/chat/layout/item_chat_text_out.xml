@@ -4,6 +4,45 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<!--    <com.shehuan.niv.NiceImageView-->
+<!--        android:id="@+id/iv_avatar"-->
+<!--        android:layout_width="36dp"-->
+<!--        android:layout_height="36dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:src="@mipmap/ic_launcher"-->
+<!--        app:is_circle="false"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_nickname"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:ellipsize="end"-->
+<!--        android:maxLines="1"-->
+<!--        android:text="FreddyChen"-->
+<!--        android:textColor="@color/c_666666"-->
+<!--        android:textSize="12sp"-->
+<!--        android:visibility="visible"-->
+<!--        app:layout_constraintRight_toLeftOf="@id/iv_avatar"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="4dp"-->
+<!--        android:background="@drawable/bg_chat_sender"-->
+<!--        android:maxWidth="220dp"-->
+<!--        android:text="测试测试测试"-->
+<!--        android:textColor="@color/c_000000"-->
+<!--        android:textSize="14dp"-->
+<!--        android:minHeight="36dp"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        app:layout_constraintRight_toLeftOf="@id/iv_avatar"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tv_nickname" />-->
+
     <com.shehuan.niv.NiceImageView
         android:id="@+id/iv_avatar"
         android:layout_width="36dp"
@@ -16,20 +55,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="FreddyChen"
-        android:textColor="@color/c_666666"
-        android:textSize="12sp"
-        android:visibility="visible"
-        app:layout_constraintRight_toLeftOf="@id/iv_avatar"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
+        android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
@@ -41,5 +67,5 @@
         android:minHeight="36dp"
         android:layout_marginTop="4dp"
         app:layout_constraintRight_toLeftOf="@id/iv_avatar"
-        app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

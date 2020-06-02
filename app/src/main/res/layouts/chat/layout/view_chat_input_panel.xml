@@ -35,21 +35,11 @@
             app:normal_image_res_id="@drawable/ic_chat_keyboard_normal"
             app:pressed_image_res_id="@drawable/ic_chat_keyboard_pressed" />
 
-        <EditText
+        <com.freddy.kulachat.view.chat.ChatEditText
             android:id="@+id/et_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@null"
-            android:imeOptions="actionSend"
-            android:inputType="text"
-            android:maxLines="5"
-            android:paddingStart="8dp"
-            android:paddingTop="6dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="6dp"
-            android:textColor="@color/c_000000"
-            android:textSize="14sp"
             app:bl_corners_radius="24dp"
             app:bl_solid_color="@color/c_ffffff"
             app:bl_stroke_color="@color/c_333333"

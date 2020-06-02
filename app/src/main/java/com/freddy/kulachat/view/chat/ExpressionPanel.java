@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.config.AppConfig;
 import com.freddy.kulachat.utils.DensityUtil;
-import com.freddy.kulachat.utils.UIUtil;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,13 +55,8 @@ public class ExpressionPanel extends LinearLayout {
         }
         LayoutParams layoutParams = (LayoutParams) getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        layoutParams.height = keyboardHeight;
+        layoutParams.height = keyboardHeight + DensityUtil.dp2px(mContext, 36);
         setLayoutParams(layoutParams);
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
     }
 
     private void init() {

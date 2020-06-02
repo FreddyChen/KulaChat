@@ -112,7 +112,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
         }
     };
 
-    private boolean isLogged = true;
+    private boolean isLogged = false;
     private void initPage() {
         if(!isLogged) {
             startActivity(LoginActivity.class);

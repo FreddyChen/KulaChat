@@ -2,39 +2,38 @@ package com.freddy.kulachat.view.chat;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.freddy.kulachat.R;
+import com.freddy.kulachat.config.AppConfig;
+import com.freddy.kulachat.utils.DensityUtil;
 import com.freddy.kulachat.utils.UIUtil;
-import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.widget.CImageButton;
-import com.freddy.kulachat.widget.SoftKeyboardStateHelper;
 
 import androidx.annotation.Nullable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnFocusChange;
+import butterknife.Unbinder;
 import es.dmoral.toasty.Toasty;
 
 /**
  * @author FreddyChen
  * @name
- * @date 2020/05/31 20:02
+ * @date 2020/06/02 20:15
  * @email chenshichao@outlook.com
  * @github https://github.com/FreddyChen
- * @describe
+ * @desc
  */
 public class ChatInputPanel extends LinearLayout {
 
-    private BaseActivity mActivity;
+    private Unbinder unbinder;
     private Context mContext;
     @BindView(R.id.btn_voice)
     CImageButton mVoiceBtn;
@@ -45,9 +44,11 @@ public class ChatInputPanel extends LinearLayout {
     @BindView(R.id.btn_more)
     CImageButton mMoreBtn;
     @BindView(R.id.et_content)
-    EditText mContentEditText;
+    ChatEditText mContentEditText;
     @BindView(R.id.expression_panel)
     ExpressionPanel mExpressionPanel;
+    private boolean isShowingInputMethod = false;
+    private boolean isShowingExpressionPanel = false;
 
     public ChatInputPanel(Context context) {
         this(context, null);
@@ -60,16 +61,13 @@ public class ChatInputPanel extends LinearLayout {
     public ChatInputPanel(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
-        mActivity = (BaseActivity) context;
         View view = LayoutInflater.from(context).inflate(R.layout.view_chat_input_panel, this, true);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         init();
     }
 
     private void init() {
         setOrientation(VERTICAL);
-        mContentEditText.setHorizontallyScrolling(false);
-        mContentEditText.setMaxLines(5);
     }
 
     @OnClick({R.id.btn_voice, R.id.btn_keyboard, R.id.btn_expression, R.id.btn_more})
@@ -82,13 +80,66 @@ public class ChatInputPanel extends LinearLayout {
                 break;
             }
             case R.id.btn_expression: {
-                showHideExpressionPanel(mExpressionPanel.getVisibility() != VISIBLE);
+                isShowingExpressionPanel = mExpressionPanel.getVisibility() == VISIBLE;
+                if (isShowingExpressionPanel) {
+                    mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
+                    mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
+                    mExpressionPanel.setVisibility(GONE);
+                } else {
+                    mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_keyboard_normal);
+                    mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_keyboard_pressed);
+                    //                    mExpressionPanel.setVisibility(VISIBLE);
+                    if (isShowingInputMethod) {
+                        if (mOnLayoutAnimatorHandleListener != null) {
+                            mOnLayoutAnimatorHandleListener.handleAnimator(-AppConfig.readKeyboardHeight(), -(AppConfig.readKeyboardHeight() + DensityUtil.dp2px(mContext, 36)));
+                        }
+                    } else {
+                        if (mOnLayoutAnimatorHandleListener != null) {
+                            mOnLayoutAnimatorHandleListener.handleAnimator(0.0f, -(AppConfig.readKeyboardHeight() + DensityUtil.dp2px(mContext, 36)));
+                        }
+                    }
+                }
+                isShowingExpressionPanel = !isShowingExpressionPanel;
                 break;
             }
             case R.id.btn_more: {
                 break;
             }
         }
+    }
+
+    @OnFocusChange(R.id.et_content)
+    void onContentEditTextFocusChanged(boolean focused) {
+        isShowingInputMethod = focused;
+        Log.d("ChatInputPanel", "isShowingInputMethod = " + isShowingInputMethod);
+        //        if (focused) {
+        //            isShowingInputMethod = true;
+        //            Toasty.normal(mContext, "获取焦点", Toasty.LENGTH_SHORT).show();
+        //            if (isShowingExpressionPanel) {
+        //                if (mOnLayoutAnimatorHandleListener != null) {
+        //                    mOnLayoutAnimatorHandleListener.handleAnimator(-(AppConfig.readKeyboardHeight() + DensityUtil.dp2px(mContext, 36)), -AppConfig.readKeyboardHeight());
+        //                }
+        //            } else {
+        //                if (mOnLayoutAnimatorHandleListener != null) {
+        //                    mOnLayoutAnimatorHandleListener.handleAnimator(0.0f, -AppConfig.readKeyboardHeight());
+        //                }
+        //            }
+        //            mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
+        //            mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
+        //            isShowingExpressionPanel = false;
+        //        } else {
+        //            isShowingInputMethod = false;
+        //            Toasty.normal(mContext, "失去焦点", Toasty.LENGTH_SHORT).show();
+        //            if (isShowingExpressionPanel) {
+        //                if (mOnLayoutAnimatorHandleListener != null) {
+        //                    mOnLayoutAnimatorHandleListener.handleAnimator(-(AppConfig.readKeyboardHeight() + DensityUtil.dp2px(mContext, 36)), -AppConfig.readKeyboardHeight());
+        //                }
+        //            } else {
+        //                if (mOnLayoutAnimatorHandleListener != null) {
+        //                    mOnLayoutAnimatorHandleListener.handleAnimator(-AppConfig.readKeyboardHeight(), 0.0f);
+        //                }
+        //            }
+        //        }
     }
 
     @OnEditorAction(R.id.et_content)
@@ -100,67 +151,30 @@ public class ChatInputPanel extends LinearLayout {
         return false;
     }
 
-    @OnFocusChange(R.id.et_content)
-    void onContentEditTextFocusChanged(boolean focused) {
-        if(focused) {
-            mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
-            mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
-            mExpressionPanel.postDelayed(mExpressionPanelDelayRunnable, 200);
-        }
+    private OnLayoutAnimatorHandleListener mOnLayoutAnimatorHandleListener;
+
+    public void setOnLayoutAnimatorHandleListener(OnLayoutAnimatorHandleListener listener) {
+        this.mOnLayoutAnimatorHandleListener = listener;
     }
 
-    private void showHideExpressionPanel(boolean isShow) {
-        if (isShow) {
-            UIUtil.loseFocus(mContentEditText);
-            UIUtil.hideSoftInput(mContext, mContentEditText);
-            mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_keyboard_normal);
-            mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_keyboard_pressed);
-            mExpressionPanel.setVisibility(VISIBLE);
-            mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-            if(mOnExpressionPanelOpenListener != null) {
-                mOnExpressionPanelOpenListener.onOpen();
-            }
-        } else {
-            mContentEditText.postDelayed(mContentTextDelayRunnable, 200);
-        }
+    public interface OnLayoutAnimatorHandleListener {
+        void handleAnimator(float fromValue, float toValue);
     }
 
-    private Runnable mContentTextDelayRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
-            mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
-            UIUtil.requestFocus(mContentEditText);
-            UIUtil.showSoftInput(mContext, mContentEditText);
-            mExpressionPanel.postDelayed(mExpressionPanelDelayRunnable, 200);
-        }
-    };
-
-    private Runnable mExpressionPanelDelayRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            mExpressionPanel.setVisibility(GONE);
-            mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        }
-    };
-
-    public void hide() {
-        mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    public void reset() {
+        UIUtil.loseFocus(mContentEditText);
+        UIUtil.hideSoftInput(mContext, mContentEditText);
         mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
         mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
         mExpressionPanel.setVisibility(GONE);
-        UIUtil.loseFocus(mContentEditText);
-        UIUtil.hideSoftInput(mContext, mContentEditText);
+        isShowingExpressionPanel = false;
     }
 
-    private OnExpressionPanelOpenListener mOnExpressionPanelOpenListener;
-    public void setOnExpressionPanelOpenListener(OnExpressionPanelOpenListener listener) {
-        this.mOnExpressionPanelOpenListener = listener;
+    public void onSoftKeyboardOpened() {
+        Log.d("ChatInputPanel", "onSoftKeyboardOpened()");
     }
 
-    public interface OnExpressionPanelOpenListener {
-        void onOpen();
+    public void onSoftKeyboardClosed() {
+        Log.d("ChatInputPanel", "onSoftKeyboardClosed()");
     }
 }
