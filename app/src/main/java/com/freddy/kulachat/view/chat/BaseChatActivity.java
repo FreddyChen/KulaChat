@@ -166,8 +166,13 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mBodyLayout.requestLayout();
-                mExpressionPanel.requestLayout();
+                if(mBodyLayout != null) {
+                    mBodyLayout.requestLayout();
+                }
+
+                if(mExpressionPanel != null) {
+                    mExpressionPanel.requestLayout();
+                }
             }
 
             @Override

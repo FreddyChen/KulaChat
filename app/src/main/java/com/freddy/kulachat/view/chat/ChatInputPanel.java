@@ -52,6 +52,8 @@ public class ChatInputPanel extends LinearLayout {
     private boolean isKeyboardOpened;
     private final float KEYBOARD_HEIGHT = AppConfig.readKeyboardHeight() * 1.0f;
 
+    private boolean isActive = false;
+
     public enum PanelType {
         INPUT_MOTHOD,
         EXPRESSION,
@@ -87,7 +89,7 @@ public class ChatInputPanel extends LinearLayout {
                     mContentEditText.resetInputType();
                     mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
                     mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
-                    handle(PanelType.INPUT_MOTHOD);
+                    handleAnimator(PanelType.INPUT_MOTHOD);
                     if (mOnChatPanelStateListener != null) {
                         mOnChatPanelStateListener.onShowInputMethod();
                     }
@@ -112,14 +114,14 @@ public class ChatInputPanel extends LinearLayout {
                 if (lastPanelType == PanelType.EXPRESSION) {
                     mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
                     mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
-                    handle(PanelType.INPUT_MOTHOD);
+                    handleAnimator(PanelType.INPUT_MOTHOD);
                     UIUtil.requestFocus(mContentEditText);
                     UIUtil.showSoftInput(mContext, mContentEditText);
                     mContentEditText.resetInputType();
                 } else {
                     mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_keyboard_normal);
                     mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_keyboard_pressed);
-                    handle(PanelType.EXPRESSION);
+                    handleAnimator(PanelType.EXPRESSION);
                     UIUtil.loseFocus(mContentEditText);
                     UIUtil.hideSoftInput(mContext, mContentEditText);
                     if (mOnChatPanelStateListener != null) {
@@ -134,8 +136,13 @@ public class ChatInputPanel extends LinearLayout {
         }
     }
 
-    private void handle(PanelType panelType) {
+    private void handleAnimator(PanelType panelType) {
         Log.d("ChatInputPanel", "lastPanelType = " + lastPanelType + "\tpanelType = " + panelType);
+        if(lastPanelType == panelType) {
+            return;
+        }
+        isActive = true;
+        Log.d("ChatInputPanel", "isActive = " + isActive);
         this.panelType = panelType;
         float fromValue = 0.0f, toValue = 0.0f;
         switch (panelType) {
@@ -220,14 +227,21 @@ public class ChatInputPanel extends LinearLayout {
     }
 
     public void reset() {
+        if(!isActive) {
+            return;
+        }
+        Log.d("ChatInputPanel", "reset()");
         UIUtil.loseFocus(mContentEditText);
         UIUtil.hideSoftInput(mContext, mContentEditText);
         mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
         mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
-        handle(PanelType.NONE);
+        handleAnimator(PanelType.NONE);
+        isActive = false;
+        Log.d("ChatInputPanel", "isActive = " + isActive);
     }
 
     public void release() {
+        Log.d("ChatInputPanel", "release()");
         reset();
         if (unbinder != null) {
             unbinder.unbind();
