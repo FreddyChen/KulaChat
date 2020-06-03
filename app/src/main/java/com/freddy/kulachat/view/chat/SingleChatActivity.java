@@ -30,7 +30,7 @@ public class SingleChatActivity extends BaseChatActivity {
                     .setMsgType(MsgType.SingleChat.getType())
                     .setTimestamp(System.currentTimeMillis())
                     .setState(0)
-                    .setContent("加载更多的消息" + currentIndex)
+                    .setContent("加载更多的消息加载更多的消息加载更多的消息加载更多的消息加载更多的消息加载更多的消息加载更多的消息加载更多的消息加载更多的消息加载更多的消息加载更多的消息" + currentIndex)
                     .setContentType(MsgContentType.Text.getType());
             if ((i & 1) == 1) {
                 messageBuilder.setSender("1002").setReceiver("1001");

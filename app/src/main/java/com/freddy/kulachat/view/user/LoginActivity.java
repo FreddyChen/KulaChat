@@ -85,6 +85,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         mPhoneNumberEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_PHONE_NUMBER_LENGTH)});
         mVerifyCodeEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_VERIFY_CODE_LENGTH)});
         mSoftKeyboardStateHelper = new SoftKeyboardStateHelper(mMainLayout);
+
+        mPhoneNumberEditText.postDelayed(() -> {
+            UIUtil.requestFocus(mPhoneNumberEditText);
+            UIUtil.showSoftInput(activity, mPhoneNumberEditText);
+            startAnimator(true);
+        }, 200);
     }
 
     @Override
@@ -134,18 +140,18 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             return;
         }
         isAnimatorDisplayed = isShow;
-        float logoFromScaleValue = isShow ? 1.0f : 0.65f;
-        float logoToScaleValue = isShow ? 0.65f : 1.0f;
-        float logoFromTranslationValue = isShow ? 0.0f : -DensityUtil.dp2px(getApplicationContext(), 48);
-        float logoToTranslationValue = isShow ? -DensityUtil.dp2px(getApplicationContext(), 48) : 0.0f;
-        float bodyLayoutFromTranslationValue = isShow ? 0.0f : -DensityUtil.dp2px(getApplicationContext(), 64);
-        float bodyLayoutToTranslationValue = isShow ? -DensityUtil.dp2px(getApplicationContext(), 64) : 0.0f;
-        ObjectAnimator logoScaleXAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_SCALE_X, logoFromScaleValue, logoToScaleValue);
-        ObjectAnimator logoScaleYAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_SCALE_Y, logoFromScaleValue, logoToScaleValue);
-        ObjectAnimator logoTranslationAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_TRANSLATION_Y, logoFromTranslationValue, logoToTranslationValue);
-        ObjectAnimator bodyLayoutTranslationAnimator = ObjectAnimator.ofFloat(mBodyLayout, CConfig.ANIMATOR_TRANSLATION_Y, bodyLayoutFromTranslationValue, bodyLayoutToTranslationValue);
+        float logoFromScaleXValue = isShow ? 1.0f : 0.65f;
+        float logoToScaleYValue = isShow ? 0.65f : 1.0f;
+        float logoFromTranslationYValue = isShow ? 0.0f : -DensityUtil.dp2px(getApplicationContext(), 48);
+        float logoToTranslationYValue = isShow ? -DensityUtil.dp2px(getApplicationContext(), 48) : 0.0f;
+        float bodyLayoutFromTranslationYValue = isShow ? 0.0f : -DensityUtil.dp2px(getApplicationContext(), 96);
+        float bodyLayoutToTranslationYValue = isShow ? -DensityUtil.dp2px(getApplicationContext(), 96) : 0.0f;
+        ObjectAnimator logoScaleXAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_SCALE_X, logoFromScaleXValue, logoToScaleYValue);
+        ObjectAnimator logoScaleYAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_SCALE_Y, logoFromScaleXValue, logoToScaleYValue);
+        ObjectAnimator logoTranslationYAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_TRANSLATION_Y, logoFromTranslationYValue, logoToTranslationYValue);
+        ObjectAnimator bodyLayoutTranslationYAnimator = ObjectAnimator.ofFloat(mBodyLayout, CConfig.ANIMATOR_TRANSLATION_Y, bodyLayoutFromTranslationYValue, bodyLayoutToTranslationYValue);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(logoScaleXAnimator).with(logoScaleYAnimator).with(logoTranslationAnimator).with(bodyLayoutTranslationAnimator);
+        animatorSet.play(logoScaleXAnimator).with(logoScaleYAnimator).with(logoTranslationYAnimator).with(bodyLayoutTranslationYAnimator);
         animatorSet.setInterpolator(new DecelerateInterpolator());
         animatorSet.setDuration(250);
         animatorSet.start();

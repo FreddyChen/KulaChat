@@ -128,11 +128,13 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
 
             @Override
             public void onShowInputMethod() {
-                mExpressionPanel.setVisibility(View.INVISIBLE);
+                mRecyclerView.scrollToBottom();
+                mExpressionPanel.postDelayed(mExpressionPanelInvisibleRunnable, 250);
             }
 
             @Override
             public void onShowExpressionPanel() {
+                mRecyclerView.scrollToBottom();
                 mExpressionPanel.setVisibility(View.VISIBLE);
             }
         });
@@ -140,7 +142,6 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
 
             @Override
             public void onOpened() {
-                mRecyclerView.scrollToBottom();
                 mInputPanel.onSoftKeyboardOpened();
             }
 
@@ -150,6 +151,14 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
             }
         });
     }
+
+    private Runnable mExpressionPanelInvisibleRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            mExpressionPanel.setVisibility(View.INVISIBLE);
+        }
+    };
 
     private void handlePanelMoveAnimator(float fromValue, float toValue) {
         ObjectAnimator bodyLayoutTranslationYAnimator = ObjectAnimator.ofFloat(mBodyLayout, CConfig.ANIMATOR_TRANSLATION_Y, fromValue, toValue);
@@ -166,11 +175,11 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if(mBodyLayout != null) {
+                if (mBodyLayout != null) {
                     mBodyLayout.requestLayout();
                 }
 
-                if(mExpressionPanel != null) {
+                if (mExpressionPanel != null) {
                     mExpressionPanel.requestLayout();
                 }
             }
@@ -211,6 +220,16 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
     @Override
     protected void destroy() {
         mInputPanel.release();
+        mExpressionPanel.release();
+        if (mKeyboardStatePopupWindow != null && mKeyboardStatePopupWindow.isShowing()) {
+            mKeyboardStatePopupWindow.dismiss();
+        }
+        mKeyboardStatePopupWindow = null;
+        if(mExpressionPanelInvisibleRunnable != null) {
+            mExpressionPanel.removeCallbacks(mExpressionPanelInvisibleRunnable);
+            mExpressionPanelInvisibleRunnable = null;
+        }
+
         if (mKeyboardStatePopupWindow != null) {
             mKeyboardStatePopupWindow.release();
         }

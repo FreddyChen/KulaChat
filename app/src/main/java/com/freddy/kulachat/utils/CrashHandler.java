@@ -63,6 +63,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     private void reportCrashInfoToDDRobot() {
         boolean existsCrashInfo = FileUtil.isFileExists(KulaApp.getInstance(), Environment.DIRECTORY_DOCUMENTS, CRASH_FOLDER_NAME, CRASH_FILE_NAME);
+        Log.d(TAG, "existsCrashInfo = " + existsCrashInfo);
         if (!existsCrashInfo) {
             return;
         }

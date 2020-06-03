@@ -83,26 +83,6 @@ public class ExpressionPanel extends LinearLayout {
     private void initData() {
         mExpressionTypeList = new ArrayList<>();
         mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
     }
 
     private void initRecyclerView() {
@@ -112,8 +92,10 @@ public class ExpressionPanel extends LinearLayout {
         mRecyclerView.setAdapter(mExpressionTypeListAdapter);
     }
 
-    @OnClick(R.id.btn_test)
-    void onTestBtnClick(View v) {
-        Toasty.normal(mContext, "test", Toasty.LENGTH_SHORT).show();;
+    public void release() {
+        if(unbinder != null) {
+            unbinder.unbind();
+            unbinder = null;
+        }
     }
 }

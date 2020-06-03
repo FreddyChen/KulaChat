@@ -5,7 +5,6 @@
     android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/c_33cbcbcb"
     android:clipChildren="false"
     android:fitsSystemWindows="true">
 
@@ -15,7 +14,8 @@
         android:clipChildren="false"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/c_top_bar">
+        app:layout_constraintTop_toBottomOf="@id/c_top_bar"
+        tools:ignore="UnknownId">
 
         <LinearLayout
             android:id="@+id/layout_body"
@@ -27,8 +27,8 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/c_333333" />
+                android:background="@color/c_333333"
+                android:layout_weight="1" />
 
             <com.freddy.kulachat.view.chat.ChatInputPanel
                 android:id="@+id/chat_input_panel"
@@ -40,7 +40,6 @@
             android:id="@+id/expression_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/c_0072ff"
             android:visibility="invisible" />
     </LinearLayout>
 
