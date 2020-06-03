@@ -1,12 +1,16 @@
 package com.freddy.kulachat.view.chat;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 
 import com.freddy.kulachat.R;
@@ -17,7 +21,8 @@ import com.freddy.kulachat.ims.MsgContentType;
 import com.freddy.kulachat.ims.MsgType;
 import com.freddy.kulachat.presenter.chat.ChatPresenter;
 import com.freddy.kulachat.view.BaseActivity;
-import com.freddy.kulachat.widget.SoftKeyboardStateHelper;
+import com.freddy.kulachat.view.adapter.ChatMessageListAdapter;
+import com.freddy.kulachat.widget.KeyboardStatePopupWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +40,20 @@ import butterknife.BindView;
  */
 public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> implements ChatContract.View {
 
+    @BindView(R.id.layout_main)
+    ViewGroup mMainLayout;
     @BindView(R.id.layout_body)
     ViewGroup mBodyLayout;
     @BindView(R.id.recycler_view)
     ChatRecyclerView mRecyclerView;
     @BindView(R.id.chat_input_panel)
     ChatInputPanel mInputPanel;
+    @BindView(R.id.expression_panel)
+    ExpressionPanel mExpressionPanel;
     protected ChatMessageListAdapter mMessageListAdapter;
     protected List<AppMessage> mChatMessageList;
+
+    private KeyboardStatePopupWindow mKeyboardStatePopupWindow;
 
     public static void startSingleChat(Context context) {
         Intent intent = new Intent(context, SingleChatActivity.class);
@@ -51,6 +62,7 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
 
     @Override
     protected void setRootView(Bundle savedInstanceState) {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         setContentView(R.layout.activity_chat);
     }
 
@@ -77,6 +89,12 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
         mMessageListAdapter = new ChatMessageListAdapter(mChatMessageList);
         mRecyclerView.setAdapter(mMessageListAdapter);
         mRecyclerView.scrollToBottom();
+        mKeyboardStatePopupWindow = new KeyboardStatePopupWindow(activity, mMainLayout);
+        setRecyclerViewHeight();
+    }
+
+    private void setRecyclerViewHeight() {
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -105,14 +123,65 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
                 onLoadMoreMessage();
             }
         });
-        mInputPanel.setOnLayoutAnimatorHandleListener(this::handleBodyLayoutMoveAnimator);
+        mInputPanel.setOnLayoutAnimatorHandleListener(this::handlePanelMoveAnimator);
+        mInputPanel.setOnChatPanelStateListener(new ChatInputPanel.OnChatPanelStateListener() {
+
+            @Override
+            public void onShowInputMethod() {
+                mExpressionPanel.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onShowExpressionPanel() {
+                mExpressionPanel.setVisibility(View.VISIBLE);
+            }
+        });
+        mKeyboardStatePopupWindow.setOnKeyboardStateListener(new KeyboardStatePopupWindow.OnKeyboardStateListener() {
+
+            @Override
+            public void onOpened() {
+                mRecyclerView.scrollToBottom();
+                mInputPanel.onSoftKeyboardOpened();
+            }
+
+            @Override
+            public void onClosed() {
+                mInputPanel.onSoftKeyboardClosed();
+            }
+        });
     }
 
-    private void handleBodyLayoutMoveAnimator(float fromValue, float toValue) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(mBodyLayout, CConfig.ANIMATOR_TRANSLATION_Y, fromValue, toValue);
-        animator.setDuration(200);
-        animator.setInterpolator(new DecelerateInterpolator());
-        animator.start();
+    private void handlePanelMoveAnimator(float fromValue, float toValue) {
+        ObjectAnimator bodyLayoutTranslationYAnimator = ObjectAnimator.ofFloat(mBodyLayout, CConfig.ANIMATOR_TRANSLATION_Y, fromValue, toValue);
+        ObjectAnimator expressionPanelTranslationYAnimator = ObjectAnimator.ofFloat(mExpressionPanel, CConfig.ANIMATOR_TRANSLATION_Y, fromValue, toValue);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(250);
+        animatorSet.setInterpolator(new DecelerateInterpolator());
+        animatorSet.play(bodyLayoutTranslationYAnimator).with(expressionPanelTranslationYAnimator);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mBodyLayout.requestLayout();
+                mExpressionPanel.requestLayout();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        animatorSet.start();
     }
 
     private ChatLoadMoreView mLoadMoreView;
@@ -136,6 +205,9 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
 
     @Override
     protected void destroy() {
-        //        mInputPanel.release();
+        mInputPanel.release();
+        if (mKeyboardStatePopupWindow != null) {
+            mKeyboardStatePopupWindow.release();
+        }
     }
 }

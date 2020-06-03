@@ -1,4 +1,4 @@
-package com.freddy.kulachat.view.chat;
+package com.freddy.kulachat.view.adapter;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;

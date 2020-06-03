@@ -63,10 +63,4 @@
             app:normal_image_res_id="@drawable/ic_chat_more_normal"
             app:pressed_image_res_id="@drawable/ic_chat_more_pressed" />
     </LinearLayout>
-
-    <com.freddy.kulachat.view.chat.ExpressionPanel
-        android:id="@+id/expression_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
 </merge>

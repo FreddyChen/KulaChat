@@ -47,4 +47,10 @@ public class RxExecutorService {
                 .observeOn(observeScheduler)
                 .subscribe(observer);
     }
+
+    public void dispose(Disposable disposable) {
+        if(disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+    }
 }

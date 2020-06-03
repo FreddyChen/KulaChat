@@ -1,17 +1,23 @@
 package com.freddy.kulachat.view.user;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.config.AppConfig;
 import com.freddy.kulachat.config.CConfig;
 import com.freddy.kulachat.contract.user.LoginContract;
 import com.freddy.kulachat.presenter.user.LoginPresenter;
+import com.freddy.kulachat.utils.DensityUtil;
+import com.freddy.kulachat.utils.RxExecutorService;
 import com.freddy.kulachat.utils.StringUtil;
 import com.freddy.kulachat.utils.UIUtil;
 import com.freddy.kulachat.utils.Util;
@@ -21,9 +27,15 @@ import com.freddy.kulachat.widget.CTextButton;
 import com.freddy.kulachat.widget.CTopBar;
 import com.freddy.kulachat.widget.SoftKeyboardStateHelper;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author FreddyChen
@@ -39,15 +51,26 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     ViewGroup mMainLayout;
     @BindView(R.id.c_top_bar)
     CTopBar mTopBar;
+    @BindView(R.id.iv_logo)
+    ImageView mLogoImageView;
+    @BindView(R.id.layout_body)
+    ViewGroup mBodyLayout;
     @BindView(R.id.btn_request_verifyCode)
     CTextButton mRequestVerifyCodeBtn;
     @BindView(R.id.et_phoneNumber)
     EditText mPhoneNumberEditText;
     @BindView(R.id.et_verifyCode)
     EditText mVerifyCodeEditText;
+    @BindView(R.id.layout_verifyCode_wrap)
+    ViewGroup mVerifyCodeWrapLayout;
+    @BindView(R.id.btn_login)
+    CTextButton mLoginBtn;
     private String phoneNumber;
     private String verifyCode;
     private SoftKeyboardStateHelper mSoftKeyboardStateHelper;
+    private Disposable mDisposable;
+
+    private boolean isAnimatorDisplayed = false;
 
     @Override
     protected void setRootView(Bundle savedInstanceState) {
@@ -62,7 +85,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         mPhoneNumberEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_PHONE_NUMBER_LENGTH)});
         mVerifyCodeEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_VERIFY_CODE_LENGTH)});
         mSoftKeyboardStateHelper = new SoftKeyboardStateHelper(mMainLayout);
-        UIUtil.requestFocus(mPhoneNumberEditText);
     }
 
     @Override
@@ -72,27 +94,75 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             @Override
             public void onSoftKeyboardOpened(int keyboardHeight) {
                 AppConfig.saveKeyboardHeight(keyboardHeight);
+                startAnimator(true);
             }
 
             @Override
             public void onSoftKeyboardClosed() {
+                RxExecutorService.getInstance().delay(100, TimeUnit.MILLISECONDS, Schedulers.io(), AndroidSchedulers.mainThread(), new Observer() {
 
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        if (mPhoneNumberEditText.isFocused() || mVerifyCodeEditText.isFocused()) {
+                            return;
+                        }
+                        startAnimator(false);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        RxExecutorService.getInstance().dispose(mDisposable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
             }
         });
+    }
+
+    private void startAnimator(boolean isShow) {
+        if (isAnimatorDisplayed == isShow) {
+            return;
+        }
+        isAnimatorDisplayed = isShow;
+        float logoFromScaleValue = isShow ? 1.0f : 0.65f;
+        float logoToScaleValue = isShow ? 0.65f : 1.0f;
+        float logoFromTranslationValue = isShow ? 0.0f : -DensityUtil.dp2px(getApplicationContext(), 48);
+        float logoToTranslationValue = isShow ? -DensityUtil.dp2px(getApplicationContext(), 48) : 0.0f;
+        float bodyLayoutFromTranslationValue = isShow ? 0.0f : -DensityUtil.dp2px(getApplicationContext(), 64);
+        float bodyLayoutToTranslationValue = isShow ? -DensityUtil.dp2px(getApplicationContext(), 64) : 0.0f;
+        ObjectAnimator logoScaleXAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_SCALE_X, logoFromScaleValue, logoToScaleValue);
+        ObjectAnimator logoScaleYAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_SCALE_Y, logoFromScaleValue, logoToScaleValue);
+        ObjectAnimator logoTranslationAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_TRANSLATION_Y, logoFromTranslationValue, logoToTranslationValue);
+        ObjectAnimator bodyLayoutTranslationAnimator = ObjectAnimator.ofFloat(mBodyLayout, CConfig.ANIMATOR_TRANSLATION_Y, bodyLayoutFromTranslationValue, bodyLayoutToTranslationValue);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(logoScaleXAnimator).with(logoScaleYAnimator).with(logoTranslationAnimator).with(bodyLayoutTranslationAnimator);
+        animatorSet.setInterpolator(new DecelerateInterpolator());
+        animatorSet.setDuration(250);
+        animatorSet.start();
     }
 
     @OnClick({R.id.btn_request_verifyCode, R.id.btn_login})
     void onClickListeners(View v) {
         switch (v.getId()) {
-            case R.id.btn_request_verifyCode : {
-                if(checkPhoneNumberInput()) {
+            case R.id.btn_request_verifyCode: {
+                if (checkPhoneNumberInput()) {
                     Toasty.normal(this, "正在获取验证码", Toasty.LENGTH_SHORT).show();
+                    showLoading();
                 }
-                showLoading();
                 break;
             }
 
-            case R.id.btn_login : {
+            case R.id.btn_login: {
                 startActivity(HomeActivity.class);
                 finish();
                 break;
@@ -102,12 +172,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     private boolean checkPhoneNumberInput() {
         phoneNumber = mPhoneNumberEditText.getText().toString();
-        if(StringUtil.isEmpty(phoneNumber)) {
+        if (StringUtil.isEmpty(phoneNumber)) {
             Toasty.warning(activity, "请输入手机号码", Toasty.LENGTH_SHORT).show();
             return false;
         }
 
-        if(!Util.isPhoneNumber(phoneNumber)) {
+        if (!Util.isPhoneNumber(phoneNumber)) {
             Toasty.warning(activity, "手机号码格式不正确", Toasty.LENGTH_SHORT).show();
             return false;
         }
@@ -117,6 +187,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     private boolean checkVerifyCodeInput() {
         return true;
+    }
+
+    @Override
+    protected void destroy() {
+        RxExecutorService.getInstance().dispose(mDisposable);
     }
 
     @Override

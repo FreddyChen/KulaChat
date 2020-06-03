@@ -68,7 +68,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
 
             @Override
             public void onError(Throwable e) {
-                dispose(mCheckPermissionDisposable);
+                RxExecutorService.getInstance().dispose(mCheckPermissionDisposable);
             }
 
             @SuppressLint("CheckResult")
@@ -102,7 +102,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
 
         @Override
         public void onError(Throwable e) {
-            dispose(mExitAppDisposable);
+            RxExecutorService.getInstance().dispose(mExitAppDisposable);
         }
 
         @Override
@@ -124,13 +124,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
 
     @Override
     protected void destroy() {
-        dispose(mCheckPermissionDisposable);
-        dispose(mExitAppDisposable);
-    }
-
-    private void dispose(Disposable d) {
-        if (d != null && !d.isDisposed()) {
-            d.dispose();
-        }
+        RxExecutorService.getInstance().dispose(mCheckPermissionDisposable);
+        RxExecutorService.getInstance().dispose(mExitAppDisposable);
     }
 }

@@ -1,7 +1,6 @@
 package com.freddy.kulachat.widget;
 
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -30,10 +29,6 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
     private final View activityRootView;
     private int lastSoftKeyboardHeightInPx;
     private boolean isSoftKeyboardOpened;
-    private int windowHeight = 0;
-    private int keyboardHeight;
-
-    private final int DIFF_HEIGHT;
 
     public SoftKeyboardStateHelper(View activityRootView) {
         this(activityRootView, false);
@@ -43,20 +38,15 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
         this.activityRootView = activityRootView;
         this.isSoftKeyboardOpened = isSoftKeyboardOpened;
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(this);
-
-        DIFF_HEIGHT = DensityUtil.dp2px(activityRootView.getContext(), 100);
     }
 
     @Override
     public void onGlobalLayout() {
         final Rect r = new Rect();
         activityRootView.getWindowVisibleDisplayFrame(r);
-        int screenHeight = activityRootView.getRootView().getHeight();
-        Log.d("SoftKeyboardStateHelper", "screenHeight = " + screenHeight);
+        int screenHeight = DensityUtil.getScreenHeight(activityRootView.getContext());
         int heightDifference = screenHeight - r.bottom;
-        Log.d("SoftKeyboardStateHelper", "heightDifference = " + heightDifference + "\tr.bottom = " + r.bottom);
         boolean visible = heightDifference > screenHeight / 4;
-        Log.d("SoftKeyboardStateHelper", "键盘" + (visible ? "已弹出" : "已收起"));
         if (!isSoftKeyboardOpened && visible) {
             isSoftKeyboardOpened = true;
             notifyOnSoftKeyboardOpened(heightDifference);

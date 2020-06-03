@@ -1,9 +1,12 @@
 package com.freddy.kulachat.view.chat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
@@ -19,7 +22,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
-import butterknife.OnFocusChange;
 import butterknife.Unbinder;
 import es.dmoral.toasty.Toasty;
 
@@ -45,10 +47,17 @@ public class ChatInputPanel extends LinearLayout {
     CImageButton mMoreBtn;
     @BindView(R.id.et_content)
     ChatEditText mContentEditText;
-    @BindView(R.id.expression_panel)
-    ExpressionPanel mExpressionPanel;
-    private boolean isShowingInputMethod = false;
-    private boolean isShowingExpressionPanel = false;
+    private PanelType panelType = PanelType.NONE;
+    private PanelType lastPanelType = panelType;
+    private boolean isKeyboardOpened;
+    private final float KEYBOARD_HEIGHT = AppConfig.readKeyboardHeight() * 1.0f;
+
+    public enum PanelType {
+        INPUT_MOTHOD,
+        EXPRESSION,
+        MORE,
+        NONE
+    }
 
     public ChatInputPanel(Context context) {
         this(context, null);
@@ -66,8 +75,28 @@ public class ChatInputPanel extends LinearLayout {
         init();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void init() {
         setOrientation(VERTICAL);
+        mContentEditText.setInputType(InputType.TYPE_NULL);
+        mContentEditText.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (!isKeyboardOpened) {
+                    UIUtil.requestFocus(mContentEditText);
+                    UIUtil.showSoftInput(mContext, mContentEditText);
+                    mContentEditText.resetInputType();
+                    mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
+                    mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
+                    handle(PanelType.INPUT_MOTHOD);
+                    if (mOnChatPanelStateListener != null) {
+                        mOnChatPanelStateListener.onShowInputMethod();
+                    }
+                }
+                return true;
+            }
+
+            return false;
+        });
     }
 
     @OnClick({R.id.btn_voice, R.id.btn_keyboard, R.id.btn_expression, R.id.btn_more})
@@ -80,26 +109,23 @@ public class ChatInputPanel extends LinearLayout {
                 break;
             }
             case R.id.btn_expression: {
-                isShowingExpressionPanel = mExpressionPanel.getVisibility() == VISIBLE;
-                if (isShowingExpressionPanel) {
+                if (lastPanelType == PanelType.EXPRESSION) {
                     mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
                     mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
-                    mExpressionPanel.setVisibility(GONE);
+                    handle(PanelType.INPUT_MOTHOD);
+                    UIUtil.requestFocus(mContentEditText);
+                    UIUtil.showSoftInput(mContext, mContentEditText);
+                    mContentEditText.resetInputType();
                 } else {
                     mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_keyboard_normal);
                     mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_keyboard_pressed);
-                    //                    mExpressionPanel.setVisibility(VISIBLE);
-                    if (isShowingInputMethod) {
-                        if (mOnLayoutAnimatorHandleListener != null) {
-                            mOnLayoutAnimatorHandleListener.handleAnimator(-AppConfig.readKeyboardHeight(), -(AppConfig.readKeyboardHeight() + DensityUtil.dp2px(mContext, 36)));
-                        }
-                    } else {
-                        if (mOnLayoutAnimatorHandleListener != null) {
-                            mOnLayoutAnimatorHandleListener.handleAnimator(0.0f, -(AppConfig.readKeyboardHeight() + DensityUtil.dp2px(mContext, 36)));
-                        }
+                    handle(PanelType.EXPRESSION);
+                    UIUtil.loseFocus(mContentEditText);
+                    UIUtil.hideSoftInput(mContext, mContentEditText);
+                    if (mOnChatPanelStateListener != null) {
+                        mOnChatPanelStateListener.onShowExpressionPanel();
                     }
                 }
-                isShowingExpressionPanel = !isShowingExpressionPanel;
                 break;
             }
             case R.id.btn_more: {
@@ -108,38 +134,70 @@ public class ChatInputPanel extends LinearLayout {
         }
     }
 
-    @OnFocusChange(R.id.et_content)
-    void onContentEditTextFocusChanged(boolean focused) {
-        isShowingInputMethod = focused;
-        Log.d("ChatInputPanel", "isShowingInputMethod = " + isShowingInputMethod);
-        //        if (focused) {
-        //            isShowingInputMethod = true;
-        //            Toasty.normal(mContext, "获取焦点", Toasty.LENGTH_SHORT).show();
-        //            if (isShowingExpressionPanel) {
-        //                if (mOnLayoutAnimatorHandleListener != null) {
-        //                    mOnLayoutAnimatorHandleListener.handleAnimator(-(AppConfig.readKeyboardHeight() + DensityUtil.dp2px(mContext, 36)), -AppConfig.readKeyboardHeight());
-        //                }
-        //            } else {
-        //                if (mOnLayoutAnimatorHandleListener != null) {
-        //                    mOnLayoutAnimatorHandleListener.handleAnimator(0.0f, -AppConfig.readKeyboardHeight());
-        //                }
-        //            }
-        //            mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
-        //            mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
-        //            isShowingExpressionPanel = false;
-        //        } else {
-        //            isShowingInputMethod = false;
-        //            Toasty.normal(mContext, "失去焦点", Toasty.LENGTH_SHORT).show();
-        //            if (isShowingExpressionPanel) {
-        //                if (mOnLayoutAnimatorHandleListener != null) {
-        //                    mOnLayoutAnimatorHandleListener.handleAnimator(-(AppConfig.readKeyboardHeight() + DensityUtil.dp2px(mContext, 36)), -AppConfig.readKeyboardHeight());
-        //                }
-        //            } else {
-        //                if (mOnLayoutAnimatorHandleListener != null) {
-        //                    mOnLayoutAnimatorHandleListener.handleAnimator(-AppConfig.readKeyboardHeight(), 0.0f);
-        //                }
-        //            }
-        //        }
+    private void handle(PanelType panelType) {
+        Log.d("ChatInputPanel", "lastPanelType = " + lastPanelType + "\tpanelType = " + panelType);
+        this.panelType = panelType;
+        float fromValue = 0.0f, toValue = 0.0f;
+        switch (panelType) {
+            case INPUT_MOTHOD:
+                switch (lastPanelType) {
+                    case EXPRESSION:
+                        fromValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(mContext, 36);
+                        toValue = -KEYBOARD_HEIGHT;
+                        break;
+                    case MORE:
+                        break;
+                    case NONE:
+                        fromValue = 0.0f;
+                        toValue = -KEYBOARD_HEIGHT;
+                        break;
+                }
+                break;
+            case EXPRESSION:
+                switch (lastPanelType) {
+                    case INPUT_MOTHOD:
+                        fromValue = -KEYBOARD_HEIGHT;
+                        toValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(mContext, 36);
+                        break;
+                    case MORE:
+                        break;
+                    case NONE:
+                        fromValue = 0.0f;
+                        toValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(mContext, 36);
+                        break;
+                }
+                break;
+            case MORE:
+                switch (lastPanelType) {
+                    case INPUT_MOTHOD:
+                        break;
+                    case EXPRESSION:
+                        break;
+                    case NONE:
+                        break;
+                }
+                break;
+            case NONE:
+                switch (lastPanelType) {
+                    case INPUT_MOTHOD:
+                        fromValue = -KEYBOARD_HEIGHT;
+                        toValue = 0.0f;
+                        break;
+                    case EXPRESSION:
+                        fromValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(mContext, 36);
+                        toValue = 0.0f;
+                        break;
+                    case MORE:
+                        break;
+                }
+                break;
+        }
+
+        if (mOnLayoutAnimatorHandleListener != null) {
+            mOnLayoutAnimatorHandleListener.handleAnimator(fromValue, toValue);
+        }
+
+        lastPanelType = panelType;
     }
 
     @OnEditorAction(R.id.et_content)
@@ -166,15 +224,35 @@ public class ChatInputPanel extends LinearLayout {
         UIUtil.hideSoftInput(mContext, mContentEditText);
         mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
         mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
-        mExpressionPanel.setVisibility(GONE);
-        isShowingExpressionPanel = false;
+        handle(PanelType.NONE);
+    }
+
+    public void release() {
+        reset();
+        if (unbinder != null) {
+            unbinder.unbind();
+            unbinder = null;
+        }
     }
 
     public void onSoftKeyboardOpened() {
-        Log.d("ChatInputPanel", "onSoftKeyboardOpened()");
+        isKeyboardOpened = true;
+        mContentEditText.resetInputType();
     }
 
     public void onSoftKeyboardClosed() {
-        Log.d("ChatInputPanel", "onSoftKeyboardClosed()");
+        isKeyboardOpened = false;
+        mContentEditText.setInputType(InputType.TYPE_NULL);
+    }
+
+    private OnChatPanelStateListener mOnChatPanelStateListener;
+
+    public void setOnChatPanelStateListener(OnChatPanelStateListener listener) {
+        this.mOnChatPanelStateListener = listener;
+    }
+
+    public interface OnChatPanelStateListener {
+        void onShowInputMethod();
+        void onShowExpressionPanel();
     }
 }

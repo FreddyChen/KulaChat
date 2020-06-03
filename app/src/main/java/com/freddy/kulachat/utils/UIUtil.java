@@ -19,33 +19,33 @@ import android.widget.EditText;
 public class UIUtil {
 
     /**
-     * 使EditText获取焦点
+     * 使控件获取焦点
      *
-     * @param editText
+     * @param view
      */
-    public static void requestFocus(EditText editText) {
-        if (editText != null) {
-            editText.setFocusable(true);
-            editText.setFocusableInTouchMode(true);
-            editText.requestFocus();
+    public static void requestFocus(View view) {
+        if (view != null) {
+            view.setFocusable(true);
+            view.setFocusableInTouchMode(true);
+            view.requestFocus();
         }
     }
 
     /**
-     * 使EditText失去焦点
+     * 使控件失去焦点
      *
-     * @param editText
+     * @param view
      */
-    public static void loseFocus(EditText editText) {
-        if (editText != null) {
-            ViewGroup parent = (ViewGroup) editText.getParent();
+    public static void loseFocus(View view) {
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null) {
                 parent.setFocusable(true);
                 parent.setFocusableInTouchMode(true);
                 parent.requestFocus();
             } else {
-                editText.setFocusable(false);
-                editText.setFocusableInTouchMode(false);
+                view.setFocusable(false);
+                view.setFocusableInTouchMode(false);
             }
         }
     }

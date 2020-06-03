@@ -45,7 +45,7 @@ public class ChatEditText extends AppCompatEditText {
 
     private void init() {
         setImeOptions(EditorInfo.IME_ACTION_SEND);
-        setInputType(InputType.TYPE_CLASS_TEXT);
+        resetInputType();
         setPadding(DensityUtil.dp2px(mContext, 8), DensityUtil.dp2px(mContext, 6), DensityUtil.dp2px(mContext, 8), DensityUtil.dp2px(mContext, 6));
         setTextColor(ContextCompat.getColor(mContext, R.color.c_000000));
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -62,5 +62,9 @@ public class ChatEditText extends AppCompatEditText {
             return false;
         }
         return super.onKeyPreIme(keyCode, event);
+    }
+
+    public void resetInputType() {
+        setInputType(InputType.TYPE_CLASS_TEXT);
     }
 }

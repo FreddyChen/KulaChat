@@ -36,7 +36,7 @@
             android:configChanges="locale|orientation|screenSize|keyboardHidden|navigation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateVisible" />
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".view.home.HomeActivity"
@@ -48,7 +48,6 @@
             android:name=".view.chat.SingleChatActivity"
             android:configChanges="locale|orientation|screenSize|keyboardHidden|navigation"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait" />
 
         <meta-data

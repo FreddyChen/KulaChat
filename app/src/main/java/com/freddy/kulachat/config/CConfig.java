@@ -16,4 +16,6 @@ public class CConfig {
     public static final String ANIMATOR_ROTATION = "rotation";
     public static final String ANIMATOR_TRANSLATION_X = "translationX";
     public static final String ANIMATOR_TRANSLATION_Y = "translationY";
+    public static final String ANIMATOR_SCALE_X = "scaleX";
+    public static final String ANIMATOR_SCALE_Y = "scaleY";
 }

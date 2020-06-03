@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_main"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -23,50 +23,22 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_phoneNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="42dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginRight="42dp"
-        android:background="@null"
-        android:hint="请输入手机号码"
-        android:inputType="phone"
-        android:maxLines="1"
-        android:paddingStart="14dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="14dp"
-        android:paddingBottom="8dp"
-        android:textColor="@color/c_000000"
-        android:textSize="14sp"
-        app:bl_corners_radius="24dp"
-        app:bl_solid_color="@color/c_ffffff"
-        app:bl_stroke_color="@color/c_999999"
-        app:bl_stroke_width="1dp"
-        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
-
     <LinearLayout
-        android:id="@+id/layout_verifyCode_wrap"
+        android:id="@+id/layout_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="42dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="42dp"
         android:layout_marginEnd="42dp"
-        android:orientation="horizontal"
-        app:bl_corners_radius="24dp"
-        app:bl_solid_color="@color/c_ffffff"
-        app:bl_stroke_color="@color/c_999999"
-        app:bl_stroke_width="1dp"
-        app:layout_constraintTop_toBottomOf="@id/et_phoneNumber">
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo">
 
         <EditText
-            android:id="@+id/et_verifyCode"
-            android:layout_width="0dp"
+            android:id="@+id/et_phoneNumber"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@null"
-            android:hint="请输入验证码"
+            android:hint="请输入手机号码"
             android:inputType="phone"
             android:maxLines="1"
             android:paddingStart="14dp"
@@ -74,38 +46,67 @@
             android:paddingEnd="14dp"
             android:paddingBottom="8dp"
             android:textColor="@color/c_000000"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:bl_corners_radius="24dp"
+            app:bl_solid_color="@color/c_ffffff"
+            app:bl_stroke_color="@color/c_999999"
+            app:bl_stroke_width="1dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_verifyCode_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            app:bl_corners_radius="24dp"
+            app:bl_solid_color="@color/c_ffffff"
+            app:bl_stroke_color="@color/c_999999"
+            app:bl_stroke_width="1dp">
+
+            <EditText
+                android:id="@+id/et_verifyCode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="请输入验证码"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:paddingStart="14dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/c_000000"
+                android:textSize="14sp" />
+
+            <com.freddy.kulachat.widget.CTextButton
+                android:id="@+id/btn_request_verifyCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:padding="6dp"
+                android:text="获取验证码"
+                android:textSize="12sp"
+                app:disabled_text_color="@color/c_999999"
+                app:normal_text_color="@color/c_0072ff"
+                app:pressed_text_color="@color/c_5fa6fd" />
+        </LinearLayout>
 
         <com.freddy.kulachat.widget.CTextButton
-            android:id="@+id/btn_request_verifyCode"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:padding="6dp"
-            android:text="获取验证码"
-            android:textSize="12sp"
-            app:disabled_text_color="@color/c_999999"
-            app:normal_text_color="@color/c_0072ff"
-            app:pressed_text_color="@color/c_5fa6fd" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_horizontal"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="登录"
+            app:bl_corners_radius="28dp"
+            app:bl_pressed_solid_color="@color/c_common_btn_pressed_color"
+            app:bl_unPressed_solid_color="@color/c_common_btn_normal_color"
+            app:normal_text_color="@color/c_000000"
+            app:pressed_text_color="@color/c_333333" />
     </LinearLayout>
-
-    <com.freddy.kulachat.widget.CTextButton
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="48dp"
-        android:gravity="center_horizontal"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:text="登录"
-        app:bl_corners_radius="28dp"
-        app:bl_pressed_solid_color="@color/c_common_btn_pressed_color"
-        app:bl_unPressed_solid_color="@color/c_common_btn_normal_color"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_verifyCode_wrap"
-        app:normal_text_color="@color/c_000000"
-        app:pressed_text_color="@color/c_333333" />
 </androidx.constraintlayout.widget.ConstraintLayout>

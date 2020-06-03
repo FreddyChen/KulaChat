@@ -9,12 +9,22 @@ import android.widget.LinearLayout;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.config.AppConfig;
+import com.freddy.kulachat.entity.ExpressionType;
 import com.freddy.kulachat.utils.DensityUtil;
+import com.freddy.kulachat.view.adapter.ExpressionTypeListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import es.dmoral.toasty.Toasty;
 
 /**
  * @author FreddyChen
@@ -27,6 +37,11 @@ import butterknife.ButterKnife;
 public class ExpressionPanel extends LinearLayout {
 
     private Context mContext;
+    private Unbinder unbinder;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    private List<ExpressionType> mExpressionTypeList;
+    private ExpressionTypeListAdapter mExpressionTypeListAdapter;
     private int keyboardHeight;
 
     public ExpressionPanel(@NonNull Context context) {
@@ -53,13 +68,52 @@ public class ExpressionPanel extends LinearLayout {
             keyboardHeight = DensityUtil.dp2px(mContext, 247);
             AppConfig.saveKeyboardHeight(keyboardHeight);
         }
-        LayoutParams layoutParams = (LayoutParams) getLayoutParams();
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutParams.height = keyboardHeight + DensityUtil.dp2px(mContext, 36);
         setLayoutParams(layoutParams);
     }
 
     private void init() {
-        setBackgroundColor(ContextCompat.getColor(mContext, R.color.c_0072ff));
+        setOrientation(VERTICAL);
+        initData();
+        initRecyclerView();
+    }
+
+    private void initData() {
+        mExpressionTypeList = new ArrayList<>();
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+    }
+
+    private void initRecyclerView() {
+        mExpressionTypeListAdapter = new ExpressionTypeListAdapter(R.layout.item_expression_type, mExpressionTypeList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mExpressionTypeListAdapter);
+    }
+
+    @OnClick(R.id.btn_test)
+    void onTestBtnClick(View v) {
+        Toasty.normal(mContext, "test", Toasty.LENGTH_SHORT).show();;
     }
 }

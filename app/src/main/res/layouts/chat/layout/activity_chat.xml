@@ -1,33 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/c_33cbcbcb"
+    android:clipChildren="false"
     android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:id="@+id/layout_body"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:clipChildren="false"
         android:orientation="vertical"
-        android:layout_marginTop="36dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/c_top_bar">
 
-        <com.freddy.kulachat.view.chat.ChatRecyclerView
-            android:id="@+id/recycler_view"
+        <LinearLayout
+            android:id="@+id/layout_body"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.freddy.kulachat.view.chat.ChatInputPanel
-            android:id="@+id/chat_input_panel"
+            <com.freddy.kulachat.view.chat.ChatRecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/c_333333" />
+
+            <com.freddy.kulachat.view.chat.ChatInputPanel
+                android:id="@+id/chat_input_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <com.freddy.kulachat.view.chat.ExpressionPanel
+            android:id="@+id/expression_panel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/c_0072ff"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <com.freddy.kulachat.widget.CTopBar
         style="@style/style_topBar"
         app:ctb_title_text="聊天页"
         tools:ignore="MissingConstraints" />
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
