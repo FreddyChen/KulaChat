@@ -50,7 +50,7 @@ public class ChatInputPanel extends LinearLayout {
     private PanelType panelType = PanelType.NONE;
     private PanelType lastPanelType = panelType;
     private boolean isKeyboardOpened;
-    private final float KEYBOARD_HEIGHT = AppConfig.readKeyboardHeight() * 1.0f;
+    private int keyboardHeight;
 
     private boolean isActive = false;
 
@@ -79,6 +79,7 @@ public class ChatInputPanel extends LinearLayout {
 
     @SuppressLint("ClickableViewAccessibility")
     private void init() {
+        keyboardHeight = AppConfig.readKeyboardHeight();
         setOrientation(VERTICAL);
         mContentEditText.setInputType(InputType.TYPE_NULL);
         mContentEditText.setOnTouchListener((v, event) -> {
@@ -149,28 +150,28 @@ public class ChatInputPanel extends LinearLayout {
             case INPUT_MOTHOD:
                 switch (lastPanelType) {
                     case EXPRESSION:
-                        fromValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(36);
-                        toValue = -KEYBOARD_HEIGHT;
+                        fromValue = -keyboardHeight - DensityUtil.dp2px(36);
+                        toValue = -keyboardHeight;
                         break;
                     case MORE:
                         break;
                     case NONE:
                         fromValue = 0.0f;
-                        toValue = -KEYBOARD_HEIGHT;
+                        toValue = -keyboardHeight;
                         break;
                 }
                 break;
             case EXPRESSION:
                 switch (lastPanelType) {
                     case INPUT_MOTHOD:
-                        fromValue = -KEYBOARD_HEIGHT;
-                        toValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(36);
+                        fromValue = -keyboardHeight;
+                        toValue = -keyboardHeight - DensityUtil.dp2px(36);
                         break;
                     case MORE:
                         break;
                     case NONE:
                         fromValue = 0.0f;
-                        toValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(36);
+                        toValue = -keyboardHeight - DensityUtil.dp2px(36);
                         break;
                 }
                 break;
@@ -187,11 +188,11 @@ public class ChatInputPanel extends LinearLayout {
             case NONE:
                 switch (lastPanelType) {
                     case INPUT_MOTHOD:
-                        fromValue = -KEYBOARD_HEIGHT;
+                        fromValue = -keyboardHeight;
                         toValue = 0.0f;
                         break;
                     case EXPRESSION:
-                        fromValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(36);
+                        fromValue = -keyboardHeight - DensityUtil.dp2px(36);
                         toValue = 0.0f;
                         break;
                     case MORE:
@@ -262,6 +263,10 @@ public class ChatInputPanel extends LinearLayout {
             UIUtil.hideSoftInput(mContext, mContentEditText);
             handleAnimator(PanelType.NONE);
         }
+    }
+
+    public void setKeyboardHeight(int keyboardHeight) {
+        this.keyboardHeight = keyboardHeight;
     }
 
     private OnChatPanelStateListener mOnChatPanelStateListener;

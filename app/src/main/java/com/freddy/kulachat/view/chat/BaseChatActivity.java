@@ -141,7 +141,8 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
         mKeyboardStatePopupWindow.setOnKeyboardStateListener(new KeyboardStatePopupWindow.OnKeyboardStateListener() {
 
             @Override
-            public void onOpened() {
+            public void onOpened(int keyboardHeight) {
+                mInputPanel.setKeyboardHeight(keyboardHeight);
                 mInputPanel.onSoftKeyboardOpened();
             }
 

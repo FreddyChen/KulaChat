@@ -11,6 +11,7 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import com.freddy.kulachat.config.AppConfig;
 import com.freddy.kulachat.utils.DensityUtil;
 
 /**
@@ -56,7 +57,8 @@ public class KeyboardStatePopupWindow extends PopupWindow implements ViewTreeObs
         if (!isSoftKeyboardOpened && visible) {
             isSoftKeyboardOpened = true;
             if(mOnKeyboardStateListener != null) {
-                mOnKeyboardStateListener.onOpened();
+                mOnKeyboardStateListener.onOpened(keyboardHeight);
+                AppConfig.saveKeyboardHeight(keyboardHeight);
             }
         } else if (isSoftKeyboardOpened && !visible) {
             isSoftKeyboardOpened = false;
@@ -76,7 +78,7 @@ public class KeyboardStatePopupWindow extends PopupWindow implements ViewTreeObs
         this.mOnKeyboardStateListener = listener;
     }
     public interface OnKeyboardStateListener {
-        void onOpened();
+        void onOpened(int keyboardHeight);
         void onClosed();
     }
 }

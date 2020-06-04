@@ -65,14 +65,9 @@ public class ExpressionPanel extends LinearLayout {
     @Override
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
-        int keyboardHeight = AppConfig.readKeyboardHeight();
-        if (keyboardHeight == 0) {
-            keyboardHeight = DensityUtil.getScreenHeight() / 2;
-            AppConfig.saveKeyboardHeight(keyboardHeight);
-        }
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        layoutParams.height = keyboardHeight + DensityUtil.dp2px(36);
+        layoutParams.height = AppConfig.readKeyboardHeight() + DensityUtil.dp2px(36);
         setLayoutParams(layoutParams);
     }
 

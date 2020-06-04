@@ -1,5 +1,6 @@
 package com.freddy.kulachat.config;
 
+import com.freddy.kulachat.utils.DensityUtil;
 import com.freddy.kulachat.utils.preferences.PreferenceConfig;
 import com.freddy.kulachat.utils.preferences.PreferencesHelper;
 
@@ -25,7 +26,7 @@ public class AppConfig {
         return PreferencesHelper.readInt(
                 PreferenceConfig.PREFERENCE_COMMON,
                 PreferenceConfig.KEYBOARD_HEIGHT,
-                0
+                DensityUtil.getScreenHeight() / 5 * 2 + DensityUtil.dp2px(30)
         );
     }
 }
