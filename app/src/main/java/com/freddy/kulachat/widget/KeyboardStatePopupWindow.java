@@ -49,7 +49,7 @@ public class KeyboardStatePopupWindow extends PopupWindow implements ViewTreeObs
         if (rect.bottom > maxHeight) {
             maxHeight = rect.bottom;
         }
-        int screenHeight = DensityUtil.getScreenHeight(mContext);
+        int screenHeight = DensityUtil.getScreenHeight();
         //键盘的高度
         int keyboardHeight = maxHeight - rect.bottom;
         boolean visible = keyboardHeight > screenHeight / 4;

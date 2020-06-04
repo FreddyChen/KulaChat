@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.freddy.kulachat.widget.CTextButton
+        android:id="@+id/btn_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:paddingStart="10dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp"
+        android:text="发送"
+        android:textSize="12sp"
+        app:bl_enabled_solid_color="@color/c_common_btn_normal_color"
+        app:bl_pressed_solid_color="@color/c_common_btn_pressed_color"
+        app:bl_unEnabled_solid_color="@color/c_ededed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:bl_corners_radius="4dp"
+        app:normal_text_color="@color/c_000000"
+        app:pressed_text_color="@color/c_333333"
+        app:disabled_text_color="@color/c_999999"/>
+
+    <com.freddy.kulachat.widget.CTextButton
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:paddingStart="10dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp"
+        android:text="删除"
+        android:textSize="12sp"
+        app:bl_corners_radius="4dp"
+        app:bl_enabled_solid_color="@color/c_eb0003"
+        app:bl_pressed_solid_color="@color/c_fc4f51"
+        app:bl_unEnabled_solid_color="@color/c_ededed"
+        app:layout_constraintRight_toLeftOf="@id/btn_send"
+        app:layout_constraintTop_toTopOf="@id/btn_send"
+        app:normal_text_color="@color/c_ffffff"
+        app:pressed_text_color="@color/c_ededed"
+        app:disabled_text_color="@color/c_999999"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

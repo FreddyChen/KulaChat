@@ -5,6 +5,7 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.inputmethod.EditorInfo;
@@ -46,7 +47,8 @@ public class ChatEditText extends AppCompatEditText {
     private void init() {
         setImeOptions(EditorInfo.IME_ACTION_SEND);
         resetInputType();
-        setPadding(DensityUtil.dp2px(mContext, 8), DensityUtil.dp2px(mContext, 6), DensityUtil.dp2px(mContext, 8), DensityUtil.dp2px(mContext, 6));
+        setGravity(Gravity.CENTER_VERTICAL);
+        setPadding(DensityUtil.dp2px(14), DensityUtil.dp2px(8), DensityUtil.dp2px(14), DensityUtil.dp2px(8));
         setTextColor(ContextCompat.getColor(mContext, R.color.c_000000));
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         setHorizontallyScrolling(false);

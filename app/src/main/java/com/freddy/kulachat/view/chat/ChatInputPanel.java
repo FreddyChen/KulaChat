@@ -114,16 +114,16 @@ public class ChatInputPanel extends LinearLayout {
                 if (lastPanelType == PanelType.EXPRESSION) {
                     mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_expression_normal);
                     mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
-                    handleAnimator(PanelType.INPUT_MOTHOD);
                     UIUtil.requestFocus(mContentEditText);
                     UIUtil.showSoftInput(mContext, mContentEditText);
+                    handleAnimator(PanelType.INPUT_MOTHOD);
                     mContentEditText.resetInputType();
                 } else {
                     mExpressionBtn.setNormalImageResId(R.drawable.ic_chat_keyboard_normal);
                     mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_keyboard_pressed);
-                    handleAnimator(PanelType.EXPRESSION);
                     UIUtil.loseFocus(mContentEditText);
                     UIUtil.hideSoftInput(mContext, mContentEditText);
+                    handleAnimator(PanelType.EXPRESSION);
                     if (mOnChatPanelStateListener != null) {
                         mOnChatPanelStateListener.onShowExpressionPanel();
                     }
@@ -149,7 +149,7 @@ public class ChatInputPanel extends LinearLayout {
             case INPUT_MOTHOD:
                 switch (lastPanelType) {
                     case EXPRESSION:
-                        fromValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(mContext, 36);
+                        fromValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(36);
                         toValue = -KEYBOARD_HEIGHT;
                         break;
                     case MORE:
@@ -164,13 +164,13 @@ public class ChatInputPanel extends LinearLayout {
                 switch (lastPanelType) {
                     case INPUT_MOTHOD:
                         fromValue = -KEYBOARD_HEIGHT;
-                        toValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(mContext, 36);
+                        toValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(36);
                         break;
                     case MORE:
                         break;
                     case NONE:
                         fromValue = 0.0f;
-                        toValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(mContext, 36);
+                        toValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(36);
                         break;
                 }
                 break;
@@ -191,7 +191,7 @@ public class ChatInputPanel extends LinearLayout {
                         toValue = 0.0f;
                         break;
                     case EXPRESSION:
-                        fromValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(mContext, 36);
+                        fromValue = -KEYBOARD_HEIGHT - DensityUtil.dp2px(36);
                         toValue = 0.0f;
                         break;
                     case MORE:
@@ -257,6 +257,11 @@ public class ChatInputPanel extends LinearLayout {
     public void onSoftKeyboardClosed() {
         isKeyboardOpened = false;
         mContentEditText.setInputType(InputType.TYPE_NULL);
+        if(lastPanelType == PanelType.INPUT_MOTHOD) {
+            UIUtil.loseFocus(mContentEditText);
+            UIUtil.hideSoftInput(mContext, mContentEditText);
+            handleAnimator(PanelType.NONE);
+        }
     }
 
     private OnChatPanelStateListener mOnChatPanelStateListener;

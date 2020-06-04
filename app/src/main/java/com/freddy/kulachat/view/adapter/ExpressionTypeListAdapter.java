@@ -26,6 +26,6 @@ public class ExpressionTypeListAdapter extends BaseQuickAdapter<ExpressionType, 
 
     @Override
     protected void convert(@NotNull BaseViewHolder viewHolder, ExpressionType expressionType) {
-        viewHolder.setImageResource(R.id.iv_expression_icon, expressionType.getTypeResId());
+        viewHolder.setImageResource(R.id.iv_expression_icon, expressionType.getResId());
     }
 }

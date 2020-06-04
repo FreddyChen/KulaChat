@@ -142,10 +142,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         isAnimatorDisplayed = isShow;
         float logoFromScaleXValue = isShow ? 1.0f : 0.65f;
         float logoToScaleYValue = isShow ? 0.65f : 1.0f;
-        float logoFromTranslationYValue = isShow ? 0.0f : -DensityUtil.dp2px(getApplicationContext(), 48);
-        float logoToTranslationYValue = isShow ? -DensityUtil.dp2px(getApplicationContext(), 48) : 0.0f;
-        float bodyLayoutFromTranslationYValue = isShow ? 0.0f : -DensityUtil.dp2px(getApplicationContext(), 96);
-        float bodyLayoutToTranslationYValue = isShow ? -DensityUtil.dp2px(getApplicationContext(), 96) : 0.0f;
+        float logoFromTranslationYValue = isShow ? 0.0f : -DensityUtil.dp2px(64);
+        float logoToTranslationYValue = isShow ? -DensityUtil.dp2px(64) : 0.0f;
+        float bodyLayoutFromTranslationYValue = isShow ? 0.0f : -DensityUtil.dp2px(118);
+        float bodyLayoutToTranslationYValue = isShow ? -DensityUtil.dp2px(118) : 0.0f;
         ObjectAnimator logoScaleXAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_SCALE_X, logoFromScaleXValue, logoToScaleYValue);
         ObjectAnimator logoScaleYAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_SCALE_Y, logoFromScaleXValue, logoToScaleYValue);
         ObjectAnimator logoTranslationYAnimator = ObjectAnimator.ofFloat(mLogoImageView, CConfig.ANIMATOR_TRANSLATION_Y, logoFromTranslationYValue, logoToTranslationYValue);

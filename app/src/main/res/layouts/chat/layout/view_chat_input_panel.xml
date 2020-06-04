@@ -19,8 +19,8 @@
 
         <com.freddy.kulachat.widget.CImageButton
             android:id="@+id/btn_voice"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginEnd="4dp"
             android:visibility="gone"
             app:normal_image_res_id="@drawable/ic_chat_voice_normal"
@@ -28,8 +28,8 @@
 
         <com.freddy.kulachat.widget.CImageButton
             android:id="@+id/btn_keyboard"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginEnd="4dp"
             android:visibility="gone"
             app:normal_image_res_id="@drawable/ic_chat_keyboard_normal"
@@ -48,16 +48,16 @@
 
         <com.freddy.kulachat.widget.CImageButton
             android:id="@+id/btn_expression"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginStart="4dp"
             app:normal_image_res_id="@drawable/ic_chat_expression_normal"
             app:pressed_image_res_id="@drawable/ic_chat_expression_pressed" />
 
         <com.freddy.kulachat.widget.CImageButton
             android:id="@+id/btn_more"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginStart="4dp"
             android:visibility="gone"
             app:normal_image_res_id="@drawable/ic_chat_more_normal"

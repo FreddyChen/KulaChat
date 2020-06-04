@@ -46,8 +46,8 @@ public class ChatRecyclerView extends RecyclerView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         setLayoutManager(layoutManager);
         Map<String, Integer> decorationMap = new HashMap<>(1);
-        decorationMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DensityUtil.dp2px(mContext, 6));
-        decorationMap.put(RecyclerViewSpacesItemDecoration.TOP_DECORATION, DensityUtil.dp2px(mContext, 6));
+        decorationMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DensityUtil.dp2px(6));
+        decorationMap.put(RecyclerViewSpacesItemDecoration.TOP_DECORATION, DensityUtil.dp2px(6));
         addItemDecoration(new RecyclerViewSpacesItemDecoration(decorationMap));
 
         addOnScrollListener(new OnScrollListener() {

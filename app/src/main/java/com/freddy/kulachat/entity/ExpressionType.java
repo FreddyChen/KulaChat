@@ -12,20 +12,20 @@ import java.util.List;
  */
 public class ExpressionType {
 
-    private int typeResId;
+    private int resId;
     private List<Expression> expressionList;
 
-    public ExpressionType(int typeResId, List<Expression> expressionList) {
-        this.typeResId = typeResId;
+    public ExpressionType(int resId, List<Expression> expressionList) {
+        this.resId = resId;
         this.expressionList = expressionList;
     }
 
-    public int getTypeResId() {
-        return typeResId;
+    public int getResId() {
+        return resId;
     }
 
-    public void setTypeResId(int typeResId) {
-        this.typeResId = typeResId;
+    public void setResId(int resId) {
+        this.resId = resId;
     }
 
     public List<Expression> getExpressionList() {
@@ -34,5 +34,13 @@ public class ExpressionType {
 
     public void setExpressionList(List<Expression> expressionList) {
         this.expressionList = expressionList;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpressionType{" +
+                "typeResId=" + resId +
+                ", expressionList=" + expressionList +
+                '}';
     }
 }

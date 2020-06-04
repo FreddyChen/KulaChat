@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.freddy.kulachat.R;
@@ -103,8 +102,8 @@ public class CTopBar extends ConstraintLayout {
 
         addView(mBackBtn);
 
-        mConstraintSet.constrainWidth(R.id.ctb_btn_back, DensityUtil.dp2px(mContext, 54));
-        mConstraintSet.constrainHeight(R.id.ctb_btn_back, DensityUtil.dp2px(mContext, 36));
+        mConstraintSet.constrainWidth(R.id.ctb_btn_back, DensityUtil.dp2px(54));
+        mConstraintSet.constrainHeight(R.id.ctb_btn_back, DensityUtil.dp2px(36));
         mConstraintSet.centerVertically(R.id.ctb_btn_back, ConstraintSet.PARENT_ID);
     }
 
@@ -144,12 +143,12 @@ public class CTopBar extends ConstraintLayout {
         menuBtn.setOnClickListener(listener);
         addView(menuBtn);
 
-        mConstraintSet.constrainWidth(menuId, DensityUtil.dp2px(mContext, 42));
-        mConstraintSet.constrainHeight(menuId, DensityUtil.dp2px(mContext, 42));
+        mConstraintSet.constrainWidth(menuId, DensityUtil.dp2px(42));
+        mConstraintSet.constrainHeight(menuId, DensityUtil.dp2px(42));
         if (mMenuArray.size() == 0) {
-            mConstraintSet.connect(menuId, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, DensityUtil.dp2px(mContext, 8));
+            mConstraintSet.connect(menuId, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, DensityUtil.dp2px(8));
         } else {
-            mConstraintSet.connect(menuId, ConstraintSet.RIGHT, mMenuArray.valueAt(mMenuArray.size() - 1).getId(), ConstraintSet.LEFT, DensityUtil.dp2px(mContext, 8));
+            mConstraintSet.connect(menuId, ConstraintSet.RIGHT, mMenuArray.valueAt(mMenuArray.size() - 1).getId(), ConstraintSet.LEFT, DensityUtil.dp2px(8));
         }
         mConstraintSet.centerVertically(menuId, ConstraintSet.PARENT_ID);
         mConstraintSet.applyTo(this);

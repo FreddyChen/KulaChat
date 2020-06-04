@@ -1,7 +1,6 @@
 package com.freddy.kulachat.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
@@ -15,15 +14,16 @@ import android.util.TypedValue;
  */
 public class DensityUtil {
 
+    public static DisplayMetrics metrics;
+
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      *
      * @param dpValue
      * @return
      */
-    public static int dp2px(Context context, float dpValue) {
-        final float density = getDensity(context);
-        return Math.round(dpValue * density);
+    public static int dp2px(float dpValue) {
+        return Math.round(dpValue * metrics.density);
     }
 
     /**
@@ -32,9 +32,8 @@ public class DensityUtil {
      * @param pxValue
      * @return
      */
-    public static int px2dp(Context context, float pxValue) {
-        final float density = getDensity(context);
-        return Math.round(pxValue / density);
+    public static int px2dp(float pxValue) {
+        return Math.round(pxValue / metrics.density);
     }
 
     /**
@@ -60,26 +59,25 @@ public class DensityUtil {
 
     /**
      * 获取屏幕宽度
+     * @return
      */
-    public static int getScreenWidth(Context context) {
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        return dm.widthPixels;
+    public static int getScreenWidth() {
+        return metrics.widthPixels;
     }
 
     /**
      * 获取屏幕高度
+     * @return
      */
-    public static int getScreenHeight(Context context) {
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        return dm.heightPixels;
+    public static int getScreenHeight() {
+        return metrics.heightPixels;
     }
 
     /**
      * 获取像素密度
      * @return
      */
-    public static float getDensity(Context context) {
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        return dm.density;
+    public static float getDensity() {
+        return metrics.density;
     }
 }

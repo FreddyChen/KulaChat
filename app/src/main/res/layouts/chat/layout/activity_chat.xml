@@ -5,7 +5,6 @@
     android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -14,8 +13,7 @@
         android:clipChildren="false"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/c_top_bar"
-        tools:ignore="UnknownId">
+        app:layout_constraintTop_toBottomOf="@id/c_top_bar">
 
         <LinearLayout
             android:id="@+id/layout_body"

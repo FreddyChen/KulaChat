@@ -10,7 +10,10 @@ import android.widget.LinearLayout;
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.config.AppConfig;
 import com.freddy.kulachat.entity.ExpressionType;
+import com.freddy.kulachat.manager.ExpressionManager;
 import com.freddy.kulachat.utils.DensityUtil;
+import com.freddy.kulachat.view.BaseActivity;
+import com.freddy.kulachat.view.adapter.ExpressionPagerListAdapter;
 import com.freddy.kulachat.view.adapter.ExpressionTypeListAdapter;
 
 import java.util.ArrayList;
@@ -20,11 +23,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
-import es.dmoral.toasty.Toasty;
 
 /**
  * @author FreddyChen
@@ -40,9 +42,9 @@ public class ExpressionPanel extends LinearLayout {
     private Unbinder unbinder;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.view_pager)
+    ViewPager2 mViewPager;
     private List<ExpressionType> mExpressionTypeList;
-    private ExpressionTypeListAdapter mExpressionTypeListAdapter;
-    private int keyboardHeight;
 
     public ExpressionPanel(@NonNull Context context) {
         this(context, null);
@@ -63,14 +65,14 @@ public class ExpressionPanel extends LinearLayout {
     @Override
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
-        keyboardHeight = AppConfig.readKeyboardHeight();
-        if(keyboardHeight == 0) {
-            keyboardHeight = DensityUtil.dp2px(mContext, 247);
+        int keyboardHeight = AppConfig.readKeyboardHeight();
+        if (keyboardHeight == 0) {
+            keyboardHeight = DensityUtil.getScreenHeight() / 2;
             AppConfig.saveKeyboardHeight(keyboardHeight);
         }
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        layoutParams.height = keyboardHeight + DensityUtil.dp2px(mContext, 36);
+        layoutParams.height = keyboardHeight + DensityUtil.dp2px(36);
         setLayoutParams(layoutParams);
     }
 
@@ -78,22 +80,32 @@ public class ExpressionPanel extends LinearLayout {
         setOrientation(VERTICAL);
         initData();
         initRecyclerView();
+        initViewPager();
     }
 
     private void initData() {
         mExpressionTypeList = new ArrayList<>();
-        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_emoji, null));
+        mExpressionTypeList.add(new ExpressionType(R.drawable.ic_expression_panel_tab_normal, ExpressionManager.getInstance().getNormalExpressionList()));
     }
 
     private void initRecyclerView() {
-        mExpressionTypeListAdapter = new ExpressionTypeListAdapter(R.layout.item_expression_type, mExpressionTypeList);
+        ExpressionTypeListAdapter expressionTypeListAdapter = new ExpressionTypeListAdapter(R.layout.item_expression_type, mExpressionTypeList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mExpressionTypeListAdapter);
+        mRecyclerView.setAdapter(expressionTypeListAdapter);
+        expressionTypeListAdapter.setOnItemClickListener((adapter, view, position) -> {
+            mViewPager.setCurrentItem(position);
+        });
+    }
+
+    private void initViewPager() {
+        ExpressionPagerListAdapter expressionPagerListAdapter = new ExpressionPagerListAdapter((BaseActivity) mContext, mExpressionTypeList);
+        mViewPager.setAdapter(expressionPagerListAdapter);
+        mViewPager.setUserInputEnabled(true);
     }
 
     public void release() {
-        if(unbinder != null) {
+        if (unbinder != null) {
             unbinder.unbind();
             unbinder = null;
         }

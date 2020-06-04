@@ -44,7 +44,7 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
     public void onGlobalLayout() {
         final Rect r = new Rect();
         activityRootView.getWindowVisibleDisplayFrame(r);
-        int screenHeight = DensityUtil.getScreenHeight(activityRootView.getContext());
+        int screenHeight = DensityUtil.getScreenHeight();
         int heightDifference = screenHeight - r.bottom;
         boolean visible = heightDifference > screenHeight / 4;
         if (!isSoftKeyboardOpened && visible) {
