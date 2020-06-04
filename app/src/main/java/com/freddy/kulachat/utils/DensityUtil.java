@@ -1,8 +1,13 @@
 package com.freddy.kulachat.utils;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.WindowManager;
+
+import com.freddy.kulachat.KulaApp;
 
 /**
  * @author FreddyChen
@@ -14,7 +19,7 @@ import android.util.TypedValue;
  */
 public class DensityUtil {
 
-    public static DisplayMetrics metrics;
+//    public static DisplayMetrics metrics;
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
@@ -23,7 +28,7 @@ public class DensityUtil {
      * @return
      */
     public static int dp2px(float dpValue) {
-        return Math.round(dpValue * metrics.density);
+        return Math.round(dpValue * getDisplayMetrics().density);
     }
 
     /**
@@ -33,7 +38,7 @@ public class DensityUtil {
      * @return
      */
     public static int px2dp(float pxValue) {
-        return Math.round(pxValue / metrics.density);
+        return Math.round(pxValue / getDisplayMetrics().density);
     }
 
     /**
@@ -42,9 +47,9 @@ public class DensityUtil {
      * @param spVal
      * @return
      */
-    public static int sp2px(Context context, float spVal) {
+    public static int sp2px(float spVal) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                spVal, context.getResources().getDisplayMetrics()));
+                spVal, KulaApp.getInstance().getResources().getDisplayMetrics()));
     }
 
     /**
@@ -53,8 +58,16 @@ public class DensityUtil {
      * @param pxVal
      * @return
      */
-    public static float px2sp(Context context, float pxVal) {
-        return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
+    public static float px2sp(float pxVal) {
+        return (pxVal / getDisplayMetrics().scaledDensity);
+    }
+
+    private static DisplayMetrics getDisplayMetrics() {
+        WindowManager wm = (WindowManager) KulaApp.getInstance().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        return metrics;
     }
 
     /**
@@ -62,7 +75,7 @@ public class DensityUtil {
      * @return
      */
     public static int getScreenWidth() {
-        return metrics.widthPixels;
+        return getDisplayMetrics().widthPixels;
     }
 
     /**
@@ -70,7 +83,7 @@ public class DensityUtil {
      * @return
      */
     public static int getScreenHeight() {
-        return metrics.heightPixels;
+        return getDisplayMetrics().heightPixels;
     }
 
     /**
@@ -78,6 +91,6 @@ public class DensityUtil {
      * @return
      */
     public static float getDensity() {
-        return metrics.density;
+        return getDisplayMetrics().density;
     }
 }

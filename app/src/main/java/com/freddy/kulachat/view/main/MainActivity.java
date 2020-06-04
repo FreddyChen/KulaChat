@@ -16,9 +16,9 @@ public class MainActivity extends BaseActivity<NullablePresenter> {
             finish();
             return;
         }
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-        DensityUtil.metrics = metrics;
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+//        DensityUtil.metrics = metrics;
 
         startActivity(SplashActivity.class);
         finish();

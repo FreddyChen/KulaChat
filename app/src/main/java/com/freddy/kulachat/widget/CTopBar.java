@@ -66,7 +66,7 @@ public class CTopBar extends ConstraintLayout {
             backBtnVisibility = array.getInt(R.styleable.CTopBar_ctb_btn_back_visibility, VISIBLE);
             titleText = array.getString(R.styleable.CTopBar_ctb_title_text);
             titleTextColor = array.getColor(R.styleable.CTopBar_ctb_title_text_color, ContextCompat.getColor(context, R.color.c_000000));
-            titleTextSize = array.getDimensionPixelSize(R.styleable.CTopBar_ctb_title_text_size, DensityUtil.sp2px(mContext, 16));
+            titleTextSize = array.getDimensionPixelSize(R.styleable.CTopBar_ctb_title_text_size, DensityUtil.sp2px(18));
             array.recycle();
         }
 

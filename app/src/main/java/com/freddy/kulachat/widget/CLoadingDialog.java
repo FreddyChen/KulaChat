@@ -125,7 +125,7 @@ public class CLoadingDialog extends DialogFragment {
             cancelable = true;
             canceledOnTouchOutside = false;
             textColor = ContextCompat.getColor(KulaApp.getInstance(), R.color.c_ffffff);
-            textSize = DensityUtil.sp2px(KulaApp.getInstance(), 14);
+            textSize = DensityUtil.sp2px(14);
         }
 
         public Builder setTitle(String title) {
