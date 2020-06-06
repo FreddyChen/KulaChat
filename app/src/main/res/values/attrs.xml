@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CTextButton">
-        <attr name="normal_text_color" format="color|reference" />
-        <attr name="pressed_text_color" format="color|reference" />
-        <attr name="disabled_text_color" format="color|reference" />
+        <attr name="ctb_normal_text_color" format="color|reference" />
+        <attr name="ctb_pressed_text_color" format="color|reference" />
+        <attr name="ctb_disabled_text_color" format="color|reference" />
     </declare-styleable>
 
     <declare-styleable name="CImageButton">
-        <attr name="normal_image_res_id" format="reference" />
-        <attr name="pressed_image_res_id" format="reference" />
-        <attr name="disabled_image_res_id" format="reference" />
+        <attr name="cib_normal_image_res_id" format="reference" />
+        <attr name="cib_pressed_image_res_id" format="reference" />
+        <attr name="cib_disabled_image_res_id" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="CTopBar">

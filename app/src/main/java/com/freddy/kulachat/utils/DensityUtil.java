@@ -19,8 +19,6 @@ import com.freddy.kulachat.KulaApp;
  */
 public class DensityUtil {
 
-//    public static DisplayMetrics metrics;
-
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      *

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.freddy.kulachat.utils.UIUtil;
 import com.freddy.kulachat.widget.CImageButton;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -80,7 +83,10 @@ public class ChatInputPanel extends LinearLayout {
     @SuppressLint("ClickableViewAccessibility")
     private void init() {
         keyboardHeight = AppConfig.readKeyboardHeight();
-        setOrientation(VERTICAL);
+        setOrientation(HORIZONTAL);
+        setPadding(DensityUtil.dp2px(10), DensityUtil.dp2px(6), DensityUtil.dp2px(10), DensityUtil.dp2px(6));
+        setGravity(Gravity.BOTTOM);
+        setBackgroundColor(ContextCompat.getColor(mContext, R.color.c_77cbcbcb));
         mContentEditText.setInputType(InputType.TYPE_NULL);
         mContentEditText.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -92,7 +98,7 @@ public class ChatInputPanel extends LinearLayout {
                     mExpressionBtn.setPressedImageResId(R.drawable.ic_chat_expression_pressed);
                     handleAnimator(PanelType.INPUT_MOTHOD);
                     if (mOnChatPanelStateListener != null) {
-                        mOnChatPanelStateListener.onShowInputMethod();
+                        mOnChatPanelStateListener.onShowInputMethodPanel();
                     }
                 }
                 return true;
@@ -276,7 +282,7 @@ public class ChatInputPanel extends LinearLayout {
     }
 
     public interface OnChatPanelStateListener {
-        void onShowInputMethod();
+        void onShowInputMethodPanel();
         void onShowExpressionPanel();
     }
 }

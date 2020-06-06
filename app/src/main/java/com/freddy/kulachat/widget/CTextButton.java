@@ -37,9 +37,9 @@ public class CTextButton extends AppCompatTextView {
         super(context, attrs, defStyleAttr);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CTextButton, defStyleAttr, 0);
         if (array != null) {
-            normalTextColor = array.getColor(R.styleable.CTextButton_normal_text_color, ContextCompat.getColor(context, R.color.c_333333));
-            pressedTextColor = array.getColor(R.styleable.CTextButton_pressed_text_color, ContextCompat.getColor(context, R.color.c_666666));
-            disabledTextColor = array.getColor(R.styleable.CTextButton_disabled_text_color, ContextCompat.getColor(context, R.color.c_999999));
+            normalTextColor = array.getColor(R.styleable.CTextButton_ctb_normal_text_color, ContextCompat.getColor(context, R.color.c_333333));
+            pressedTextColor = array.getColor(R.styleable.CTextButton_ctb_pressed_text_color, ContextCompat.getColor(context, R.color.c_666666));
+            disabledTextColor = array.getColor(R.styleable.CTextButton_ctb_disabled_text_color, ContextCompat.getColor(context, R.color.c_999999));
 
             array.recycle();
         }

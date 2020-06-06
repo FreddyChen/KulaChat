@@ -9,6 +9,7 @@ import android.view.View;
 import com.freddy.kulachat.R;
 
 import androidx.annotation.DrawableRes;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 
 /**
@@ -19,7 +20,7 @@ import androidx.appcompat.widget.AppCompatImageView;
  * @github https://github.com/FreddyChen
  * @desc
  */
-public class CImageButton extends AppCompatImageView {
+public class CImageButton extends AppCompatImageButton {
 
     private int normalImageResId;
     private int pressedImageResId;
@@ -37,9 +38,9 @@ public class CImageButton extends AppCompatImageView {
         super(context, attrs, defStyleAttr);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CImageButton, defStyleAttr, 0);
         if (array != null) {
-            normalImageResId = array.getResourceId(R.styleable.CImageButton_normal_image_res_id, 0);
-            pressedImageResId = array.getResourceId(R.styleable.CImageButton_pressed_image_res_id, 0);
-            disabledImageResId = array.getResourceId(R.styleable.CImageButton_disabled_image_res_id, 0);
+            normalImageResId = array.getResourceId(R.styleable.CImageButton_cib_normal_image_res_id, 0);
+            pressedImageResId = array.getResourceId(R.styleable.CImageButton_cib_pressed_image_res_id, 0);
+            disabledImageResId = array.getResourceId(R.styleable.CImageButton_cib_disabled_image_res_id, 0);
 
             array.recycle();
         }

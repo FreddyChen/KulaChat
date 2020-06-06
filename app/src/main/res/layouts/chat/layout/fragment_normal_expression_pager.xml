@@ -27,9 +27,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:bl_corners_radius="4dp"
-        app:normal_text_color="@color/c_000000"
-        app:pressed_text_color="@color/c_333333"
-        app:disabled_text_color="@color/c_999999"/>
+        app:ctb_normal_text_color="@color/c_000000"
+        app:ctb_pressed_text_color="@color/c_333333"
+        app:ctb_disabled_text_color="@color/c_999999"/>
 
     <com.freddy.kulachat.widget.CTextButton
         android:id="@+id/btn_delete"
@@ -48,7 +48,7 @@
         app:bl_unEnabled_solid_color="@color/c_ededed"
         app:layout_constraintRight_toLeftOf="@id/btn_send"
         app:layout_constraintTop_toTopOf="@id/btn_send"
-        app:normal_text_color="@color/c_ffffff"
-        app:pressed_text_color="@color/c_ededed"
-        app:disabled_text_color="@color/c_999999"/>
+        app:ctb_normal_text_color="@color/c_ffffff"
+        app:ctb_pressed_text_color="@color/c_ededed"
+        app:ctb_disabled_text_color="@color/c_999999"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

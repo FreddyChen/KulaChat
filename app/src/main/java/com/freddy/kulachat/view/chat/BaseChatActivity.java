@@ -103,6 +103,7 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
         mRecyclerView.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 mInputPanel.reset();
+                mExpressionPanel.postDelayed(mExpressionPanelInvisibleRunnable, 250);
             }
             return false;
         });
@@ -127,7 +128,7 @@ public abstract class BaseChatActivity extends BaseActivity<ChatPresenter> imple
         mInputPanel.setOnChatPanelStateListener(new ChatInputPanel.OnChatPanelStateListener() {
 
             @Override
-            public void onShowInputMethod() {
+            public void onShowInputMethodPanel() {
                 mRecyclerView.scrollToBottom();
                 mExpressionPanel.postDelayed(mExpressionPanelInvisibleRunnable, 250);
             }

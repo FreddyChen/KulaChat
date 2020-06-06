@@ -53,17 +53,6 @@ public class ChatEditText extends AppCompatEditText {
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         setHorizontallyScrolling(false);
         setMaxLines(5);
-        setBackground(null);
-    }
-
-    @Override
-    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == MotionEvent.ACTION_UP) {
-            Log.d("ChatEditText", "键盘向下");
-            super.onKeyPreIme(keyCode, event);
-            return false;
-        }
-        return super.onKeyPreIme(keyCode, event);
     }
 
     public void resetInputType() {

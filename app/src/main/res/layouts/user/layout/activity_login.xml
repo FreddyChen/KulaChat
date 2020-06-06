@@ -87,9 +87,9 @@
                 android:padding="6dp"
                 android:text="获取验证码"
                 android:textSize="12sp"
-                app:disabled_text_color="@color/c_999999"
-                app:normal_text_color="@color/c_0072ff"
-                app:pressed_text_color="@color/c_5fa6fd" />
+                app:ctb_disabled_text_color="@color/c_999999"
+                app:ctb_normal_text_color="@color/c_0072ff"
+                app:ctb_pressed_text_color="@color/c_5fa6fd" />
         </LinearLayout>
 
         <com.freddy.kulachat.widget.CTextButton
@@ -106,7 +106,7 @@
             app:bl_corners_radius="28dp"
             app:bl_pressed_solid_color="@color/c_common_btn_pressed_color"
             app:bl_unPressed_solid_color="@color/c_common_btn_normal_color"
-            app:normal_text_color="@color/c_000000"
-            app:pressed_text_color="@color/c_333333" />
+            app:ctb_normal_text_color="@color/c_000000"
+            app:ctb_pressed_text_color="@color/c_333333" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
