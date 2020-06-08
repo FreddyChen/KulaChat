@@ -42,8 +42,6 @@ public class ChatInputPanel extends LinearLayout {
     private Context mContext;
     @BindView(R.id.btn_voice)
     CImageButton mVoiceBtn;
-    @BindView(R.id.btn_keyboard)
-    CImageButton mKeyboardBtn;
     @BindView(R.id.btn_expression)
     CImageButton mExpressionBtn;
     @BindView(R.id.btn_more)
@@ -108,13 +106,10 @@ public class ChatInputPanel extends LinearLayout {
         });
     }
 
-    @OnClick({R.id.btn_voice, R.id.btn_keyboard, R.id.btn_expression, R.id.btn_more})
+    @OnClick({R.id.btn_voice, R.id.btn_expression, R.id.btn_more})
     void onClickListeners(View v) {
         switch (v.getId()) {
             case R.id.btn_voice: {
-                break;
-            }
-            case R.id.btn_keyboard: {
                 break;
             }
             case R.id.btn_expression: {

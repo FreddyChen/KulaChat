@@ -4,13 +4,11 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.entity.Expression;
 import com.freddy.kulachat.presenter.NullablePresenter;
-import com.freddy.kulachat.utils.DensityUtil;
 import com.freddy.kulachat.view.BaseFragment;
 import com.freddy.kulachat.view.adapter.ExpressionListAdapter;
 
@@ -18,7 +16,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;

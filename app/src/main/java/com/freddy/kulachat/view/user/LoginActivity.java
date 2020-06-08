@@ -197,6 +197,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     protected void destroy() {
+        if(mSoftKeyboardStateHelper != null) {
+            mSoftKeyboardStateHelper.release();
+        }
         RxExecutorService.getInstance().dispose(mDisposable);
     }
 

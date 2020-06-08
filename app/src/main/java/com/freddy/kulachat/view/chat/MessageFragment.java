@@ -1,14 +1,7 @@
 package com.freddy.kulachat.view.chat;
 
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.entity.Conversation;
 import com.freddy.kulachat.presenter.NullablePresenter;
@@ -19,6 +12,8 @@ import com.freddy.kulachat.widget.ReboundRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 /**
@@ -70,12 +65,6 @@ public class MessageFragment extends BaseFragment<NullablePresenter> {
 
     @Override
     protected void setListeners() {
-        mConversationListAdapter.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                BaseChatActivity.startSingleChat(getActivity());
-            }
-        });
+        mConversationListAdapter.setOnItemClickListener((adapter, view, position) -> BaseChatActivity.startSingleChat(getActivity()));
     }
 }

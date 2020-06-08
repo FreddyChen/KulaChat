@@ -24,10 +24,7 @@ import com.freddy.kulachat.utils.DensityUtil;
  */
 public class KeyboardStatePopupWindow extends PopupWindow implements ViewTreeObserver.OnGlobalLayoutListener {
 
-    private Context mContext;
-
     public KeyboardStatePopupWindow(Context context, View anchorView) {
-        this.mContext = context;
         View contentView = new View(context);
         setContentView(contentView);
         setWidth(0);

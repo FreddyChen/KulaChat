@@ -15,15 +15,6 @@
         android:layout_marginEnd="4dp"
         android:visibility="gone" />
 
-    <com.freddy.kulachat.widget.CImageButton
-        android:id="@+id/btn_keyboard"
-        app:cib_normal_image_res_id="@drawable/ic_chat_keyboard_normal"
-        app:cib_pressed_image_res_id="@drawable/ic_chat_keyboard_pressed"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="4dp"
-        android:visibility="gone" />
-
     <com.freddy.kulachat.view.chat.ChatEditText
         android:id="@+id/et_content"
         app:bl_corners_radius="24dp"
