@@ -18,6 +18,7 @@ public class ExpressionManager {
 
     private static volatile ExpressionManager instance;
     private List<Expression> mNormalExpressionList;
+    private static final int NORMAL_COUNT_BY_ROW = 7;
 
     private ExpressionManager() {
         init();
@@ -130,6 +131,11 @@ public class ExpressionManager {
         mNormalExpressionList.add(new Expression(R.drawable.img_expression_87, "$ne#87^"));
         mNormalExpressionList.add(new Expression(R.drawable.img_expression_88, "$ne#88^"));
         mNormalExpressionList.add(new Expression(R.drawable.img_expression_89, "$ne#89^"));
+
+        int emptyCount = NORMAL_COUNT_BY_ROW + NORMAL_COUNT_BY_ROW - mNormalExpressionList.size() % NORMAL_COUNT_BY_ROW;
+        for(int i = 0; i < emptyCount; i++) {
+            mNormalExpressionList.add(new Expression(0, null));
+        }
     }
 
     public List<Expression> getNormalExpressionList() {
