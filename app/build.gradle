@@ -138,7 +138,7 @@ dependencies {
     implementation 'com.github.ihsanbal:LoggingInterceptor:3.1.0-rc5'
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     implementation 'com.github.GrenderG:Toasty:1.4.2'
-    implementation 'com.noober.background:core:1.6.3'
+    implementation 'com.noober.background:core:1.6.5'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.freddy:eventcenter_lib:1.0.1'

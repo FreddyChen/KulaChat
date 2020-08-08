@@ -23,6 +23,7 @@ import com.freddy.kulachat.presenter.chat.ChatPresenter;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.adapter.ChatMessageListAdapter;
 import com.freddy.kulachat.widget.KeyboardStatePopupWindow;
+import com.freddy.kulaims.config.IMSOptions;
 
 import java.util.ArrayList;
 import java.util.List;
