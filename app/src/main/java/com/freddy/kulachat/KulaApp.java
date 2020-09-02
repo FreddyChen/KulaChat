@@ -2,11 +2,17 @@ package com.freddy.kulachat;
 
 import android.app.Application;
 
-//import com.freddy.kulachat.di.component.ApplicationComponent;
-//import com.freddy.kulachat.di.component.DaggerApplicationComponent;
 import com.freddy.kulachat.di.component.ApplicationComponent;
 import com.freddy.kulachat.di.component.DaggerApplicationComponent;
 import com.freddy.kulachat.utils.CrashHandler;
+import com.freddy.kulaims.IMSKit;
+import com.freddy.kulaims.config.CommunicationProtocol;
+import com.freddy.kulaims.config.IMSOptions;
+import com.freddy.kulaims.config.TransportProtocol;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -42,6 +48,18 @@ public class KulaApp extends Application implements HasAndroidInjector {
         applicationComponent.inject(this);
         instance = this;
         CrashHandler.getInstance().init();
+        initIMS();
+    }
+
+    private void initIMS() {
+        List<String> serverList = new ArrayList<>();
+        serverList.add("192.168.0.93 8808");
+        IMSOptions options = new IMSOptions.Builder()
+                .setCommunicationProtocol(CommunicationProtocol.TCP)
+                .setTransportProtocol(TransportProtocol.Protobuf)
+                .setServerList(serverList)
+                .build();
+        IMSKit.getInstance().init(instance, options, null, null);
     }
 
     @Override

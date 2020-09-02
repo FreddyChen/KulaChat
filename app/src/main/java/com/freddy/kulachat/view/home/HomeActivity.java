@@ -11,6 +11,7 @@ import com.freddy.kulachat.contract.home.HomeContract;
 import com.freddy.kulachat.presenter.home.HomePresenter;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.adapter.HomeFragmentStateAdapter;
+import com.freddy.kulaims.IMSKit;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.viewpager2.widget.ViewPager2;
@@ -36,6 +37,8 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     @Override
     protected void setRootView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
+
+        IMSKit.getInstance().connect();
     }
 
     @Override

@@ -2,10 +2,8 @@ package com.freddy.kulachat.view.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 
 import com.freddy.kulachat.presenter.NullablePresenter;
-import com.freddy.kulachat.utils.DensityUtil;
 import com.freddy.kulachat.view.BaseActivity;
 
 public class MainActivity extends BaseActivity<NullablePresenter> {
