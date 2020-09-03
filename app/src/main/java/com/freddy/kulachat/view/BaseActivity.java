@@ -3,6 +3,8 @@ package com.freddy.kulachat.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.freddy.event.CEventCenter;
+import com.freddy.event.I_CEventListener;
 import com.freddy.kulachat.presenter.BasePresenter;
 import com.freddy.kulachat.widget.CLoadingDialog;
 import com.jaeger.library.StatusBarUtil;
@@ -26,7 +28,7 @@ import dagger.android.AndroidInjection;
  * @github https://github.com/FreddyChen
  * @desc
  */
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IBaseView {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IBaseView, I_CEventListener {
 
     @Inject
     public P presenter;
@@ -50,6 +52,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         unbinder = ButterKnife.bind(this);
         init();
         setListeners();
+
+        String[] events = getEvents();
+        if(events != null && events.length > 0) {
+            CEventCenter.registerEventListener(this, events);
+        }
     }
 
     @Override
@@ -96,6 +103,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             unbinder.unbind();
             unbinder = null;
         }
+
+        String[] events = getEvents();
+        if(events != null && events.length > 0) {
+            CEventCenter.unregisterEventListener(this, events);
+        }
+
         super.onDestroy();
         CActivityManager.getInstance().removeActivityFromStack(activity);
     }
@@ -158,6 +171,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     }
 
+    protected String[] getEvents() {
+        return null;
+    }
+
     protected void setStatusBarColor() {
         StatusBarUtil.setLightMode(this);
     }
@@ -204,5 +221,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         else if (val instanceof Serializable) {
             intent.putExtra(key, (Serializable) val);
         }
+    }
+
+    @Override
+    public void onCEvent(String topic, int msgCode, int resultCode, Object obj) {
+
     }
 }

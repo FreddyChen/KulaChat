@@ -5,13 +5,17 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.contract.home.HomeContract;
+import com.freddy.kulachat.event.Events;
+import com.freddy.kulachat.event.obj.IMSConnectStatusEventObj;
 import com.freddy.kulachat.presenter.home.HomePresenter;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.adapter.HomeFragmentStateAdapter;
 import com.freddy.kulaims.IMSKit;
+import com.freddy.kulaims.config.IMSConnectStatus;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.viewpager2.widget.ViewPager2;
@@ -37,7 +41,6 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     @Override
     protected void setRootView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
-
         IMSKit.getInstance().connect();
     }
 
@@ -75,7 +78,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
                     return true;
                 }
 
-                case R.id.menu_mine : {
+                case R.id.menu_mine: {
                     mViewPager.setCurrentItem(2, false);
                     return true;
                 }
@@ -88,9 +91,9 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     private void disableBottomNavigationMenuLongClick() {
         Menu menu = mBottomNavigation.getMenu();
         int menuCount = menu.size();
-        for(int i = 0; i < menuCount; i++) {
+        for (int i = 0; i < menuCount; i++) {
             View view = mBottomNavigation.findViewById(menu.getItem(i).getItemId());
-            if(view == null) {
+            if (view == null) {
                 continue;
             }
             view.setOnLongClickListener(v -> true);
@@ -103,15 +106,16 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     }
 
     private long firstClickTime = 0L;
+
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
             long secondClickTime = System.currentTimeMillis();
-            if(secondClickTime - firstClickTime > 2000) {
+            if (secondClickTime - firstClickTime > 2000) {
                 Toasty.warning(activity, "再按一次退出程序", Toasty.LENGTH_SHORT).show();
                 firstClickTime = secondClickTime;
                 return true;
-            }else {
+            } else {
                 finish();
             }
         }

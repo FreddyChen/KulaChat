@@ -4,10 +4,12 @@ import android.app.Application;
 
 import com.freddy.kulachat.di.component.ApplicationComponent;
 import com.freddy.kulachat.di.component.DaggerApplicationComponent;
+import com.freddy.kulachat.listener.OnIMSConnectStatusListener;
 import com.freddy.kulachat.utils.CrashHandler;
 import com.freddy.kulaims.IMSKit;
 import com.freddy.kulaims.config.CommunicationProtocol;
 import com.freddy.kulaims.config.IMSOptions;
+import com.freddy.kulaims.config.ImplementationMode;
 import com.freddy.kulaims.config.TransportProtocol;
 
 import java.util.ArrayList;
@@ -53,16 +55,17 @@ public class KulaApp extends Application implements HasAndroidInjector {
 
     private void initIMS() {
         List<String> serverList = new ArrayList<>();
-//        serverList.add("192.168.0.93 8808");
-//        serverList.add("192.168.0.93 8809");
-        serverList.add("ws://192.168.0.93:8809/websocket");
-        serverList.add("ws://192.168.0.93:8810/websocket");
+        serverList.add("192.168.0.93 8808");
+        serverList.add("192.168.0.93 8809");
+//        serverList.add("ws://192.168.0.93:8809/websocket");
+//        serverList.add("ws://192.168.0.93:8810/websocket");
         IMSOptions options = new IMSOptions.Builder()
-                .setCommunicationProtocol(CommunicationProtocol.WebSocket)
+                .setImplementationMode(ImplementationMode.Netty)
+                .setCommunicationProtocol(CommunicationProtocol.TCP)
                 .setTransportProtocol(TransportProtocol.Protobuf)
                 .setServerList(serverList)
                 .build();
-        IMSKit.getInstance().init(instance, options, null, null);
+        IMSKit.getInstance().init(instance, options, new OnIMSConnectStatusListener(), null);
     }
 
     @Override

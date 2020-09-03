@@ -1,15 +1,24 @@
 package com.freddy.kulachat.widget;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.InputFilter;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.freddy.kulachat.R;
+import com.freddy.kulachat.config.CConfig;
 import com.freddy.kulachat.utils.DensityUtil;
 import com.freddy.kulachat.utils.StringUtil;
 import com.freddy.kulachat.view.CActivityManager;
@@ -28,9 +37,16 @@ import androidx.core.content.ContextCompat;
  */
 public class CTopBar extends ConstraintLayout {
 
+    public enum Mode {
+        Normal,
+        Loading
+    }
+
     private Context mContext;
     private CImageButton mBackBtn;
+    private LinearLayout mTitleWrapLayout;
     private TextView mTitleTextView;
+    private ImageView mLoadingImageView;
 
     private int backgroundColor;
     private int backBtnNormalIcon;
@@ -45,7 +61,9 @@ public class CTopBar extends ConstraintLayout {
     private static final int VISIBLE = 1;
     private static final int GONE = 0;
 
-    private OnClickListener mOnBackClickListener;
+    private Mode mode = Mode.Normal;
+
+    private OnClickListener mOnBackBtnClickListener;
 
     public CTopBar(Context context) {
         this(context, null);
@@ -78,6 +96,7 @@ public class CTopBar extends ConstraintLayout {
         setBackgroundColor(backgroundColor);
         mConstraintSet = new ConstraintSet();
         mConstraintSet.clone(this);
+        createTitleWrapLayout();
         createBackBtn();
         createTitleText();
         mConstraintSet.applyTo(this);
@@ -93,8 +112,8 @@ public class CTopBar extends ConstraintLayout {
         mBackBtn.setNormalImageResId(backBtnNormalIcon);
         mBackBtn.setPressedImageResId(backBtnPressedIcon);
         mBackBtn.setOnClickListener(v -> {
-            if(mOnBackClickListener != null) {
-                mOnBackClickListener.onClick(v);
+            if(mOnBackBtnClickListener != null) {
+                mOnBackBtnClickListener.onClick(v);
             }else {
                 CActivityManager.getInstance().finishActivity();
             }
@@ -105,6 +124,20 @@ public class CTopBar extends ConstraintLayout {
         mConstraintSet.constrainWidth(R.id.ctb_btn_back, DensityUtil.dp2px(54));
         mConstraintSet.constrainHeight(R.id.ctb_btn_back, DensityUtil.dp2px(36));
         mConstraintSet.centerVertically(R.id.ctb_btn_back, ConstraintSet.PARENT_ID);
+    }
+
+    private void createTitleWrapLayout() {
+        mTitleWrapLayout = new LinearLayout(mContext);
+        mTitleWrapLayout.setId(R.id.ctb_layout_title_wrap);
+        mTitleWrapLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mTitleWrapLayout.setGravity(Gravity.CENTER_VERTICAL);
+
+        addView(mTitleWrapLayout);
+
+        mConstraintSet.constrainWidth(R.id.ctb_layout_title_wrap, ConstraintSet.WRAP_CONTENT);
+        mConstraintSet.constrainHeight(R.id.ctb_layout_title_wrap, ConstraintSet.WRAP_CONTENT);
+        mConstraintSet.centerVertically(R.id.ctb_layout_title_wrap, ConstraintSet.PARENT_ID);
+        mConstraintSet.centerHorizontally(R.id.ctb_layout_title_wrap, ConstraintSet.PARENT_ID);
     }
 
     private void createTitleText() {
@@ -120,16 +153,28 @@ public class CTopBar extends ConstraintLayout {
         mTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);
         mTitleTextView.getPaint().setFakeBoldText(true);
 
-        addView(mTitleTextView);
+        mTitleWrapLayout.addView(mTitleTextView);
+    }
 
-        mConstraintSet.constrainWidth(R.id.ctb_tv_title, ConstraintSet.WRAP_CONTENT);
-        mConstraintSet.constrainHeight(R.id.ctb_tv_title, ConstraintSet.WRAP_CONTENT);
-        mConstraintSet.centerVertically(R.id.ctb_tv_title, ConstraintSet.PARENT_ID);
-        mConstraintSet.centerHorizontally(R.id.ctb_tv_title, ConstraintSet.PARENT_ID);
+    public void setTitleText(String titleText) {
+        this.titleText = titleText;
+        if(mTitleTextView == null) {
+            createTitleText();
+        }
+
+        mTitleTextView.setText(titleText);
+    }
+
+    private void createLoadingImageView() {
+        mLoadingImageView = new ImageView(mContext);
+        mLoadingImageView.setId(R.id.ctb_iv_loading);
+        mLoadingImageView.setImageResource(R.drawable.ic_topbar_loading);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DensityUtil.dp2px(32), DensityUtil.dp2px(32));
+        lp.rightMargin = DensityUtil.dp2px(10);
+        mTitleWrapLayout.addView(mLoadingImageView, 0, lp);
     }
 
     private SparseArray<View> mMenuArray;
-
     public void addMenu(int normalImgResId, int pressedImgResId, OnClickListener listener) {
         if (mMenuArray == null) {
             mMenuArray = new SparseArray<>();
@@ -155,7 +200,55 @@ public class CTopBar extends ConstraintLayout {
         mMenuArray.put(menuId, menuBtn);
     }
 
-    public void setOnBackClickListener(OnClickListener listener) {
-        this.mOnBackClickListener = listener;
+    public void setOnBackBtnClickListener(OnClickListener listener) {
+        this.mOnBackBtnClickListener = listener;
+    }
+
+    public void setMode(Mode mode) {
+        Log.d("CTopBar", "setMode() mode = " + mode);
+        switch (mode) {
+            case Normal:
+                if(mLoadingImageView != null && mLoadingImageView.getVisibility() == View.VISIBLE) {
+                    mLoadingImageView.setVisibility(View.GONE);
+                    stopLoadingImageViewAnim();
+                }
+                break;
+
+            case Loading:
+                if(mLoadingImageView == null) {
+                    createLoadingImageView();
+                }
+                mLoadingImageView.setVisibility(View.VISIBLE);
+                startLoadingImageViewAnim();
+                break;
+        }
+    }
+
+    private ObjectAnimator mLoadingImageViewAnimator;
+    private void startLoadingImageViewAnim() {
+        if(mLoadingImageView == null) {
+            return;
+        }
+
+        stopLoadingImageViewAnim();
+
+        ObjectAnimator.ofPropertyValuesHolder(mLoadingImageView, PropertyValuesHolder.ofFloat(CConfig.ANIMATOR_ROTATION, 0.0f, 360.0f));
+        mLoadingImageViewAnimator = ObjectAnimator.ofFloat(mLoadingImageView, CConfig.ANIMATOR_ROTATION, 0.0f, 360.0f);
+        mLoadingImageViewAnimator.setRepeatMode(ValueAnimator.RESTART);
+        mLoadingImageViewAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        mLoadingImageViewAnimator.setDuration(1000);
+        mLoadingImageViewAnimator.setInterpolator(new LinearInterpolator());
+        mLoadingImageViewAnimator.start();
+    }
+
+    private void stopLoadingImageViewAnim() {
+        if(mLoadingImageView == null) {
+            return;
+        }
+
+        if(mLoadingImageViewAnimator != null && mLoadingImageViewAnimator.isRunning()) {
+            mLoadingImageViewAnimator.cancel();
+        }
+        mLoadingImageViewAnimator = null;
     }
 }

@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.freddy.event.CEventCenter;
+import com.freddy.event.I_CEventListener;
 import com.freddy.kulachat.presenter.BasePresenter;
 import com.freddy.kulachat.widget.CLoadingDialog;
 
@@ -27,7 +29,7 @@ import dagger.android.support.AndroidSupportInjection;
  * @github https://github.com/FreddyChen
  * @describe
  */
-public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IBaseView {
+public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IBaseView, I_CEventListener {
 
     @Inject
     protected P presenter;
@@ -61,6 +63,12 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
         init();
         setListeners();
+
+        String[] events = getEvents();
+        if(events != null && events.length > 0) {
+            CEventCenter.registerEventListener(this, events);
+        }
+
         return layoutView;
     }
 
@@ -100,6 +108,10 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public void onDestroyView() {
+        String[] events = getEvents();
+        if(events != null && events.length > 0) {
+            CEventCenter.unregisterEventListener(this, events);
+        }
         super.onDestroyView();
         destroyView();
     }
@@ -178,6 +190,10 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     }
 
+    protected String[] getEvents() {
+        return null;
+    }
+
     @Override
     public void showLoading() {
         this.showLoading("加载中");
@@ -200,5 +216,10 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
             mLoadingDialog.dismiss();
         }
         mLoadingDialog = null;
+    }
+
+    @Override
+    public void onCEvent(String topic, int msgCode, int resultCode, Object obj) {
+
     }
 }
