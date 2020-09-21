@@ -43,7 +43,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         try {
             AndroidSupportInjection.inject(this);
         }catch (IllegalArgumentException e) {
-            e.printStackTrace();
         }
         super.onAttach(context);
         attach(context);

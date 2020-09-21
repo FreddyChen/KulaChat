@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.freddy.kulachat.presenter.NullablePresenter;
 import com.freddy.kulachat.view.BaseActivity;
+import com.freddy.kulachat.view.CActivityManager;
 
 public class MainActivity extends BaseActivity<NullablePresenter> {
 
@@ -19,6 +20,11 @@ public class MainActivity extends BaseActivity<NullablePresenter> {
 //        DensityUtil.metrics = metrics;
 
         startActivity(SplashActivity.class);
-        finish();
+        CActivityManager.getInstance().finishActivity();
+    }
+
+    @Override
+    protected boolean hasTransition() {
+        return false;
     }
 }

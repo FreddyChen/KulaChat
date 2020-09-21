@@ -1,10 +1,8 @@
 package com.freddy.kulachat.view;
 
-import android.app.Activity;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.core.app.ActivityCompat;
 import java.util.Stack;
 
 /**
@@ -28,13 +26,13 @@ public class CActivityManager {
         private static final CActivityManager INSTANCE = new CActivityManager();
     }
 
-    private static final Stack<Activity> ACTIVITY_STACK = new Stack<>();
+    private static final Stack<BaseActivity> ACTIVITY_STACK = new Stack<>();
 
     /**
      * 添加activity到栈
      * @param activity
      */
-    public void addActivityToStack(Activity activity) {
+    public void addActivityToStack(BaseActivity activity) {
         ACTIVITY_STACK.add(activity);
         Log.d(TAG, "addActivityToStack() activity = " + activity + ", size = " + ACTIVITY_STACK.size());
     }
@@ -43,7 +41,7 @@ public class CActivityManager {
      * 从栈中移除activity
      * @param activity
      */
-    public void removeActivityFromStack(Activity activity) {
+    public void removeActivityFromStack(BaseActivity activity) {
         if(ACTIVITY_STACK.isEmpty()) {
             return;
         }
@@ -64,7 +62,7 @@ public class CActivityManager {
             return;
         }
 
-        Activity activity = getTopActivityInStack();
+        BaseActivity activity = getTopActivityInStack();
         if(activity == null) {
             return;
         }
@@ -76,7 +74,7 @@ public class CActivityManager {
      * 结束指定的activity
      * @param activity
      */
-    public void finishActivity(Activity activity) {
+    public void finishActivity(BaseActivity activity) {
         if(activity == null) {
             return;
         }
@@ -93,11 +91,15 @@ public class CActivityManager {
             return;
         }
 
-        for(Activity activity : ACTIVITY_STACK) {
+        for(BaseActivity activity : ACTIVITY_STACK) {
             if(activity.getClass().equals(cls)) {
                 ACTIVITY_STACK.remove(activity);
                 if(!activity.isFinishing()) {
-                    activity.finish();
+                    if(activity.hasTransition()) {
+                        ActivityCompat.finishAfterTransition(activity);
+                    }else {
+                        activity.finish();
+                    }
                 }
                 break;
             }
@@ -109,7 +111,7 @@ public class CActivityManager {
      * 获取栈顶activity
      * @return
      */
-    public Activity getTopActivityInStack() {
+    public BaseActivity getTopActivityInStack() {
         if(ACTIVITY_STACK.isEmpty()) {
             return null;
         }
@@ -121,7 +123,7 @@ public class CActivityManager {
      * 结束除指定activity外的其他activity
      * @param activity
      */
-    public void finishOtherActivity(Activity activity) {
+    public void finishOtherActivity(BaseActivity activity) {
         if(activity == null) {
             return;
         }
@@ -142,7 +144,7 @@ public class CActivityManager {
             return;
         }
 
-        for(Activity activity : ACTIVITY_STACK) {
+        for(BaseActivity activity : ACTIVITY_STACK) {
             if(activity == null) {
                 continue;
             }
@@ -163,7 +165,7 @@ public class CActivityManager {
             return;
         }
 
-        for(Activity activity : ACTIVITY_STACK) {
+        for(BaseActivity activity : ACTIVITY_STACK) {
             finishActivity(activity);
         }
         Log.d(TAG, "finishAllActivity(), size = " + ACTIVITY_STACK.size());

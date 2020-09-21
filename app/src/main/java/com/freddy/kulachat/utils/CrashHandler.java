@@ -16,6 +16,7 @@ import com.freddy.kulachat.net.config.RequestMethod;
 import com.freddy.kulachat.net.config.RequestOptions;
 import com.freddy.kulachat.net.config.ServerType;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -175,10 +176,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
             StringBuilder sb = new StringBuilder();
             sb.append(getAppInfo(KulaApp.getInstance()));
-            sb.append("线程信息：").append("thread_id:").append(t.getId()).append("\t").append("thread_name:").append(t.getName()).append("\n");
-            sb.append("崩溃时间：").append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())).append("\n");
-            sb.append("手机系统：").append(Build.VERSION.RELEASE).append("\n");
-            sb.append("手机型号：").append(Build.MODEL).append("\n");
+            sb.append("线程：").append("thread_id:").append(t.getId()).append("\t").append("thread_name:").append(t.getName()).append("\n");
+            sb.append("时间：").append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())).append("\n");
+            sb.append("系统：").append(Build.VERSION.RELEASE).append("\n");
+            sb.append("型号：").append(Build.MODEL).append("\n");
+            sb.append("路径：").append(FileUtil.getFilePath(KulaApp.getInstance(), Environment.DIRECTORY_DOCUMENTS, CRASH_FOLDER_NAME)).append(File.separator).append(CRASH_FILE_NAME).append("\n");
             String crashInfo = Log.getStackTraceString(e);
             if(crashInfo.contains("Caused by:")) {
                 crashInfo = crashInfo.substring(crashInfo.indexOf("Caused by:"));
@@ -224,7 +226,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         try {
             PackageManager packageManager = context.getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-            return "应用包名：" + packageInfo.packageName + "\n应用版本：" + packageInfo.versionName + "\n";
+            return "包名：" + packageInfo.packageName + "\n版本：" + packageInfo.versionName + "\n";
         } catch (Exception e) {
             e.printStackTrace();
         }

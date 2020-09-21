@@ -224,4 +224,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
         return onTouchEvent(ev);
     }
+
+    @Override
+    protected boolean hasTransition() {
+        return false;
+    }
 }

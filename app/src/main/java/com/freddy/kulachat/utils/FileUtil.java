@@ -2,6 +2,7 @@ package com.freddy.kulachat.utils;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,6 +11,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author FreddyChen
@@ -93,6 +98,7 @@ public class FileUtil {
         }
 
         File file = new File(getFilePath(directory.getPath(), fileName));
+        Log.d("Freddy", "file path = " + file.getPath());
         if (!file.exists() || !file.isFile()) {
             return null;
         }
@@ -130,6 +136,14 @@ public class FileUtil {
 
     private static String getFilePath(String directoryPath, String fileName) {
         return directoryPath + File.separator + fileName;
+    }
+
+    public static String getFilePath(Context context, String directoryType, String directoryName) {
+        File directory = getCompatDirectory(context, directoryType, directoryName);
+        if(directory == null || !directory.isDirectory() || !directory.exists()) {
+            return null;
+        }
+        return directory.getPath();
     }
 
     private static File getCompatDirectory(Context context, String directoryType, String directoryName) {
@@ -191,5 +205,17 @@ public class FileUtil {
         }
 
         return false;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>();
+        list.add(0);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        System.out.println("交换前" + list);
+        list.remove(2);
+        list.add(0, 2);
+        System.out.println("交换后" + list);
     }
 }

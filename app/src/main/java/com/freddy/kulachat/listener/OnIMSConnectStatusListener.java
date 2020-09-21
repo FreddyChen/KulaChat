@@ -1,7 +1,5 @@
 package com.freddy.kulachat.listener;
 
-import android.util.Log;
-
 import com.freddy.event.CEvent;
 import com.freddy.event.CEventCenter;
 import com.freddy.kulachat.event.Events;
@@ -39,7 +37,6 @@ public class OnIMSConnectStatusListener implements IMSConnectStatusListener {
 
 
     private void dispatchEvent(IMSConnectStatus status) {
-        Log.d("Freddy", "thread1 = " + Thread.currentThread().getId());
         Observable.just(status)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,7 +49,6 @@ public class OnIMSConnectStatusListener implements IMSConnectStatusListener {
 
                     @Override
                     public void onNext(IMSConnectStatus imsConnectStatus) {
-                        Log.d("Freddy", "thread2 = " + Thread.currentThread().getId());
                         IMSConnectStatusEventObj eventObj = new IMSConnectStatusEventObj();
                         eventObj.setImsConnectStatus(status);
                         CEvent event = new CEvent();

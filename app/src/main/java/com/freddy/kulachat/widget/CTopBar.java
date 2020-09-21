@@ -3,6 +3,7 @@ package com.freddy.kulachat.widget;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.InputFilter;
@@ -25,6 +26,7 @@ import com.freddy.kulachat.view.CActivityManager;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 /**

@@ -16,7 +16,7 @@ import java.util.UUID;
  * @github https://github.com/FreddyChen
  * @describe
  */
-public class SingleChatActivity extends BaseChatActivity {
+public class SingleChatActivity extends AbstractChatActivity {
 
     private int currentIndex = 0;
 

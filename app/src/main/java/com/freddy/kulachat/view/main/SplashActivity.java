@@ -8,6 +8,7 @@ import com.freddy.kulachat.R;
 import com.freddy.kulachat.presenter.NullablePresenter;
 import com.freddy.kulachat.utils.RxExecutorService;
 import com.freddy.kulachat.view.BaseActivity;
+import com.freddy.kulachat.view.CActivityManager;
 import com.freddy.kulachat.view.home.HomeActivity;
 import com.freddy.kulachat.view.user.LoginActivity;
 import com.jaeger.library.StatusBarUtil;
@@ -37,6 +38,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
     RxPermissions rxPermissions;
     private Disposable mCheckPermissionDisposable;
     private Disposable mExitAppDisposable;
+    private Disposable mFinishDisposable;
     private static final String[] NECESSARY_PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -119,12 +121,40 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
         }else {
             startActivity(HomeActivity.class);
         }
-        finish();
+
+        RxExecutorService.getInstance().delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread(), new Observer() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                mFinishDisposable = d;
+            }
+
+            @Override
+            public void onNext(Object o) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                CActivityManager.getInstance().finishActivity(SplashActivity.class);
+            }
+        });
     }
 
     @Override
     protected void destroy() {
         RxExecutorService.getInstance().dispose(mCheckPermissionDisposable);
         RxExecutorService.getInstance().dispose(mExitAppDisposable);
+        RxExecutorService.getInstance().dispose(mFinishDisposable);
+    }
+
+    @Override
+    protected boolean hasTransition() {
+        return false;
     }
 }

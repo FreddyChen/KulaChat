@@ -5,17 +5,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
-import android.widget.TextView;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.contract.home.HomeContract;
-import com.freddy.kulachat.event.Events;
-import com.freddy.kulachat.event.obj.IMSConnectStatusEventObj;
 import com.freddy.kulachat.presenter.home.HomePresenter;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.adapter.HomeFragmentStateAdapter;
 import com.freddy.kulaims.IMSKit;
-import com.freddy.kulaims.config.IMSConnectStatus;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.viewpager2.widget.ViewPager2;
@@ -41,7 +37,16 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     @Override
     protected void setRootView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
-        IMSKit.getInstance().connect();
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            IMSKit.getInstance().connect();
+        }).start();
     }
 
     @Override

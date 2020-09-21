@@ -1,7 +1,16 @@
 package com.freddy.kulachat.view;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.CircularPropagation;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.SidePropagation;
+import android.transition.Slide;
+import android.view.Gravity;
+import android.view.Window;
 
 import com.freddy.event.CEventCenter;
 import com.freddy.event.I_CEventListener;
@@ -16,6 +25,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dagger.android.AndroidInjection;
@@ -42,9 +53,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         try {
             AndroidInjection.inject(this);
         }catch (IllegalArgumentException e) {
-            e.printStackTrace();
         }
         super.onCreate(savedInstanceState);
+        if(hasTransition()) {
+            getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+            Slide slide = new Slide();
+            slide.setSlideEdge(Gravity.END);
+            getWindow().setEnterTransition(slide);
+
+            Explode explode = new Explode();
+            explode.setPropagation(new CircularPropagation());
+            getWindow().setExitTransition(explode);
+        }
         activity = this;
         CActivityManager.getInstance().addActivityToStack(activity);
         setRootView(savedInstanceState);
@@ -226,5 +246,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     public void onCEvent(String topic, int msgCode, int resultCode, Object obj) {
 
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+
+    protected boolean hasTransition() {
+        return true;
     }
 }

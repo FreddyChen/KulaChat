@@ -69,7 +69,7 @@ public class MessageFragment extends BaseFragment<NullablePresenter> {
 
     @Override
     protected void setListeners() {
-        mConversationListAdapter.setOnItemClickListener((adapter, view, position) -> BaseChatActivity.startSingleChat(getActivity()));
+        mConversationListAdapter.setOnItemClickListener((adapter, view, position) -> AbstractChatActivity.startSingleChat(getActivity()));
     }
 
     @Override
