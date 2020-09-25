@@ -98,7 +98,6 @@ public class FileUtil {
         }
 
         File file = new File(getFilePath(directory.getPath(), fileName));
-        Log.d("Freddy", "file path = " + file.getPath());
         if (!file.exists() || !file.isFile()) {
             return null;
         }

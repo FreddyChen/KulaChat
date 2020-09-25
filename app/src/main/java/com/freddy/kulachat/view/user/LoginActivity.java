@@ -22,7 +22,9 @@ import com.freddy.kulachat.utils.StringUtil;
 import com.freddy.kulachat.utils.UIUtil;
 import com.freddy.kulachat.utils.Util;
 import com.freddy.kulachat.view.BaseActivity;
+import com.freddy.kulachat.view.CActivityManager;
 import com.freddy.kulachat.view.home.HomeActivity;
+import com.freddy.kulachat.view.main.SplashActivity;
 import com.freddy.kulachat.widget.CTextButton;
 import com.freddy.kulachat.widget.CTopBar;
 import com.freddy.kulachat.widget.SoftKeyboardStateHelper;
@@ -69,6 +71,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     private String verifyCode;
     private SoftKeyboardStateHelper mSoftKeyboardStateHelper;
     private Disposable mDisposable;
+    private Disposable mFinishDisposable;
 
     private boolean isAnimatorDisplayed = false;
 
@@ -170,7 +173,28 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
             case R.id.btn_login: {
                 startActivity(HomeActivity.class);
-                finish();
+                RxExecutorService.getInstance().delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread(), new Observer() {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mFinishDisposable = d;
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        RxExecutorService.getInstance().dispose(mDisposable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        CActivityManager.getInstance().finishActivity(LoginActivity.class);
+                    }
+                });
                 break;
             }
         }
@@ -201,6 +225,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             mSoftKeyboardStateHelper.release();
         }
         RxExecutorService.getInstance().dispose(mDisposable);
+        RxExecutorService.getInstance().dispose(mFinishDisposable);
     }
 
     @Override

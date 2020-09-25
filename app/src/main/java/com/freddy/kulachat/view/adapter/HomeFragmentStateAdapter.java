@@ -35,7 +35,6 @@ public class HomeFragmentStateAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Log.d("HomeFragmentStateAdapter()", "createFragment() position = " + position);
         switch (position) {
             /*case 0:
                 return HomeFragment.newInstance();*/
