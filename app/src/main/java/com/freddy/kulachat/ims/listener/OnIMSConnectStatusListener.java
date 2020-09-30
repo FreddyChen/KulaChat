@@ -1,4 +1,4 @@
-package com.freddy.kulachat.listener;
+package com.freddy.kulachat.ims.listener;
 
 import com.freddy.event.CEvent;
 import com.freddy.event.CEventCenter;

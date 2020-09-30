@@ -3,7 +3,9 @@ package com.freddy.kulachat.net.retrofit;
 import com.alibaba.fastjson.JSON;
 import com.freddy.kulachat.net.config.DingDingResponseModel;
 import com.freddy.kulachat.net.config.RequestOptions;
+import com.freddy.kulachat.net.config.ResponseModel;
 import com.freddy.kulachat.net.interf.IRequestInterface;
+import com.freddy.kulachat.net.listener.OnNetResponseListener;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -22,6 +24,16 @@ public class DingDingRetrofitRequestManager extends AbstractRequestManager imple
 
     public DingDingRetrofitRequestManager(OkHttpClient okHttpClient) {
         super(okHttpClient);
+    }
+
+    @Override
+    public void request(RequestOptions options, OnNetResponseListener listener) {
+
+    }
+
+    @Override
+    public <T> void request(RequestOptions options, Class<T> cls, OnNetResponseListener listener) {
+
     }
 
     @Override

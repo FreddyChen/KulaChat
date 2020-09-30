@@ -1,5 +1,15 @@
 package com.freddy.kulachat.model;
 
+import com.freddy.kulachat.net.RequestManagerFactory;
+import com.freddy.kulachat.net.config.RequestMethod;
+import com.freddy.kulachat.net.config.RequestOptions;
+import com.freddy.kulachat.net.config.ResponseModel;
+import com.freddy.kulachat.net.listener.OnNetResponseListener;
+
+import java.util.Map;
+
+import io.reactivex.Observable;
+
 /**
  * @author FreddyChen
  * @name
@@ -8,6 +18,149 @@ package com.freddy.kulachat.model;
  * @github https://github.com/FreddyChen
  * @desc
  */
-public abstract class BaseModel {
+public class BaseModel {
 
+    public <T> void request(String function, OnNetResponseListener<T> listener) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setFunction(function)
+                .build();
+        this.request(options, listener);
+    }
+
+    public <T> void request(String function, Map<String, Object> params, OnNetResponseListener<T> listener) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setFunction(function)
+                .setParams(params)
+                .build();
+        this.request(options, listener);
+    }
+
+    public <T> void request(String baseUrl, String function, OnNetResponseListener<T> listener) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setBaseUrl(baseUrl)
+                .setFunction(function)
+                .build();
+        this.request(options, listener);
+    }
+
+    public <T> void request(String baseUrl, String function, Map<String, Object> params, OnNetResponseListener<T> listener) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setBaseUrl(baseUrl)
+                .setFunction(function)
+                .setParams(params)
+                .build();
+        this.request(options, listener);
+    }
+
+    public <T> void request(String function, RequestMethod method, OnNetResponseListener<T> listener) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setFunction(function)
+                .setMethod(method)
+                .build();
+        this.request(options, listener);
+    }
+
+    public <T> void request(String function, Map<String, Object> params, RequestMethod method, OnNetResponseListener<T> listener) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setFunction(function)
+                .setParams(params)
+                .setMethod(method)
+                .build();
+        this.request(options, listener);
+    }
+
+    public <T> void request(String baseUrl, String function, RequestMethod method, OnNetResponseListener<T> listener) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setBaseUrl(baseUrl)
+                .setFunction(function)
+                .setMethod(method)
+                .build();
+        this.request(options, listener);
+    }
+
+    public <T> void request(String baseUrl, String function, Map<String, Object> params, RequestMethod method, OnNetResponseListener<T> listener) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setBaseUrl(baseUrl)
+                .setFunction(function)
+                .setParams(params)
+                .setMethod(method)
+                .build();
+        this.request(options, listener);
+    }
+
+    public <T> void request(RequestOptions options, OnNetResponseListener<T> listener) {
+        RequestManagerFactory.getRequestManager().request(options, listener);
+    }
+
+    public Observable<ResponseModel> request(String function) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setFunction(function)
+                .build();
+        return this.request(options);
+    }
+
+    public Observable<ResponseModel> request(String function, Map<String, Object> params) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setFunction(function)
+                .setParams(params)
+                .build();
+        return this.request(options);
+    }
+
+    public Observable<ResponseModel> request(String baseUrl, String function) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setBaseUrl(baseUrl)
+                .setFunction(function)
+                .build();
+        return this.request(options);
+    }
+
+    public Observable<ResponseModel> request(String baseUrl, String function, Map<String, Object> params) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setBaseUrl(baseUrl)
+                .setFunction(function)
+                .setParams(params)
+                .build();
+        return this.request(options);
+    }
+
+    public Observable<ResponseModel> request(String function, RequestMethod method) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setFunction(function)
+                .setMethod(method)
+                .build();
+        return this.request(options);
+    }
+
+    public Observable<ResponseModel> request(String function, Map<String, Object> params, RequestMethod method) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setFunction(function)
+                .setParams(params)
+                .setMethod(method)
+                .build();
+        return this.request(options);
+    }
+
+    public Observable<ResponseModel> request(String baseUrl, String function, RequestMethod method) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setBaseUrl(baseUrl)
+                .setFunction(function)
+                .setMethod(method)
+                .build();
+        return this.request(options);
+    }
+
+    public Observable<ResponseModel> request(String baseUrl, String function, Map<String, Object> params, RequestMethod method) {
+        RequestOptions options = new RequestOptions.Builder()
+                .setBaseUrl(baseUrl)
+                .setFunction(function)
+                .setParams(params)
+                .setMethod(method)
+                .build();
+        return this.request(options);
+    }
+
+    public Observable<ResponseModel> request(RequestOptions options) {
+        return RequestManagerFactory.getRequestManager().request(options);
+    }
 }

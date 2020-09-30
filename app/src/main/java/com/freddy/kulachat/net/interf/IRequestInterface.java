@@ -1,6 +1,7 @@
 package com.freddy.kulachat.net.interf;
 
 import com.freddy.kulachat.net.config.RequestOptions;
+import com.freddy.kulachat.net.listener.OnNetResponseListener;
 
 import io.reactivex.Observable;
 
@@ -13,6 +14,10 @@ import io.reactivex.Observable;
  * @describe
  */
 public interface IRequestInterface<Model> {
-    
+
+    void request(RequestOptions options, OnNetResponseListener listener);
+
+    <T> void request(RequestOptions options, Class<T> cls, OnNetResponseListener listener);
+
     Observable<Model> request(RequestOptions options);
 }

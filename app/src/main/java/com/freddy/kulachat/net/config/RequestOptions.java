@@ -67,7 +67,7 @@ public class RequestOptions {
         public Builder() {
             options = new RequestOptions();
             options.setBaseUrl(BuildConfig.SERVER_URL);
-            options.setMethod(RequestMethod.GET);
+            options.setMethod(RequestMethod.POST);
         }
 
         public Builder setBaseUrl(String baseUrl) {

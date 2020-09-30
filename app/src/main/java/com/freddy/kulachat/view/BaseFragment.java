@@ -193,20 +193,30 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         return null;
     }
 
-    @Override
-    public void showLoading() {
-        this.showLoading("加载中");
-    }
-
     private CLoadingDialog mLoadingDialog;
     @Override
-    public void showLoading(String title) {
+    public void showLoadingDialog() {
+        this.showLoadingDialog("加载中", true, true);
+    }
+
+    @Override
+    public void showLoadingDialog(String title) {
+        this.showLoadingDialog(title, true, true);
+    }
+
+    @Override
+    public void showLoadingDialog(boolean cancelable, boolean canceledOnTouchOutside) {
+        this.showLoadingDialog("加载中", true, true);
+    }
+
+    @Override
+    public void showLoadingDialog(String title, boolean cancelable, boolean canceledOnTouchOutside) {
         mLoadingDialog = new CLoadingDialog.Builder()
                 .setTitle(title)
-                .setCancelable(true)
-                .setCanceledOnTouchOutside(true)
+                .setCancelable(cancelable)
+                .setCanceledOnTouchOutside(canceledOnTouchOutside)
                 .build();
-        mLoadingDialog.show(getChildFragmentManager(), null);
+        mLoadingDialog.show(getChildFragmentManager(), getClass().getSimpleName());
     }
 
     @Override

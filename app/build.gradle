@@ -42,7 +42,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("boolean", "LOG_DEBUG", "false")
-            buildConfigField("String", "SERVER_URL", "\"https://wanandroid.com/\"")
+            buildConfigField("String", "SERVER_URL", "\"http://192.168.0.93:8088/\"")
             signingConfig signingConfigs.release
         }
 
@@ -50,7 +50,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("boolean", "LOG_DEBUG", "true")
-            buildConfigField("String", "SERVER_URL", "\"https://wanandroid.com/\"")
+            buildConfigField("String", "SERVER_URL", "\"http://192.168.0.93:8088/\"")
             signingConfig signingConfigs.debug
         }
     }

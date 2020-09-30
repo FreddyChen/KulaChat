@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.freddy.kulachat.di.component.ApplicationComponent;
 import com.freddy.kulachat.di.component.DaggerApplicationComponent;
-import com.freddy.kulachat.listener.OnIMSConnectStatusListener;
+import com.freddy.kulachat.ims.listener.OnIMSConnectStatusListener;
 import com.freddy.kulachat.utils.CrashHandler;
 import com.freddy.kulaims.IMSKit;
 import com.freddy.kulaims.config.CommunicationProtocol;
@@ -13,7 +13,6 @@ import com.freddy.kulaims.config.ImplementationMode;
 import com.freddy.kulaims.config.TransportProtocol;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;

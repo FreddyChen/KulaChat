@@ -26,13 +26,13 @@ public class RequestManagerFactory {
 
     public static IRequestInterface getRequestManager(ServerType serverType) {
         switch (serverType) {
+            case DINGDING: {
+                return KulaApp.getInstance().applicationComponent.getDingDingRetrofitRequestManager();
+            }
+
             case INNER:
             default: {
                 return KulaApp.getInstance().applicationComponent.getRetrofitRequestManager();
-            }
-
-            case DINGDING: {
-                return KulaApp.getInstance().applicationComponent.getDingDingRetrofitRequestManager();
             }
         }
     }

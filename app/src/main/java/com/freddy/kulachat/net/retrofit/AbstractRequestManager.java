@@ -99,6 +99,8 @@ public abstract class AbstractRequestManager {
             }
         }
 
+        if(observable == null) return null;
+
         return observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

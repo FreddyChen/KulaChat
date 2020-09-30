@@ -1,8 +1,8 @@
 package com.freddy.kulachat.entity;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.freddy.kulachat.ims.MsgContentType;
-import com.freddy.kulachat.ims.MsgType;
+import com.freddy.kulachat.ims.config.MsgContentType;
+import com.freddy.kulachat.ims.config.MsgType;
 import com.freddy.kulachat.utils.StringUtil;
 import com.freddy.kulachat.view.chat.item.BaseChatItem;
 

@@ -5,8 +5,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.freddy.kulachat.R;
+import com.freddy.kulachat.manager.DelayManager;
 import com.freddy.kulachat.presenter.NullablePresenter;
-import com.freddy.kulachat.utils.RxExecutorService;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.CActivityManager;
 import com.freddy.kulachat.view.home.HomeActivity;
@@ -48,6 +48,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
     protected void setRootView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_splash);
         checkNecessaryPermissions();
+        getLifecycle().addObserver(DelayManager.getInstance());
     }
 
     @Override
@@ -56,63 +57,24 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
     }
 
     private void checkNecessaryPermissions() {
-        RxExecutorService.getInstance().delay(1, TimeUnit.SECONDS, Schedulers.io(), AndroidSchedulers.mainThread(), new Observer<Long>() {
-
-            @Override
-            public void onSubscribe(Disposable d) {
-                mCheckPermissionDisposable = d;
-            }
-
-            @Override
-            public void onNext(Long aLong) {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                RxExecutorService.getInstance().dispose(mCheckPermissionDisposable);
-            }
-
-            @SuppressLint("CheckResult")
-            @Override
-            public void onComplete() {
-                rxPermissions.request(NECESSARY_PERMISSIONS)
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(granted -> {
-                            if(granted) {
-                                initPage();
-                            }else {
-                                RxExecutorService.getInstance().delay(3, TimeUnit.SECONDS, Schedulers.io(), AndroidSchedulers.mainThread(), mExitAppObserver);
-                            }
-                        });
-            }
-        });
+        DelayManager.getInstance().startDelay(1, TimeUnit.SECONDS, () -> rxPermissions.request(NECESSARY_PERMISSIONS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(granted -> {
+                    if(granted) {
+                        initPage();
+                    }else {
+                        exitApp();
+                    }
+                }));
     }
 
-    private Observer<Long> mExitAppObserver = new Observer<Long>() {
-
-        @Override
-        public void onSubscribe(Disposable d) {
-            mExitAppDisposable = d;
-        }
-
-        @Override
-        public void onNext(Long aLong) {
-
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            RxExecutorService.getInstance().dispose(mExitAppDisposable);
-        }
-
-        @Override
-        public void onComplete() {
-            Toasty.error(activity, "缺少必须权限，程序即将关闭", Toasty.LENGTH_SHORT).show();
+    private void exitApp() {
+        Toasty.error(activity, "缺少必须权限，程序即将关闭", Toasty.LENGTH_SHORT).show();
+        DelayManager.getInstance().startDelay(3, TimeUnit.SECONDS, () -> {
             System.exit(0);
-        }
-    };
+        });
+    }
 
     private boolean isLogged = false;
     private void initPage() {
@@ -122,35 +84,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
             startActivity(HomeActivity.class);
         }
 
-        RxExecutorService.getInstance().delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread(), new Observer() {
-
-            @Override
-            public void onSubscribe(Disposable d) {
-                mFinishDisposable = d;
-            }
-
-            @Override
-            public void onNext(Object o) {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-                CActivityManager.getInstance().finishActivity(SplashActivity.class);
-            }
-        });
-    }
-
-    @Override
-    protected void destroy() {
-        RxExecutorService.getInstance().dispose(mCheckPermissionDisposable);
-        RxExecutorService.getInstance().dispose(mExitAppDisposable);
-        RxExecutorService.getInstance().dispose(mFinishDisposable);
+        DelayManager.getInstance().startDelay(500, TimeUnit.MILLISECONDS, () -> CActivityManager.getInstance().finishActivity(SplashActivity.class));
     }
 
     @Override

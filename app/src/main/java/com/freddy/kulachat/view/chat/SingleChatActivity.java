@@ -1,8 +1,8 @@
 package com.freddy.kulachat.view.chat;
 
 import com.freddy.kulachat.entity.AppMessage;
-import com.freddy.kulachat.ims.MsgContentType;
-import com.freddy.kulachat.ims.MsgType;
+import com.freddy.kulachat.ims.config.MsgContentType;
+import com.freddy.kulachat.ims.config.MsgType;
 
 import java.util.ArrayList;
 import java.util.List;

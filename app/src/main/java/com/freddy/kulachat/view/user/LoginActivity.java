@@ -2,8 +2,10 @@ package com.freddy.kulachat.view.user;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +17,16 @@ import com.freddy.kulachat.R;
 import com.freddy.kulachat.config.AppConfig;
 import com.freddy.kulachat.config.CConfig;
 import com.freddy.kulachat.contract.user.LoginContract;
+import com.freddy.kulachat.manager.CountdownManager;
+import com.freddy.kulachat.manager.DelayManager;
 import com.freddy.kulachat.presenter.user.LoginPresenter;
 import com.freddy.kulachat.utils.DensityUtil;
-import com.freddy.kulachat.utils.RxExecutorService;
 import com.freddy.kulachat.utils.StringUtil;
 import com.freddy.kulachat.utils.UIUtil;
 import com.freddy.kulachat.utils.Util;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.CActivityManager;
 import com.freddy.kulachat.view.home.HomeActivity;
-import com.freddy.kulachat.view.main.SplashActivity;
 import com.freddy.kulachat.widget.CTextButton;
 import com.freddy.kulachat.widget.CTopBar;
 import com.freddy.kulachat.widget.SoftKeyboardStateHelper;
@@ -34,10 +36,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author FreddyChen
@@ -57,27 +55,27 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     ImageView mLogoImageView;
     @BindView(R.id.layout_body)
     ViewGroup mBodyLayout;
-    @BindView(R.id.btn_request_verifyCode)
-    CTextButton mRequestVerifyCodeBtn;
     @BindView(R.id.et_phoneNumber)
     EditText mPhoneNumberEditText;
     @BindView(R.id.et_verifyCode)
     EditText mVerifyCodeEditText;
     @BindView(R.id.layout_verifyCode_wrap)
     ViewGroup mVerifyCodeWrapLayout;
+    @BindView(R.id.btn_get_verifyCode)
+    CTextButton mGetVerifyCodeBtn;
     @BindView(R.id.btn_login)
     CTextButton mLoginBtn;
     private String phoneNumber;
     private String verifyCode;
     private SoftKeyboardStateHelper mSoftKeyboardStateHelper;
-    private Disposable mDisposable;
-    private Disposable mFinishDisposable;
 
     private boolean isAnimatorDisplayed = false;
 
     @Override
     protected void setRootView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
+        getLifecycle().addObserver(CountdownManager.getInstance());
+        getLifecycle().addObserver(DelayManager.getInstance());
     }
 
     @Override
@@ -89,11 +87,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         mVerifyCodeEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_VERIFY_CODE_LENGTH)});
         mSoftKeyboardStateHelper = new SoftKeyboardStateHelper(mMainLayout);
 
-        mPhoneNumberEditText.postDelayed(() -> {
+        DelayManager.getInstance().startDelay(200, TimeUnit.MILLISECONDS, () -> {
             UIUtil.requestFocus(mPhoneNumberEditText);
             UIUtil.showSoftInput(activity, mPhoneNumberEditText);
             startAnimator(true);
-        }, 200);
+        });
     }
 
     @Override
@@ -108,31 +106,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
             @Override
             public void onSoftKeyboardClosed() {
-                RxExecutorService.getInstance().delay(100, TimeUnit.MILLISECONDS, Schedulers.io(), AndroidSchedulers.mainThread(), new Observer() {
-
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        mDisposable = d;
+                DelayManager.getInstance().startDelay(100, TimeUnit.MILLISECONDS, () -> {
+                    if (mPhoneNumberEditText.isFocused() || mVerifyCodeEditText.isFocused()) {
+                        return;
                     }
-
-                    @Override
-                    public void onNext(Object o) {
-                        if (mPhoneNumberEditText.isFocused() || mVerifyCodeEditText.isFocused()) {
-                            return;
-                        }
-                        startAnimator(false);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        RxExecutorService.getInstance().dispose(mDisposable);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
+                    startAnimator(false);
                 });
             }
         });
@@ -160,41 +138,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         animatorSet.start();
     }
 
-    @OnClick({R.id.btn_request_verifyCode, R.id.btn_login})
+    @OnClick({R.id.btn_get_verifyCode, R.id.btn_login})
     void onClickListeners(View v) {
         switch (v.getId()) {
-            case R.id.btn_request_verifyCode: {
+            case R.id.btn_get_verifyCode: {
                 if (checkPhoneNumberInput()) {
-                    Toasty.normal(this, "正在获取验证码", Toasty.LENGTH_SHORT).show();
-                    showLoading();
+                    presenter.getVerifyCode(phoneNumber);
                 }
                 break;
             }
 
             case R.id.btn_login: {
-                startActivity(HomeActivity.class);
-                RxExecutorService.getInstance().delay(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread(), AndroidSchedulers.mainThread(), new Observer() {
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        mFinishDisposable = d;
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        RxExecutorService.getInstance().dispose(mDisposable);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        CActivityManager.getInstance().finishActivity(LoginActivity.class);
-                    }
-                });
+                if (checkPhoneNumberInput() && checkVerifyCodeInput()) {
+                    presenter.login(phoneNumber, verifyCode);
+                }
                 break;
             }
         }
@@ -216,16 +173,24 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     private boolean checkVerifyCodeInput() {
+        verifyCode = mVerifyCodeEditText.getText().toString();
+        if (StringUtil.isEmpty(verifyCode)) {
+            Toasty.warning(activity, "请输入验证码", Toasty.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (verifyCode.length() != 6) {
+            Toasty.warning(activity, "验证码长度为6位", Toasty.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 
     @Override
     protected void destroy() {
-        if(mSoftKeyboardStateHelper != null) {
+        if (mSoftKeyboardStateHelper != null) {
             mSoftKeyboardStateHelper.release();
         }
-        RxExecutorService.getInstance().dispose(mDisposable);
-        RxExecutorService.getInstance().dispose(mFinishDisposable);
     }
 
     @Override
@@ -253,5 +218,47 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     protected boolean hasTransition() {
         return false;
+    }
+
+    @Override
+    public void showGetVerifyCodeLoadingDialog() {
+        showLoadingDialog("正在获取验证码", false, false);
+    }
+
+    @Override
+    public void showLoginLoadingDialog() {
+        showLoadingDialog("登录中", false, false);
+    }
+
+    @Override
+    public void onGetVerifyCodeSucceed() {
+        mGetVerifyCodeBtn.setEnabled(false);
+        startGetVerifyCodeCountdown();
+    }
+
+    @Override
+    public void onLoginSucceed() {
+        startActivity(HomeActivity.class);
+        DelayManager.getInstance().startDelay(500, TimeUnit.MILLISECONDS, () -> {
+            CActivityManager.getInstance().finishActivity(LoginActivity.class);
+        });
+    }
+
+    private void startGetVerifyCodeCountdown() {
+        CountdownManager.getInstance().startCountdown(10, new CountdownManager.CountdownCallback() {
+
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onNext(Long time) {
+                Log.d("FreddyChen", "time = " + time);
+                mGetVerifyCodeBtn.setText(String.format("%1$ds", time));
+            }
+
+            @Override
+            public void onComplete() {
+                mGetVerifyCodeBtn.setEnabled(true);
+                mGetVerifyCodeBtn.setText("获取验证码");
+            }
+        });
     }
 }

@@ -1,13 +1,10 @@
 package com.freddy.kulachat.view;
 
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.transition.CircularPropagation;
 import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.SidePropagation;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.Window;
@@ -25,7 +22,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -133,20 +129,30 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         CActivityManager.getInstance().removeActivityFromStack(activity);
     }
 
-    @Override
-    public void showLoading() {
-        this.showLoading("加载中");
-    }
-
     private CLoadingDialog mLoadingDialog;
     @Override
-    public void showLoading(String title) {
+    public void showLoadingDialog() {
+        this.showLoadingDialog("加载中", true, true);
+    }
+
+    @Override
+    public void showLoadingDialog(String title) {
+        this.showLoadingDialog(title, true, true);
+    }
+
+    @Override
+    public void showLoadingDialog(boolean cancelable, boolean canceledOnTouchOutside) {
+        this.showLoadingDialog("加载中", true, true);
+    }
+
+    @Override
+    public void showLoadingDialog(String title, boolean cancelable, boolean canceledOnTouchOutside) {
         mLoadingDialog = new CLoadingDialog.Builder()
                 .setTitle(title)
-                .setCancelable(true)
-                .setCanceledOnTouchOutside(true)
+                .setCancelable(cancelable)
+                .setCanceledOnTouchOutside(canceledOnTouchOutside)
                 .build();
-        mLoadingDialog.show(getSupportFragmentManager(), null);
+        mLoadingDialog.show(getSupportFragmentManager(), getClass().getSimpleName());
     }
 
     @Override

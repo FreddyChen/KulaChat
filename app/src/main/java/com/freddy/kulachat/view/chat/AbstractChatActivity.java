@@ -4,34 +4,25 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
-
-import androidx.core.app.ActivityCompat;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.config.CConfig;
 import com.freddy.kulachat.contract.chat.ChatContract;
 import com.freddy.kulachat.entity.AppMessage;
-import com.freddy.kulachat.ims.MsgContentType;
-import com.freddy.kulachat.ims.MsgType;
+import com.freddy.kulachat.ims.config.MsgContentType;
+import com.freddy.kulachat.ims.config.MsgType;
 import com.freddy.kulachat.presenter.chat.ChatPresenter;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.adapter.ChatMessageListAdapter;
 import com.freddy.kulachat.widget.KeyboardStatePopupWindow;
-import com.freddy.kulaims.config.IMSOptions;
 
 import java.util.ArrayList;
 import java.util.List;

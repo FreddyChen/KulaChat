@@ -13,4 +13,10 @@ public class NetworkConfig {
     public static final int REQUEST_TIMEOUT = 15 * 1000;
     public static final int READ_TIMEOUT = 15 * 1000;
     public static final int WRITE_TIMEOUT = 15 * 1000;
+
+    public static final String FUNC_USER_GET_VERIFY_CODE = "user/getVerifyCode.action";
+    public static final String FUNC_USER_LOGIN = "user/login.action";
+
+    public static final String PARAM_USER_PHONE = "phone";
+    public static final String PARAM_USER_VERIFY_CODE = "verifyCode";
 }

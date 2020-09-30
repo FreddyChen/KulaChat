@@ -10,9 +10,13 @@ package com.freddy.kulachat.view;
  */
 public interface IBaseView {
 
-    void showLoading();
+    void showLoadingDialog();
 
-    void showLoading(String title);
+    void showLoadingDialog(String title);
+
+    void showLoadingDialog(boolean cancelable, boolean canceledOnTouchOutside);
+
+    void showLoadingDialog(String title, boolean cancelable, boolean canceledOnTouchOutside);
 
     void hideLoading();
 }

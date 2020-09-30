@@ -1,4 +1,4 @@
-package com.freddy.kulachat.ims;
+package com.freddy.kulachat.ims.config;
 
 import com.freddy.kulachat.utils.StringUtil;
 
