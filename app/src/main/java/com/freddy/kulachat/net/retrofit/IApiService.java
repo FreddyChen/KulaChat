@@ -25,13 +25,11 @@ public interface IApiService {
     Observable<String> get(@Url String function);
 
     @GET
-    Observable<String> get(@Url String url, @QueryMap Map<String, Object> params);
+    Observable<String> get(@Url String function, @QueryMap Map<String, Object> params);
 
-    @Headers("Content-Type:application/json")
     @POST
-    Observable<String> post(@Url String url);
+    Observable<String> post(@Url String function);
 
-    @Headers("Content-Type:application/json")
     @POST
-    Observable<String> post(@Url String url, @Body RequestBody body);
+    Observable<String> post(@Url String function, @Body RequestBody body);
 }

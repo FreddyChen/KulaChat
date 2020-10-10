@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.manager.DelayManager;
+import com.freddy.kulachat.model.user.UserManager;
 import com.freddy.kulachat.presenter.NullablePresenter;
 import com.freddy.kulachat.view.BaseActivity;
 import com.freddy.kulachat.view.CActivityManager;
@@ -36,9 +37,6 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
 
     @Inject
     RxPermissions rxPermissions;
-    private Disposable mCheckPermissionDisposable;
-    private Disposable mExitAppDisposable;
-    private Disposable mFinishDisposable;
     private static final String[] NECESSARY_PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -76,15 +74,16 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
         });
     }
 
-    private boolean isLogged = false;
     private void initPage() {
-        if(!isLogged) {
-            startActivity(LoginActivity.class);
-        }else {
+        if(UserManager.getInstance().checkUserLoginStateFromLocal()) {
             startActivity(HomeActivity.class);
+        }else {
+            startActivity(LoginActivity.class);
         }
 
-        DelayManager.getInstance().startDelay(500, TimeUnit.MILLISECONDS, () -> CActivityManager.getInstance().finishActivity(SplashActivity.class));
+        DelayManager.getInstance().startDelay(500, TimeUnit.MILLISECONDS, () -> {
+            CActivityManager.getInstance().finishActivity(this);
+        });
     }
 
     @Override

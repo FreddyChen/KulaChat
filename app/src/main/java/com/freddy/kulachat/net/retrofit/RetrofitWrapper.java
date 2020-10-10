@@ -1,5 +1,10 @@
 package com.freddy.kulachat.net.retrofit;
 
+import android.util.Log;
+
+import com.freddy.kulachat.model.user.UserManager;
+import com.freddy.kulachat.net.config.NetworkConfig;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -50,15 +55,10 @@ public class RetrofitWrapper {
 
     private static class HeaderInterceptor implements Interceptor {
 
-        private Map<String, String> headers;
-
-        HeaderInterceptor(Map<String, String> headers) {
-            this.headers = headers;
-        }
-
         @NotNull
         @Override
         public Response intercept(@NotNull Chain chain) throws IOException {
+            Map<String, String> headers = getHeaders();
             Request.Builder requestBuilder = chain.request().newBuilder();
             for(Map.Entry<String, String> entry : headers.entrySet()) {
                 requestBuilder.addHeader(entry.getKey(), entry.getValue());
@@ -80,13 +80,21 @@ public class RetrofitWrapper {
             }
         }
 
-        okHttpClientBuilder.addInterceptor(new HeaderInterceptor(getHeaders())).build();
+        okHttpClientBuilder.addInterceptor(new HeaderInterceptor()).build();
         builder.client(okHttpClientBuilder.build());
         return builder.build();
     }
 
-    private Map<String, String> getHeaders() {
+    private static Map<String, String> getHeaders() {
         Map<String, String> headers = new HashMap<>();
+        Long userId = UserManager.getInstance().getUserId();
+        if(userId != null) {
+            headers.put(NetworkConfig.PARAM_USER_ID, String.valueOf(userId));
+        }
+        String token = UserManager.getInstance().getToken();
+        if(token != null) {
+            headers.put(NetworkConfig.PARAM_USER_TOKEN, token);
+        }
         return headers;
     }
 }

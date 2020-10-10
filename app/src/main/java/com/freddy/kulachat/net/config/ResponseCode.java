@@ -31,4 +31,14 @@ public enum ResponseCode {
     public String getMessage() {
         return message;
     }
+
+    public static ResponseCode codeOf(int code) {
+        for (ResponseCode c : ResponseCode.values()) {
+            if (c.getCode() == code) {
+                return c;
+            }
+        }
+
+        return UNKNOWN;
+    }
 }

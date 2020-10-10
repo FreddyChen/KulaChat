@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.freddy.kulachat.KulaApp;
+import com.freddy.kulachat.model.user.UserManager;
 import com.freddy.kulachat.net.config.ResponseCode;
 import com.freddy.kulachat.net.config.ResponseModel;
 
@@ -36,12 +37,19 @@ public abstract class CObserver implements Observer<ResponseModel> {
 
     @Override
     public void onNext(ResponseModel responseModel) {
-        Log.d(TAG, "onNext()\tresponseModel = " + responseModel);
+        Log.d(TAG, "onNext()\tfunction = " + getBaseUrl() + getFunction() + "\tresponseModel = " + responseModel);
         int code = responseModel.getCode();
         if (code == ResponseCode.SUCCEED.getCode()) {
             onCNext(responseModel);
         } else {
             onCError(responseModel.getCode(), responseModel.getMsg());
+            switch (ResponseCode.codeOf(code)) {
+                case TOKEN_IS_EMPTY:
+                case TOKEN_EXPIRED:
+                case TOKEN_INVALID:
+                    UserManager.getInstance().onUserLogout();
+                    break;
+            }
         }
 
         onComplete();

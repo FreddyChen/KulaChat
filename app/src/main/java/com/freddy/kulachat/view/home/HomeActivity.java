@@ -39,16 +39,6 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     @Override
     protected void setRootView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            IMSKit.getInstance().connect();
-        }).start();
     }
 
     @Override
@@ -57,6 +47,8 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         HomeFragmentStateAdapter adapter = new HomeFragmentStateAdapter(activity);
         mViewPager.setAdapter(adapter);
         mViewPager.setUserInputEnabled(false);
+
+        presenter.test();
     }
 
     @Override

@@ -14,7 +14,8 @@ public class PreferenceConfig {
      * SharedPreferences 文件名称
      */
     public static final String PREFERENCE_COMMON = "pref_common";
-
     /** 软键盘高度 */
     public static final String KEYBOARD_HEIGHT = "keyboard_height";
+    public static final String USER_TOKEN = "user_token";
+    public static final String USER_ID = "user_id";
 }

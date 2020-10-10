@@ -34,7 +34,6 @@
         <activity
             android:name=".view.user.LoginActivity"
             android:configChanges="locale|orientation|screenSize|keyboardHidden|navigation"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 

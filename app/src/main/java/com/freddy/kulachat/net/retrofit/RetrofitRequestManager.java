@@ -42,16 +42,20 @@ public class RetrofitRequestManager extends AbstractRequestManager implements IR
 
             @Override
             protected void onCNext(ResponseModel responseModel) {
-                if (listener == null) return;
-                String data = responseModel.getData();
-                if (cls == null || StringUtil.isEmpty(data)) {
-                    listener.onSucceed(responseModel);
-                } else {
-                    if (List.class.isAssignableFrom(cls)) {
-                        listener.onSucceed(parseArray(data, cls));
+                try {
+                    if (listener == null) return;
+                    String data = responseModel.getData();
+                    if (cls == null || StringUtil.isEmpty(data)) {
+                        listener.onSucceed(responseModel);
                     } else {
-                        listener.onSucceed(parseObject(data, cls));
+                        if (List.class.isAssignableFrom(cls)) {
+                            listener.onSucceed(parseArray(data, cls));
+                        } else {
+                            listener.onSucceed(parseObject(data, cls));
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

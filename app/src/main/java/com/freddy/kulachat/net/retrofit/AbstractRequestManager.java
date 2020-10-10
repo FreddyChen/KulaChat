@@ -99,7 +99,7 @@ public abstract class AbstractRequestManager {
             }
         }
 
-        if(observable == null) return null;
+        if (observable == null) return null;
 
         return observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -107,7 +107,7 @@ public abstract class AbstractRequestManager {
 
     private RequestBody convertParamsToRequestBody(Map<String, Object> params) {
         if (params != null && !params.isEmpty()) {
-            return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(params));
+            return RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), JSON.toJSONString(params));
         }
 
         return null;

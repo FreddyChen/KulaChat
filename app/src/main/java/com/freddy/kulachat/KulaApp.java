@@ -71,4 +71,12 @@ public class KulaApp extends Application implements HasAndroidInjector {
     public AndroidInjector<Object> androidInjector() {
         return androidInjector;
     }
+
+    public void connectIMS() {
+        IMSKit.getInstance().connect();
+    }
+
+    public void disconnectIMS() {
+        IMSKit.getInstance().disconnect();
+    }
 }

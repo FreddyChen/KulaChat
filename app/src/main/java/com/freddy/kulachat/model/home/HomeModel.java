@@ -1,9 +1,9 @@
 package com.freddy.kulachat.model.home;
 
-import android.util.Log;
-
 import com.freddy.kulachat.contract.home.HomeContract;
 import com.freddy.kulachat.model.BaseModel;
+import com.freddy.kulachat.net.config.ResponseModel;
+import com.freddy.kulachat.net.listener.OnNetResponseListener;
 
 import javax.inject.Inject;
 
@@ -24,6 +24,26 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
 
     @Override
     public void test() {
-        Log.d("HomeModel", "test()");
+        request("test.action", new OnNetResponseListener<ResponseModel>() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onSucceed(ResponseModel responseModel) {
+                super.onSucceed(responseModel);
+            }
+
+            @Override
+            public void onFailed(int errCode, String errMsg) {
+                super.onFailed(errCode, errMsg);
+            }
+
+            @Override
+            public void onFinished() {
+                super.onFinished();
+            }
+        });
     }
 }

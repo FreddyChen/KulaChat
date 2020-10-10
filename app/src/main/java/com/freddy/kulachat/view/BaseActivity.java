@@ -11,6 +11,7 @@ import android.view.Window;
 
 import com.freddy.event.CEventCenter;
 import com.freddy.event.I_CEventListener;
+import com.freddy.kulachat.model.user.UserManager;
 import com.freddy.kulachat.presenter.BasePresenter;
 import com.freddy.kulachat.widget.CLoadingDialog;
 import com.jaeger.library.StatusBarUtil;
@@ -261,5 +262,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     protected boolean hasTransition() {
         return true;
+    }
+
+    protected boolean isLoggedIn() {
+        return UserManager.getInstance().isLoggedIn();
     }
 }

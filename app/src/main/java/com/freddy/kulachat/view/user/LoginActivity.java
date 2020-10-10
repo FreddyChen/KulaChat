@@ -87,10 +87,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         mVerifyCodeEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(CConfig.MAX_VERIFY_CODE_LENGTH)});
         mSoftKeyboardStateHelper = new SoftKeyboardStateHelper(mMainLayout);
 
-        DelayManager.getInstance().startDelay(200, TimeUnit.MILLISECONDS, () -> {
+        DelayManager.getInstance().startDelay(350, TimeUnit.MILLISECONDS, () -> {
             UIUtil.requestFocus(mPhoneNumberEditText);
             UIUtil.showSoftInput(activity, mPhoneNumberEditText);
-            startAnimator(true);
         });
     }
 
@@ -106,10 +105,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
             @Override
             public void onSoftKeyboardClosed() {
+                UIUtil.loseFocus(mPhoneNumberEditText);
+                UIUtil.loseFocus(mVerifyCodeEditText);
                 DelayManager.getInstance().startDelay(100, TimeUnit.MILLISECONDS, () -> {
-                    if (mPhoneNumberEditText.isFocused() || mVerifyCodeEditText.isFocused()) {
-                        return;
-                    }
                     startAnimator(false);
                 });
             }
@@ -194,28 +192,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (UIUtil.isShouldHideInput(v, ev)) {
-                if (mPhoneNumberEditText.isFocused()) {
-                    UIUtil.hideSoftInput(activity, mPhoneNumberEditText);
-                    UIUtil.loseFocus(mPhoneNumberEditText);
-                } else if (mVerifyCodeEditText.isFocused()) {
-                    UIUtil.hideSoftInput(activity, mVerifyCodeEditText);
-                    UIUtil.loseFocus(mVerifyCodeEditText);
-                }
-            }
-            return super.dispatchTouchEvent(ev);
-        }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
-    }
-
-    @Override
     protected boolean hasTransition() {
         return false;
     }
@@ -234,23 +210,26 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void onGetVerifyCodeSucceed() {
         mGetVerifyCodeBtn.setEnabled(false);
         startGetVerifyCodeCountdown();
+        DelayManager.getInstance().startDelay(1200, TimeUnit.MILLISECONDS, () -> {
+            UIUtil.requestFocus(mVerifyCodeEditText);
+            UIUtil.showSoftInput(activity, mVerifyCodeEditText);
+        });
     }
 
     @Override
     public void onLoginSucceed() {
         startActivity(HomeActivity.class);
         DelayManager.getInstance().startDelay(500, TimeUnit.MILLISECONDS, () -> {
-            CActivityManager.getInstance().finishActivity(LoginActivity.class);
+            CActivityManager.getInstance().finishActivity(this);
         });
     }
 
     private void startGetVerifyCodeCountdown() {
-        CountdownManager.getInstance().startCountdown(10, new CountdownManager.CountdownCallback() {
+        CountdownManager.getInstance().startCountdown(60, new CountdownManager.CountdownCallback() {
 
             @SuppressLint("DefaultLocale")
             @Override
             public void onNext(Long time) {
-                Log.d("FreddyChen", "time = " + time);
                 mGetVerifyCodeBtn.setText(String.format("%1$ds", time));
             }
 

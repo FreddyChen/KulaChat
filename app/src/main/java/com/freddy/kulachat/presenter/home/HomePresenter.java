@@ -27,8 +27,5 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
     @Override
     public void test() {
         homeModel.test();
-        if(isActive()) {
-            view.onTestSuccess();
-        }
     }
 }

@@ -1,12 +1,17 @@
 package com.freddy.kulachat.presenter.user;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.freddy.kulachat.contract.user.LoginContract;
-import com.freddy.kulachat.manager.CountdownManager;
+import com.freddy.kulachat.entity.User;
 import com.freddy.kulachat.manager.DelayManager;
+import com.freddy.kulachat.model.user.UserManager;
 import com.freddy.kulachat.model.user.UserModel;
+import com.freddy.kulachat.net.config.NetworkConfig;
 import com.freddy.kulachat.net.config.ResponseModel;
 import com.freddy.kulachat.net.listener.OnNetResponseListener;
 import com.freddy.kulachat.presenter.BasePresenter;
+import com.freddy.kulachat.utils.StringUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -44,18 +49,17 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             public void onSucceed(ResponseModel responseModel) {
                 if(isActive()) {
                     view.onGetVerifyCodeSucceed();
+                    DelayManager.getInstance().startDelay(1, TimeUnit.SECONDS, () -> {
+                        view.hideLoading();
+                        DelayManager.getInstance().dispose();
+                    });
                 }
             }
 
             @Override
             public void onFailed(int errCode, String errMsg) {
-                super.onFailed(errCode, errMsg);
-            }
-
-            @Override
-            public void onFinished() {
                 if(isActive()) {
-                    DelayManager.getInstance().startDelay(1, TimeUnit.SECONDS, () -> view.hideLoading());
+                    view.hideLoading();
                 }
             }
         });
@@ -73,15 +77,15 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
             @Override
             public void onSucceed(ResponseModel responseModel) {
-                super.onSucceed(responseModel);
-                if(isActive()) {
-                    view.onLoginSucceed();
+                JSONObject jsonObj = JSON.parseObject(responseModel.getData());
+                String token = jsonObj.getString(NetworkConfig.PARAM_USER_TOKEN);
+                User user = JSON.parseObject(jsonObj.getString(NetworkConfig.PARAM_USER), User.class);
+                if(StringUtil.isNotEmpty(token) && user != null) {
+                    UserManager.getInstance().onUserLoggedIn(token, user, true);
+                    if(isActive()) {
+                        view.onLoginSucceed();
+                    }
                 }
-            }
-
-            @Override
-            public void onFailed(int errCode, String errMsg) {
-                super.onFailed(errCode, errMsg);
             }
 
             @Override
