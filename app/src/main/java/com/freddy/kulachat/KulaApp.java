@@ -5,6 +5,7 @@ import android.app.Application;
 import com.freddy.kulachat.di.component.ApplicationComponent;
 import com.freddy.kulachat.di.component.DaggerApplicationComponent;
 import com.freddy.kulachat.ims.listener.OnIMSConnectStatusListener;
+import com.freddy.kulachat.storage.oss.OSSClientManager;
 import com.freddy.kulachat.utils.CrashHandler;
 import com.freddy.kulaims.IMSKit;
 import com.freddy.kulaims.config.CommunicationProtocol;
@@ -49,10 +50,15 @@ public class KulaApp extends Application implements HasAndroidInjector {
         applicationComponent.inject(this);
         instance = this;
         CrashHandler.getInstance().init();
-        initIMS();
+        OSSClientManager.getInstance().init();
     }
 
-    private void initIMS() {
+    @Override
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
+    }
+
+    public void connectIMS() {
         List<String> serverList = new ArrayList<>();
         serverList.add("192.168.0.93 8808");
         serverList.add("192.168.0.93 8809");
@@ -64,16 +70,8 @@ public class KulaApp extends Application implements HasAndroidInjector {
                 .setTransportProtocol(TransportProtocol.Protobuf)
                 .setServerList(serverList)
                 .build();
-        IMSKit.getInstance().init(instance, options, new OnIMSConnectStatusListener(), null);
-    }
-
-    @Override
-    public AndroidInjector<Object> androidInjector() {
-        return androidInjector;
-    }
-
-    public void connectIMS() {
-        IMSKit.getInstance().connect();
+        boolean initSucceed = IMSKit.getInstance().init(instance, options, new OnIMSConnectStatusListener(), null);
+        if (initSucceed) IMSKit.getInstance().connect();
     }
 
     public void disconnectIMS() {

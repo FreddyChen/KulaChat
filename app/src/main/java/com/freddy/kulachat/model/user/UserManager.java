@@ -116,6 +116,11 @@ public class UserManager {
         }
     }
 
+    public boolean isCompletedInfo() {
+        if(mCurrentUser == null) return false;
+        return mCurrentUser.isCompletedInfo();
+    }
+
     public interface IUserLoginStateListener {
         void onUserLoggedIn(String token, User user, boolean initDatabase);
 
@@ -132,7 +137,9 @@ public class UserManager {
                 DatabaseManagerFactory.getDatabaseManager().init();
             }
             UserManager.getInstance().setCurrentUser(user);
-            KulaApp.getInstance().connectIMS();
+            if(user.isCompletedInfo()) {
+                KulaApp.getInstance().connectIMS();
+            }
         }
 
         @Override
@@ -142,7 +149,6 @@ public class UserManager {
             UserManager.getInstance().setCurrentUser(null);
             DatabaseManagerFactory.getDatabaseManager().release();
             KulaApp.getInstance().disconnectIMS();
-            UserManager.getInstance().gotoLogin();
         }
     }
 }

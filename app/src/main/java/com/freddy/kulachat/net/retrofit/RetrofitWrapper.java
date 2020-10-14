@@ -85,12 +85,8 @@ public class RetrofitWrapper {
         return builder.build();
     }
 
-    private static Map<String, String> getHeaders() {
+    public static Map<String, String> getHeaders() {
         Map<String, String> headers = new HashMap<>();
-        Long userId = UserManager.getInstance().getUserId();
-        if(userId != null) {
-            headers.put(NetworkConfig.PARAM_USER_ID, String.valueOf(userId));
-        }
         String token = UserManager.getInstance().getToken();
         if(token != null) {
             headers.put(NetworkConfig.PARAM_USER_TOKEN, token);

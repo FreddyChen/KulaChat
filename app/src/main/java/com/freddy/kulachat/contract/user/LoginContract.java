@@ -1,6 +1,5 @@
 package com.freddy.kulachat.contract.user;
 
-import com.freddy.kulachat.entity.User;
 import com.freddy.kulachat.net.config.ResponseModel;
 import com.freddy.kulachat.net.listener.OnNetResponseListener;
 import com.freddy.kulachat.view.IBaseView;
@@ -37,7 +36,7 @@ public interface LoginContract {
         void showGetVerifyCodeLoadingDialog();
         void showLoginLoadingDialog();
         void onGetVerifyCodeSucceed();
-        void onLoginSucceed();
+        void onLoginSucceed(boolean isCompletedInfo);
     }
 
     interface Presenter {

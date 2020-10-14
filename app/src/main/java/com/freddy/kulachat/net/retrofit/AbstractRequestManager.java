@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.freddy.kulachat.BuildConfig;
+import com.freddy.kulachat.net.config.NetworkConfig;
 import com.freddy.kulachat.net.config.RequestMethod;
 import com.freddy.kulachat.net.config.RequestOptions;
 import com.freddy.kulachat.net.retrofit.converter.FastJsonConverterFactory;
@@ -12,14 +13,14 @@ import com.freddy.kulachat.utils.StringUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * @author FreddyChen
@@ -39,7 +40,7 @@ public abstract class AbstractRequestManager {
         TAG = getClass().getSimpleName();
         mRetrofitWrapper = new RetrofitWrapper()
                 .addConverterFactory(FastJsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .setClient(okHttpClient);
     }
 
@@ -107,7 +108,7 @@ public abstract class AbstractRequestManager {
 
     private RequestBody convertParamsToRequestBody(Map<String, Object> params) {
         if (params != null && !params.isEmpty()) {
-            return RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), JSON.toJSONString(params));
+            return RequestBody.create(MediaType.parse(NetworkConfig.CONTENT_TYPE), JSON.toJSONString(params));
         }
 
         return null;

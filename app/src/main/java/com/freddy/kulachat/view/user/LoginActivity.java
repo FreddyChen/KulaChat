@@ -217,11 +217,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public void onLoginSucceed() {
-        startActivity(HomeActivity.class);
-        DelayManager.getInstance().startDelay(500, TimeUnit.MILLISECONDS, () -> {
-            CActivityManager.getInstance().finishActivity(this);
-        });
+    public void onLoginSucceed(boolean isCompletedInfo) {
+        if(isCompletedInfo) {
+            startActivity(HomeActivity.class);
+            DelayManager.getInstance().startDelay(500, TimeUnit.MILLISECONDS, () -> {
+                CActivityManager.getInstance().finishActivity(this);
+            });
+        }else {
+            startActivity(CompleteInfoActivity.class);
+        }
     }
 
     private void startGetVerifyCodeCountdown() {

@@ -7,6 +7,8 @@ import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Unique;
 
+import java.util.Objects;
+
 /**
  * @author FreddyChen
  * @name
@@ -34,15 +36,20 @@ public class User {
     private String signature;
     private String province;
     private String city;
+    private String area;
     private int completedInfo;
+
+    public static final int GENDER_UNKNOWN = 0;
+    public static final int GENDER_MALE = 1;
+    public static final int GENDER_FEMALE = 2;
 
     private static final int IS_COMPLETED_INFO = 1;
     private static final int UN_COMPLETED_INFO = 0;
 
-    @Generated(hash = 1444041703)
+    @Generated(hash = 1144158524)
     public User(Long id, @NotNull Long userId, String phone, String nickname,
                 String avatar, int gender, String birthday, String signature,
-                String province, String city, int completedInfo) {
+                String province, String city, String area, int completedInfo) {
         this.id = id;
         this.userId = userId;
         this.phone = phone;
@@ -53,6 +60,7 @@ public class User {
         this.signature = signature;
         this.province = province;
         this.city = city;
+        this.area = area;
         this.completedInfo = completedInfo;
     }
 
@@ -140,6 +148,14 @@ public class User {
         this.city = city;
     }
 
+    public String getArea() {
+        return this.area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
     public int getCompletedInfo() {
         return this.completedInfo;
     }
@@ -154,5 +170,36 @@ public class User {
 
     public void setCompletedInfo(boolean completedInfo) {
         setCompletedInfo(completedInfo ? IS_COMPLETED_INFO : UN_COMPLETED_INFO);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", phone='" + phone + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", gender=" + gender +
+                ", birthday='" + birthday + '\'' +
+                ", signature='" + signature + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", area='" + area + '\'' +
+                ", completedInfo=" + completedInfo +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userId, user.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 }

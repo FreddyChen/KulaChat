@@ -13,6 +13,7 @@ import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,14 +58,9 @@ public class CTopBar extends ConstraintLayout {
     private String titleText;
     private int titleTextColor;
     private int titleTextSize;
-
     private ConstraintSet mConstraintSet;
-
     private static final int VISIBLE = 1;
     private static final int GONE = 0;
-
-    private Mode mode = Mode.Normal;
-
     private OnClickListener mOnBackBtnClickListener;
 
     public CTopBar(Context context) {
@@ -79,16 +75,14 @@ public class CTopBar extends ConstraintLayout {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CTopBar, defStyleAttr, 0);
-        if (array != null) {
-            backgroundColor = array.getColor(R.styleable.CTopBar_ctb_background_color, ContextCompat.getColor(context, R.color.c_app_main_color));
-            backBtnNormalIcon = array.getResourceId(R.styleable.CTopBar_ctb_btn_back_normal_icon, R.drawable.ic_back_normal);
-            backBtnPressedIcon = array.getResourceId(R.styleable.CTopBar_ctb_btn_back_pressed_icon, R.drawable.ic_back_pressed);
-            backBtnVisibility = array.getInt(R.styleable.CTopBar_ctb_btn_back_visibility, VISIBLE);
-            titleText = array.getString(R.styleable.CTopBar_ctb_title_text);
-            titleTextColor = array.getColor(R.styleable.CTopBar_ctb_title_text_color, ContextCompat.getColor(context, R.color.c_000000));
-            titleTextSize = array.getDimensionPixelSize(R.styleable.CTopBar_ctb_title_text_size, DensityUtil.sp2px(16));
-            array.recycle();
-        }
+        backgroundColor = array.getColor(R.styleable.CTopBar_ctb_background_color, ContextCompat.getColor(context, R.color.c_app_main_color));
+        backBtnNormalIcon = array.getResourceId(R.styleable.CTopBar_ctb_btn_back_normal_icon, R.drawable.ic_back_normal);
+        backBtnPressedIcon = array.getResourceId(R.styleable.CTopBar_ctb_btn_back_pressed_icon, R.drawable.ic_back_pressed);
+        backBtnVisibility = array.getInt(R.styleable.CTopBar_ctb_btn_back_visibility, VISIBLE);
+        titleText = array.getString(R.styleable.CTopBar_ctb_title_text);
+        titleTextColor = array.getColor(R.styleable.CTopBar_ctb_title_text_color, ContextCompat.getColor(context, R.color.c_000000));
+        titleTextSize = array.getDimensionPixelSize(R.styleable.CTopBar_ctb_title_text_size, DensityUtil.sp2px(16));
+        array.recycle();
 
         init();
     }
@@ -192,6 +186,33 @@ public class CTopBar extends ConstraintLayout {
 
         mConstraintSet.constrainWidth(menuId, DensityUtil.dp2px(42));
         mConstraintSet.constrainHeight(menuId, DensityUtil.dp2px(42));
+        if (mMenuArray.size() == 0) {
+            mConstraintSet.connect(menuId, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, DensityUtil.dp2px(8));
+        } else {
+            mConstraintSet.connect(menuId, ConstraintSet.RIGHT, mMenuArray.valueAt(mMenuArray.size() - 1).getId(), ConstraintSet.LEFT, DensityUtil.dp2px(8));
+        }
+        mConstraintSet.centerVertically(menuId, ConstraintSet.PARENT_ID);
+        mConstraintSet.applyTo(this);
+        mMenuArray.put(menuId, menuBtn);
+    }
+
+    public void addMenu(String text, OnClickListener listener) {
+        if (mMenuArray == null) {
+            mMenuArray = new SparseArray<>();
+        }
+
+        int menuId = View.generateViewId();
+        CTextButton menuBtn = new CTextButton(mContext);
+        menuBtn.setId(menuId);
+        menuBtn.setText(text);
+        menuBtn.setTextColor(ContextCompat.getColor(mContext, R.color.c_000000));
+        menuBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.0f);
+        menuBtn.setPadding(DensityUtil.dp2px(6.0f), DensityUtil.dp2px(4.0f), DensityUtil.dp2px(6.0f), DensityUtil.dp2px(4.0f));
+        menuBtn.setOnClickListener(listener);
+        addView(menuBtn);
+
+        mConstraintSet.constrainWidth(menuId, ConstraintSet.WRAP_CONTENT);
+        mConstraintSet.constrainHeight(menuId, ConstraintSet.WRAP_CONTENT);
         if (mMenuArray.size() == 0) {
             mConstraintSet.connect(menuId, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, DensityUtil.dp2px(8));
         } else {

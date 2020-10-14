@@ -1,7 +1,6 @@
 package com.freddy.kulachat.view.main;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.freddy.kulachat.R;
@@ -13,17 +12,14 @@ import com.freddy.kulachat.view.CActivityManager;
 import com.freddy.kulachat.view.home.HomeActivity;
 import com.freddy.kulachat.view.user.LoginActivity;
 import com.jaeger.library.StatusBarUtil;
-import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import es.dmoral.toasty.Toasty;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 /**
  * @author FreddyChen
@@ -39,7 +35,7 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
     RxPermissions rxPermissions;
     private static final String[] NECESSARY_PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
 
     @Override
@@ -55,13 +51,13 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
     }
 
     private void checkNecessaryPermissions() {
-        DelayManager.getInstance().startDelay(1, TimeUnit.SECONDS, () -> rxPermissions.request(NECESSARY_PERMISSIONS)
+        DelayManager.getInstance().startDelay(2, TimeUnit.SECONDS, () -> rxPermissions.request(NECESSARY_PERMISSIONS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(granted -> {
-                    if(granted) {
+                    if (granted) {
                         initPage();
-                    }else {
+                    } else {
                         exitApp();
                     }
                 }));
@@ -75,9 +71,9 @@ public class SplashActivity extends BaseActivity<NullablePresenter> {
     }
 
     private void initPage() {
-        if(UserManager.getInstance().checkUserLoginStateFromLocal()) {
+        if (UserManager.getInstance().checkUserLoginStateFromLocal() && UserManager.getInstance().isCompletedInfo()) {
             startActivity(HomeActivity.class);
-        }else {
+        } else {
             startActivity(LoginActivity.class);
         }
 

@@ -13,8 +13,8 @@ import java.net.SocketTimeoutException;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
 import retrofit2.HttpException;
 
 /**

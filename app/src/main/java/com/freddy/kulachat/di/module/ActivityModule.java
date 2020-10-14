@@ -4,6 +4,7 @@ import com.freddy.kulachat.di.component.ActivityComponent;
 import com.freddy.kulachat.di.scope.ActivityScope;
 import com.freddy.kulachat.view.home.HomeActivity;
 import com.freddy.kulachat.view.main.SplashActivity;
+import com.freddy.kulachat.view.user.CompleteInfoActivity;
 import com.freddy.kulachat.view.user.LoginActivity;
 
 import dagger.Module;
@@ -31,4 +32,8 @@ public abstract class ActivityModule {
     @ActivityScope
     @ContributesAndroidInjector()
     abstract HomeActivity homeActivityInjector();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract CompleteInfoActivity completeInfoActivityInjector();
 }

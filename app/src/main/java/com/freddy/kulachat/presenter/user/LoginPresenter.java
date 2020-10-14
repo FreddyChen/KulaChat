@@ -83,7 +83,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 if(StringUtil.isNotEmpty(token) && user != null) {
                     UserManager.getInstance().onUserLoggedIn(token, user, true);
                     if(isActive()) {
-                        view.onLoginSucceed();
+                        view.onLoginSucceed(user.isCompletedInfo());
                     }
                 }
             }

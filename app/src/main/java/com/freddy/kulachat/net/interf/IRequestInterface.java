@@ -3,7 +3,7 @@ package com.freddy.kulachat.net.interf;
 import com.freddy.kulachat.net.config.RequestOptions;
 import com.freddy.kulachat.net.listener.OnNetResponseListener;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * @author FreddyChen

@@ -7,9 +7,9 @@ import com.freddy.kulachat.net.config.ResponseModel;
 import com.freddy.kulachat.net.interf.IRequestInterface;
 import com.freddy.kulachat.net.listener.OnNetResponseListener;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Function;
 import okhttp3.OkHttpClient;
 
 /**

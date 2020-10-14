@@ -1,6 +1,7 @@
 package com.freddy.kulachat.view.home;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -8,15 +9,22 @@ import android.view.View;
 
 import com.freddy.kulachat.R;
 import com.freddy.kulachat.contract.home.HomeContract;
+import com.freddy.kulachat.media.MediaScanner;
+import com.freddy.kulachat.media.MediaType;
 import com.freddy.kulachat.presenter.home.HomePresenter;
+import com.freddy.kulachat.storage.UploadUtil;
+import com.freddy.kulachat.storage.config.UploadFileOptions;
+import com.freddy.kulachat.storage.config.UploadFileType;
+import com.freddy.kulachat.storage.config.UploadFolderType;
+import com.freddy.kulachat.storage.config.UploadType;
+import com.freddy.kulachat.storage.listener.OnUploadFileListener;
 import com.freddy.kulachat.view.BaseActivity;
-import com.freddy.kulachat.view.CActivityManager;
 import com.freddy.kulachat.view.adapter.HomeFragmentStateAdapter;
-import com.freddy.kulachat.view.user.LoginActivity;
-import com.freddy.kulaims.IMSKit;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.viewpager2.widget.ViewPager2;
+
+import java.io.File;
 
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
@@ -48,7 +56,48 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         mViewPager.setAdapter(adapter);
         mViewPager.setUserInputEnabled(false);
 
-        presenter.test();
+        MediaScanner scanner = new MediaScanner(getApplicationContext());
+        scanner.loadMedias(MediaType.Image);
+    }
+
+    private void upload() {
+        File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera/IMG_20201013_174644.jpg");
+        if(file.isFile() && file.exists()) {
+            UploadFileOptions options = new UploadFileOptions.Builder()
+                    .setFilePath(file.getPath())
+                    .setUploadType(UploadType.Normal)
+                    .setUploadFileType(UploadFileType.JPG_IMAGE)
+                    .setUploadFolderType(UploadFolderType.AvatarImage)
+                    .build();
+
+            UploadUtil.uploadFile(options, new OnUploadFileListener() {
+
+                @Override
+                public void onStart(String filePath) {
+                    Log.d("HomeActivity", "onStart() filePath = " + filePath);
+                }
+
+                @Override
+                public void onProgress(String filePath, int progress) {
+                    Log.d("HomeActivity", "onProgress() filePath = " + filePath + "\tprogress = " + progress);
+                }
+
+                @Override
+                public void onSucceed(String filePath, String fileUrl) {
+                    Log.d("HomeActivity", "onSucceed() filePath = " + filePath + "\tfileUrl = " + fileUrl);
+                }
+
+                @Override
+                public void onFailed(String filePath, String errMsg) {
+                    Log.d("HomeActivity", "onSucceed() filePath = " + filePath + "\terrMsg = " + errMsg);
+                }
+
+                @Override
+                public void onFinished() {
+                    Log.d("HomeActivity", "onFinished");
+                }
+            });
+        }
     }
 
     @Override

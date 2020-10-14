@@ -34,7 +34,8 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property Signature = new Property(7, String.class, "signature", false, "SIGNATURE");
         public final static Property Province = new Property(8, String.class, "province", false, "PROVINCE");
         public final static Property City = new Property(9, String.class, "city", false, "CITY");
-        public final static Property CompletedInfo = new Property(10, int.class, "completedInfo", false, "COMPLETED_INFO");
+        public final static Property Area = new Property(10, String.class, "area", false, "AREA");
+        public final static Property CompletedInfo = new Property(11, int.class, "completedInfo", false, "COMPLETED_INFO");
     }
 
 
@@ -60,7 +61,8 @@ public class UserDao extends AbstractDao<User, Long> {
                 "\"SIGNATURE\" TEXT," + // 7: signature
                 "\"PROVINCE\" TEXT," + // 8: province
                 "\"CITY\" TEXT," + // 9: city
-                "\"COMPLETED_INFO\" INTEGER NOT NULL );"); // 10: completedInfo
+                "\"AREA\" TEXT," + // 10: area
+                "\"COMPLETED_INFO\" INTEGER NOT NULL );"); // 11: completedInfo
     }
 
     /** Drops the underlying database table. */
@@ -114,7 +116,12 @@ public class UserDao extends AbstractDao<User, Long> {
         if (city != null) {
             stmt.bindString(10, city);
         }
-        stmt.bindLong(11, entity.getCompletedInfo());
+ 
+        String area = entity.getArea();
+        if (area != null) {
+            stmt.bindString(11, area);
+        }
+        stmt.bindLong(12, entity.getCompletedInfo());
     }
 
     @Override
@@ -162,7 +169,12 @@ public class UserDao extends AbstractDao<User, Long> {
         if (city != null) {
             stmt.bindString(10, city);
         }
-        stmt.bindLong(11, entity.getCompletedInfo());
+ 
+        String area = entity.getArea();
+        if (area != null) {
+            stmt.bindString(11, area);
+        }
+        stmt.bindLong(12, entity.getCompletedInfo());
     }
 
     @Override
@@ -183,7 +195,8 @@ public class UserDao extends AbstractDao<User, Long> {
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // signature
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // province
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // city
-            cursor.getInt(offset + 10) // completedInfo
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // area
+            cursor.getInt(offset + 11) // completedInfo
         );
         return entity;
     }
@@ -200,7 +213,8 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setSignature(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setProvince(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setCity(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setCompletedInfo(cursor.getInt(offset + 10));
+        entity.setArea(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setCompletedInfo(cursor.getInt(offset + 11));
      }
     
     @Override

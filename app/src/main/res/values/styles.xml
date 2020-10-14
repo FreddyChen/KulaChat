@@ -26,6 +26,11 @@
         <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
+    <style name="style_circle_imageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="bottom_navigation_menu_item_text_size_active" parent="@style/TextAppearance.AppCompat.Caption">
         <item name="android:textSize">10sp</item>
     </style>

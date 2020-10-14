@@ -5,6 +5,7 @@ import android.util.Log;
 import com.freddy.kulachat.BuildConfig;
 import com.freddy.kulachat.net.config.NetworkConfig;
 import com.freddy.kulachat.net.retrofit.DingDingRetrofitRequestManager;
+import com.freddy.kulachat.net.retrofit.OkHttpManager;
 import com.freddy.kulachat.net.retrofit.RetrofitRequestManager;
 import com.ihsanbal.logging.Level;
 import com.ihsanbal.logging.LoggingInterceptor;
@@ -44,21 +45,6 @@ public class ApplicationModule {
     @Singleton
     @Provides
     static OkHttpClient provideOkHttpClient() {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(NetworkConfig.REQUEST_TIMEOUT, TimeUnit.MILLISECONDS)
-                .writeTimeout(NetworkConfig.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
-                .readTimeout(NetworkConfig.READ_TIMEOUT, TimeUnit.MILLISECONDS);
-        if(BuildConfig.LOG_DEBUG) {
-            LoggingInterceptor loggingInterceptor = new LoggingInterceptor.Builder()
-                    .setLevel(Level.BASIC)
-                    .log(Platform.INFO)
-                    .request("Request")
-                    .response("Response")
-                    .logger((level, tag, message) -> Log.d("OkHttpClient", "level = " + level + ", tag = " + tag + ", message = " + message))
-                    .build();
-            builder.addNetworkInterceptor(loggingInterceptor);
-        }
-
-        return builder.build();
+        return OkHttpManager.getInstance().getOkHttpClientBuilder().build();
     }
 }

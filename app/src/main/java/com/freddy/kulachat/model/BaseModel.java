@@ -8,7 +8,7 @@ import com.freddy.kulachat.net.listener.OnNetResponseListener;
 
 import java.util.Map;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * @author FreddyChen
@@ -20,14 +20,14 @@ import io.reactivex.Observable;
  */
 public class BaseModel {
 
-    public <T> void request(String function, OnNetResponseListener<T> listener) {
+    protected  <T> void request(String function, OnNetResponseListener<T> listener) {
         RequestOptions options = new RequestOptions.Builder()
                 .setFunction(function)
                 .build();
         this.request(options, listener);
     }
 
-    public <T> void request(String function, Map<String, Object> params, OnNetResponseListener<T> listener) {
+    protected <T> void request(String function, Map<String, Object> params, OnNetResponseListener<T> listener) {
         RequestOptions options = new RequestOptions.Builder()
                 .setFunction(function)
                 .setParams(params)
@@ -35,7 +35,7 @@ public class BaseModel {
         this.request(options, listener);
     }
 
-    public <T> void request(String baseUrl, String function, OnNetResponseListener<T> listener) {
+    protected <T> void request(String baseUrl, String function, OnNetResponseListener<T> listener) {
         RequestOptions options = new RequestOptions.Builder()
                 .setBaseUrl(baseUrl)
                 .setFunction(function)
@@ -43,7 +43,7 @@ public class BaseModel {
         this.request(options, listener);
     }
 
-    public <T> void request(String baseUrl, String function, Map<String, Object> params, OnNetResponseListener<T> listener) {
+    protected <T> void request(String baseUrl, String function, Map<String, Object> params, OnNetResponseListener<T> listener) {
         RequestOptions options = new RequestOptions.Builder()
                 .setBaseUrl(baseUrl)
                 .setFunction(function)
@@ -52,7 +52,7 @@ public class BaseModel {
         this.request(options, listener);
     }
 
-    public <T> void request(String function, RequestMethod method, OnNetResponseListener<T> listener) {
+    protected <T> void request(String function, RequestMethod method, OnNetResponseListener<T> listener) {
         RequestOptions options = new RequestOptions.Builder()
                 .setFunction(function)
                 .setMethod(method)
@@ -60,7 +60,7 @@ public class BaseModel {
         this.request(options, listener);
     }
 
-    public <T> void request(String function, Map<String, Object> params, RequestMethod method, OnNetResponseListener<T> listener) {
+    protected <T> void request(String function, Map<String, Object> params, RequestMethod method, OnNetResponseListener<T> listener) {
         RequestOptions options = new RequestOptions.Builder()
                 .setFunction(function)
                 .setParams(params)
@@ -69,7 +69,7 @@ public class BaseModel {
         this.request(options, listener);
     }
 
-    public <T> void request(String baseUrl, String function, RequestMethod method, OnNetResponseListener<T> listener) {
+    protected <T> void request(String baseUrl, String function, RequestMethod method, OnNetResponseListener<T> listener) {
         RequestOptions options = new RequestOptions.Builder()
                 .setBaseUrl(baseUrl)
                 .setFunction(function)
@@ -78,7 +78,7 @@ public class BaseModel {
         this.request(options, listener);
     }
 
-    public <T> void request(String baseUrl, String function, Map<String, Object> params, RequestMethod method, OnNetResponseListener<T> listener) {
+    protected <T> void request(String baseUrl, String function, Map<String, Object> params, RequestMethod method, OnNetResponseListener<T> listener) {
         RequestOptions options = new RequestOptions.Builder()
                 .setBaseUrl(baseUrl)
                 .setFunction(function)
@@ -88,18 +88,18 @@ public class BaseModel {
         this.request(options, listener);
     }
 
-    public <T> void request(RequestOptions options, OnNetResponseListener<T> listener) {
+    protected <T> void request(RequestOptions options, OnNetResponseListener<T> listener) {
         RequestManagerFactory.getRequestManager().request(options, listener);
     }
 
-    public Observable<ResponseModel> request(String function) {
+    protected Observable<ResponseModel> request(String function) {
         RequestOptions options = new RequestOptions.Builder()
                 .setFunction(function)
                 .build();
         return this.request(options);
     }
 
-    public Observable<ResponseModel> request(String function, Map<String, Object> params) {
+    protected Observable<ResponseModel> request(String function, Map<String, Object> params) {
         RequestOptions options = new RequestOptions.Builder()
                 .setFunction(function)
                 .setParams(params)
@@ -107,7 +107,7 @@ public class BaseModel {
         return this.request(options);
     }
 
-    public Observable<ResponseModel> request(String baseUrl, String function) {
+    protected Observable<ResponseModel> request(String baseUrl, String function) {
         RequestOptions options = new RequestOptions.Builder()
                 .setBaseUrl(baseUrl)
                 .setFunction(function)
@@ -115,7 +115,7 @@ public class BaseModel {
         return this.request(options);
     }
 
-    public Observable<ResponseModel> request(String baseUrl, String function, Map<String, Object> params) {
+    protected Observable<ResponseModel> request(String baseUrl, String function, Map<String, Object> params) {
         RequestOptions options = new RequestOptions.Builder()
                 .setBaseUrl(baseUrl)
                 .setFunction(function)
@@ -124,7 +124,7 @@ public class BaseModel {
         return this.request(options);
     }
 
-    public Observable<ResponseModel> request(String function, RequestMethod method) {
+    protected Observable<ResponseModel> request(String function, RequestMethod method) {
         RequestOptions options = new RequestOptions.Builder()
                 .setFunction(function)
                 .setMethod(method)
@@ -132,7 +132,7 @@ public class BaseModel {
         return this.request(options);
     }
 
-    public Observable<ResponseModel> request(String function, Map<String, Object> params, RequestMethod method) {
+    protected Observable<ResponseModel> request(String function, Map<String, Object> params, RequestMethod method) {
         RequestOptions options = new RequestOptions.Builder()
                 .setFunction(function)
                 .setParams(params)
@@ -141,7 +141,7 @@ public class BaseModel {
         return this.request(options);
     }
 
-    public Observable<ResponseModel> request(String baseUrl, String function, RequestMethod method) {
+    protected Observable<ResponseModel> request(String baseUrl, String function, RequestMethod method) {
         RequestOptions options = new RequestOptions.Builder()
                 .setBaseUrl(baseUrl)
                 .setFunction(function)
@@ -150,7 +150,7 @@ public class BaseModel {
         return this.request(options);
     }
 
-    public Observable<ResponseModel> request(String baseUrl, String function, Map<String, Object> params, RequestMethod method) {
+    protected Observable<ResponseModel> request(String baseUrl, String function, Map<String, Object> params, RequestMethod method) {
         RequestOptions options = new RequestOptions.Builder()
                 .setBaseUrl(baseUrl)
                 .setFunction(function)
@@ -160,7 +160,7 @@ public class BaseModel {
         return this.request(options);
     }
 
-    public Observable<ResponseModel> request(RequestOptions options) {
+    protected Observable<ResponseModel> request(RequestOptions options) {
         return RequestManagerFactory.getRequestManager().request(options);
     }
 }

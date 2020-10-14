@@ -1,7 +1,7 @@
 package com.freddy.kulachat.di.module;
 
 import com.freddy.kulachat.view.main.SplashActivity;
-import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import dagger.Module;
 import dagger.Provides;
