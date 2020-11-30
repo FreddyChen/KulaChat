@@ -52,7 +52,8 @@
             app:bl_corners_radius="24dp"
             app:bl_solid_color="@color/c_ffffff"
             app:bl_stroke_color="@color/c_999999"
-            app:bl_stroke_width="1dp" />
+            app:bl_stroke_width="1dp"
+            tools:ignore="MissingPrefix" />
 
         <LinearLayout
             android:id="@+id/layout_verifyCode_wrap"
@@ -63,7 +64,8 @@
             app:bl_corners_radius="24dp"
             app:bl_solid_color="@color/c_ffffff"
             app:bl_stroke_color="@color/c_999999"
-            app:bl_stroke_width="1dp">
+            app:bl_stroke_width="1dp"
+            tools:ignore="MissingPrefix">
 
             <EditText
                 android:id="@+id/et_verifyCode"

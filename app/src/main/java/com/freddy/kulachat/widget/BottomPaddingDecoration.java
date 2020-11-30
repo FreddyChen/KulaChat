@@ -34,11 +34,10 @@ public class BottomPaddingDecoration extends RecyclerView.ItemDecoration {
             int startPos, endPos;
             if (itemCount % spanCount == 0) {
                 startPos = itemCount - spanCount;
-                endPos = itemCount;
             } else {
                 startPos = itemCount - itemCount % spanCount;
-                endPos = itemCount;
             }
+            endPos = itemCount;
             if (position >= startPos & position < endPos) {
                 outRect.set(0, 0, 0, padding);
             }

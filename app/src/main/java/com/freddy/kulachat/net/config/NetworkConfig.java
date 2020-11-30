@@ -11,7 +11,7 @@ package com.freddy.kulachat.net.config;
 public class NetworkConfig {
 
     public static final String CONTENT_TYPE = "application/json;charset=utf-8";
-    public static final int REQUEST_TIMEOUT = 15 * 1000;
+    public static final int CONNECT_TIMEOUT = 15 * 1000;
     public static final int READ_TIMEOUT = 15 * 1000;
     public static final int WRITE_TIMEOUT = 15 * 1000;
 

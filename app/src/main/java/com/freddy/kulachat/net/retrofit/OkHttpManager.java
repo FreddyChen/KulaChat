@@ -26,7 +26,7 @@ public class OkHttpManager {
 
     public OkHttpClient.Builder getOkHttpClientBuilder() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(NetworkConfig.REQUEST_TIMEOUT, TimeUnit.MILLISECONDS)
+                .connectTimeout(NetworkConfig.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .writeTimeout(NetworkConfig.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(NetworkConfig.READ_TIMEOUT, TimeUnit.MILLISECONDS);
         if(BuildConfig.LOG_DEBUG) {

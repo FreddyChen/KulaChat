@@ -60,7 +60,7 @@ public class KulaApp extends Application implements HasAndroidInjector {
 
     public void connectIMS() {
         List<String> serverList = new ArrayList<>();
-        serverList.add("192.168.0.93 8808");
+        serverList.add("192.168.0.938808");
         serverList.add("192.168.0.93 8809");
 //        serverList.add("ws://192.168.0.93:8809/websocket");
 //        serverList.add("ws://192.168.0.93:8810/websocket");
